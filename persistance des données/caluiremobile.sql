@@ -20,185 +20,130 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `caluiremobile`
 --
+DROP DATABASE IF EXISTS `caluiremobile`;
 CREATE DATABASE IF NOT EXISTS `caluiremobile` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `caluiremobile`;
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS clients;
+CREATE TABLE IF NOT EXISTS clients(
+   Id_client INT AUTO_INCREMENT,
+   nom VARCHAR(50),
+   prénom VARCHAR(50),
+   adresseMail VARCHAR(50),
+   MotDepasse VARCHAR(50),
+   abonnee BOOLEAN,
+   adresse VARCHAR(50),
+   telephone VARCHAR(20),
+   PRIMARY KEY(Id_client)
+);
 
---
--- Structure de la table `clients`
---
+DROP TABLE IF EXISTS employes;
+CREATE TABLE IF NOT EXISTS employes(
+   Id_employe INT AUTO_INCREMENT,
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   adresse VARCHAR(50),
+   mail VARCHAR(50),
+   dateEmbauche DATETIME,
+   telephone VARCHAR(20),
+   PRIMARY KEY(Id_employe)
+);
 
-DROP TABLE IF EXISTS `clients`;
-CREATE TABLE IF NOT EXISTS `clients` (
-  `Id_Client_` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(50) DEFAULT NULL,
-  `prénom` varchar(50) DEFAULT NULL,
-  `adresseMail` varchar(50) DEFAULT NULL,
-  `MotDepasse` varchar(50) DEFAULT NULL,
-  `abonnee` tinyint(1) DEFAULT NULL,
-  `adresse` varchar(50) DEFAULT NULL,
-  `telephone` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`Id_Client_`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS typesProduits;
+CREATE TABLE IF NOT EXISTS typesProduits(
+   Id_typesProduit INT AUTO_INCREMENT,
+   nomTypes VARCHAR(50),
+   PRIMARY KEY(Id_typesProduit)
+);
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS operations;
+CREATE TABLE IF NOT EXISTS operations(
+   Id_operation INT AUTO_INCREMENT,
+   dateDemande DATETIME,
+   dateRecuperation DATETIME,
+   dateRetour DATETIME,
+   dateVentes DATETIME,
+   dateReparation DATETIME,
+   adressePickup VARCHAR(50),
+   status VARCHAR(50),
+   serviceExpress BOOLEAN,
+   montant DECIMAL(10,2),
+   quantite INT,
+   flag_reparation_pickUp_vente_ VARCHAR(50),
+   PRIMARY KEY(Id_operation)
+);
 
---
--- Structure de la table `employes`
---
+DROP TABLE IF EXISTS produits;
+CREATE TABLE IF NOT EXISTS produits(
+   Id_produit INT AUTO_INCREMENT,
+   nomProduit VARCHAR(50),
+   marque VARCHAR(50),
+   prix DECIMAL(10,2),
+   stock INT,
+   flag_client_employe_ VARCHAR(50),
+   photographie VARCHAR(255),
+   Id_typesProduit INT NOT NULL,
+   PRIMARY KEY(Id_produit),
+   FOREIGN KEY(Id_typesProduit) REFERENCES typesProduits(Id_typesProduit)
+);
 
-DROP TABLE IF EXISTS `employes`;
-CREATE TABLE IF NOT EXISTS `employes` (
-  `Id_employes` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(50) DEFAULT NULL,
-  `prenom` varchar(50) DEFAULT NULL,
-  `adresse` varchar(50) DEFAULT NULL,
-  `mail` varchar(50) DEFAULT NULL,
-  `dateEmbauche` datetime DEFAULT NULL,
-  `telephone` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`Id_employes`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS transactionPaiments;
+CREATE TABLE IF NOT EXISTS transactionPaiments(
+   Id_transactionPaiment INT AUTO_INCREMENT,
+   montant DECIMAL(10,2),
+   dateTransaction DATETIME,
+   status VARCHAR(50),
+   methodePayement VARCHAR(50),
+   Id_operation INT NOT NULL,
+   PRIMARY KEY(Id_transactionPaiment),
+   FOREIGN KEY(Id_operation) REFERENCES operations(Id_operation)
+);
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS traduction;
+CREATE TABLE IF NOT EXISTS traduction(
+   Id_traduction INT AUTO_INCREMENT,
+   clef VARCHAR(250),
+   langue VARCHAR(10),
+   valeur TEXT,
+   PRIMARY KEY(Id_traduction)
+);
 
---
--- Structure de la table `prise_en_charge`
---
+DROP TABLE IF EXISTS tchat;
+CREATE TABLE IF NOT EXISTS tchat(
+   Id_client INT,
+   Id_employe INT,
+   NomUtilisateur VARCHAR(50),
+   socketId VARCHAR(50),
+   PRIMARY KEY(Id_client, Id_employe),
+   FOREIGN KEY(Id_client) REFERENCES clients(Id_client),
+   FOREIGN KEY(Id_employe) REFERENCES employes(Id_employe)
+);
 
-DROP TABLE IF EXISTS `prise_en_charge`;
-CREATE TABLE IF NOT EXISTS `prise_en_charge` (
-  `Id_employes` int NOT NULL,
-  `Id_reparation_pickUp_Vente` int NOT NULL,
-  PRIMARY KEY (`Id_employes`,`Id_reparation_pickUp_Vente`),
-  KEY `Id_reparation_pickUp_Vente` (`Id_reparation_pickUp_Vente`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS rendez_vous;
+CREATE TABLE IF NOT EXISTS rendez_vous(
+   Id_client INT,
+   Id_operation INT,
+   description TEXT,
+   dateHeureRdv DATETIME,
+   PRIMARY KEY(Id_client, Id_operation),
+   FOREIGN KEY(Id_client) REFERENCES clients(Id_client),
+   FOREIGN KEY(Id_operation) REFERENCES operations(Id_operation)
+);
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS prise_en_charge;
+CREATE TABLE IF NOT EXISTS prise_en_charge(
+   Id_employe INT,
+   Id_operation INT,
+   PRIMARY KEY(Id_employe, Id_operation),
+   FOREIGN KEY(Id_employe) REFERENCES employes(Id_employe),
+   FOREIGN KEY(Id_operation) REFERENCES operations(Id_operation)
+);
 
---
--- Structure de la table `produits`
---
-
-DROP TABLE IF EXISTS `produits`;
-CREATE TABLE IF NOT EXISTS `produits` (
-  `Id_produits` int NOT NULL AUTO_INCREMENT,
-  `nomProduit` varchar(50) DEFAULT NULL,
-  `marque` varchar(50) DEFAULT NULL,
-  `prix` decimal(10,2) DEFAULT NULL,
-  `stock` int DEFAULT NULL,
-  `Id_reparation_pickUp_Vente` int DEFAULT NULL,
-  `Id_client_` int DEFAULT NULL,
-  `Id_typesProduits` int DEFAULT NULL,
-  PRIMARY KEY (`Id_produits`),
-  KEY `Id_reparation_pickUp_Vente` (`Id_reparation_pickUp_Vente`),
-  KEY `Id_client_` (`Id_client_`),
-  KEY `Id_typesProduits` (`Id_typesProduits`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `rendez_vous`
---
-
-DROP TABLE IF EXISTS `rendez_vous`;
-CREATE TABLE IF NOT EXISTS `rendez_vous` (
-  `Id_client_` int NOT NULL,
-  `Id_reparation_pickUp_Vente` int NOT NULL,
-  `description` text,
-  `dateHeureRdv` datetime DEFAULT NULL,
-  PRIMARY KEY (`Id_client_`,`Id_reparation_pickUp_Vente`),
-  KEY `Id_reparation_pickUp_Vente` (`Id_reparation_pickUp_Vente`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `reparation_pickup_vente`
---
-
-DROP TABLE IF EXISTS `reparation_pickup_vente`;
-CREATE TABLE IF NOT EXISTS `reparation_pickup_vente` (
-  `Id_reparation_pickUp_Vente` int NOT NULL AUTO_INCREMENT,
-  `dateDemande` datetime DEFAULT NULL,
-  `dateRecuperation` datetime DEFAULT NULL,
-  `dateRetour` datetime DEFAULT NULL,
-  `dateVentes` datetime DEFAULT NULL,
-  `dateRéparation` datetime DEFAULT NULL,
-  `adressePickup` varchar(50) DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `serviceExpress` tinyint(1) DEFAULT NULL,
-  `montant` decimal(10,2) DEFAULT NULL,
-  `quantite` int DEFAULT NULL,
-  `flag` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Id_reparation_pickUp_Vente`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `tchat`
---
-
-DROP TABLE IF EXISTS `tchat`;
-CREATE TABLE IF NOT EXISTS `tchat` (
-  `Id_client_` int NOT NULL,
-  `Id_employes` int NOT NULL,
-  `NomUtilisateur` varchar(50) DEFAULT NULL,
-  `socketId` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Id_client_`,`Id_employes`),
-  KEY `Id_employes` (`Id_employes`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `traduction`
---
-
-DROP TABLE IF EXISTS `traduction`;
-CREATE TABLE IF NOT EXISTS `traduction` (
-  `Id_traduction` int NOT NULL AUTO_INCREMENT,
-  `clef` varchar(250) DEFAULT NULL,
-  `langue` varchar(10) DEFAULT NULL,
-  `valeur` text,
-sv c  ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `transactionpaiment`
---
-
-DROP TABLE IF EXISTS `transactionpaiment`;
-CREATE TABLE IF NOT EXISTS `transactionpaiment` (
-  `Id_transactionPaiment` int NOT NULL AUTO_INCREMENT,
-  `montant` decimal(10,2) DEFAULT NULL,
-  `dateTransaction` datetime DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `methodePayement` varchar(50) DEFAULT NULL,
-  `Id_reparation_pickUp_Vente` int DEFAULT NULL,
-  PRIMARY KEY (`Id_transactionPaiment`),
-  UNIQUE KEY `Id_reparation_pickUp_Vente` (`Id_reparation_pickUp_Vente`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `typesproduits`mù
-ù
-quantitefùc:DSV/
---
-
-DROP TABLE IF EXISTS `typesproduits`;
-CREATE TABLE IF NOT EXISTS `typesproduits` (
-  `Id_typesProduits` int NOT NULL AUTO_INCREMENT,
-  `nomTypes` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Id_typesProduits`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+DROP TABLE IF EXISTS traiter;
+CREATE TABLE IF NOT EXISTS traiter(
+   Id_operation INT,
+   Id_produit INT,
+   PRIMARY KEY(Id_operation, Id_produit),
+   FOREIGN KEY(Id_operation) REFERENCES operations(Id_operation),
+   FOREIGN KEY(Id_produit) REFERENCES produits(Id_produit)
+);
