@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using caluireMobile.models.data;
+using caluireMobile.models.Data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 

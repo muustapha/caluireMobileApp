@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace caluireMobile.models.Data;
+namespace caluireMobile.Models.Data;
 
 public partial class Transactionpaiment
 {
