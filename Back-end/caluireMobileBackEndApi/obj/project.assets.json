@@ -8287,11 +8287,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobile\\caluireMobile.csproj",
+      "projectUniqueName": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobileBackEndApi\\caluireMobile.csproj",
       "projectName": "caluireMobile",
-      "projectPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobile\\caluireMobile.csproj",
+      "projectPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobileBackEndApi\\caluireMobile.csproj",
       "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobile\\obj\\",
+      "outputPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobileBackEndApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Utilisateur\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -4,7 +4,7 @@ using caluireMobile.models.data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace caluireMobile.Models;
+namespace caluireMobile.Models.Data;
 
 public partial class CaluiremobileContext : DbContext
 {

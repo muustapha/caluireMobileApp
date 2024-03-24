@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace caluireMobile.models.data;
+namespace caluireMobile.models.Data;
 
 public partial class Traduction
 {

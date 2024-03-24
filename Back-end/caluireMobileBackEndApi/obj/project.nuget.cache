@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "leiGQ14PCQmhodIcxlO1CSq0crrvLIrSrZljGCU+fuuEtTSHOImPUXDe5jCfFXmXEJx5upvawkEzYUyKyQWZpw==",
+  "dgSpecHash": "YhXYaCtShgx7UWC0+Z9BJbZSJFijIGCBi0Awm/XGLkJHHvD2D5TvUUKfapkmjBZrcCJSPOE7grTVnuCntEo2tA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobile\\caluireMobile.csproj",
+  "projectFilePath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\caluireMobileBackEndApi\\caluireMobile.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilisateur\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
     "C:\\Users\\Utilisateur\\.nuget\\packages\\google.protobuf\\3.11.4\\google.protobuf.3.11.4.nupkg.sha512",
