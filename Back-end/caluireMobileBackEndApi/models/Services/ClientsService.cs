@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using caluireMobile.Models.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace caluireMobile.Models.Services
 {
@@ -39,14 +40,19 @@ namespace caluireMobile.Models.Services
 
         public IEnumerable<Client> GetAllClients()
         {
-            return _context.Clients.ToList();
+            return _context.Clients
+                           .Include("operation")
+                            .Include("tchat").ToList();
+
         }
 
         public Client GetClientbyId(int id)
         {
-            return _context.Clients.Find(id);
+            return _context.Clients
+                           .Include("operation")
+                               .Include("tchat") 
+                           .FirstOrDefault(c => c.IdClient == id);
         }
-
         public void UpdateClient(Client client)
         {
             _context.Clients.Update(client);

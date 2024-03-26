@@ -1,4 +1,5 @@
 using caluireMobile.Models.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,13 +40,20 @@ namespace caluireMobile.Models.Services
 
         public IEnumerable<PriseEnCharge> GetAllPriseEnCharges()
         {
-            return _context.PriseEnCharges.ToList();
+            return _context.PriseEnCharges
+            .Include("employe")
+            .Include("operation")
+            .ToList();
         }
 
         public PriseEnCharge GetPriseEnChargebyId(int id)
         {
-            return _context.PriseEnCharges.Find(id);
+            return _context.PriseEnCharges
+            .Include("Employe")
+            .Include("Operation")
+            .FirstOrDefault(e => e.IdPriseEnCharge == id);
         }
+        
 
         public void UpdatePriseEnCharge(PriseEnCharge priseEnCharge)
         {

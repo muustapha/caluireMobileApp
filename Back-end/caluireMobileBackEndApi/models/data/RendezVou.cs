@@ -13,7 +13,7 @@ public partial class RendezVou
 
     public DateTime? DateHeureRdv { get; set; }
 
-    public virtual Client ClientNavigation { get; set; }
+    public virtual Client Client { get; set; }
 
-    public virtual Operation OperationNavigation { get; set; }
+    public virtual Operation Operation { get; set; }
 }

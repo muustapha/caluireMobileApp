@@ -1,4 +1,5 @@
 using caluireMobile.Models.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,19 @@ namespace caluireMobile.Models.Services
 
         public IEnumerable<Operation> GetAllOperations()
         {
-            return _context.Operations.ToList();
+            return _context.Operations
+            .Include("Client")
+            .Include("Employe")
+            .ToList();
         }
 
         public Operation GetOperationbyId(int id)
         {
-            return _context.Operations.Find(id);
+            return _context.Operations
+            .Include("Client")
+            .Include("Employe")
+            .FirstOrDefault(e => e.IdOperation == id);
+
         }
 
         public void UpdateOperation(Operation operation)

@@ -1,4 +1,5 @@
 using caluireMobile.Models.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,18 @@ namespace caluireMobile.Models.Services
 
         public IEnumerable<Produit> GetAllProduits()
         {
-            return _context.Produits.ToList();
+            return _context.Produits
+            .Include("operation")
+            .Include("typesproduit")            
+            .ToList();
         }
 
         public Produit GetProduitbyId(int id)
         {
-            return _context.Produits.Find(id);
+            return _context.Produits
+            .Include("operation")
+            .Include("typesproduit")            
+            .FirstOrDefault(c => c.IdProduit == id);
         }
 
         public void UpdateProduit(Produit produit)
