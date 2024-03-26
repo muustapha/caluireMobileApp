@@ -12,4 +12,8 @@ public partial class Tchat
     public string? NomUtilisateur { get; set; }
 
     public string? SocketId { get; set; }
+
+    public virtual Client ClientNavigation { get; set; }
+
+    public virtual Employe EmployeNavigation { get; set; }
 }

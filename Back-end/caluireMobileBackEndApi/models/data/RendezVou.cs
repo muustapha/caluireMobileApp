@@ -12,4 +12,8 @@ public partial class RendezVou
     public string? Description { get; set; }
 
     public DateTime? DateHeureRdv { get; set; }
+
+    public virtual Client ClientNavigation { get; set; }
+
+    public virtual Operation OperationNavigation { get; set; }
 }

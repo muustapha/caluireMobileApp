@@ -16,4 +16,6 @@ public partial class Transactionpaiment
     public string? MethodePayement { get; set; }
 
     public int IdOperation { get; set; }
+
+    public virtual Operation OperationNavigation { get; set; }
 }
