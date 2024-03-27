@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class TypesproduitssService
+    public class TypesproduitsService
     {
         private readonly CaluireMobileContext _context;
 
-        public TypesproduitssService(CaluireMobileContext context)
+        public TypesproduitsService(CaluireMobileContext context)
         {
             _context = context;
         }

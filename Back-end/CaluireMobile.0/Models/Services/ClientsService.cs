@@ -53,9 +53,15 @@ namespace CaluireMobile._0.Models.Services
                            .Include(c => c.Socketios)
                            .FirstOrDefault(c => c.IdClient == id);
         }
-        public void UpdateClient(Client client)
+        public void UpdateClient(int id, Client client)
         {
-            _context.Clients.Update(client);
+            var existingClient = _context.Clients.Find(id);
+            if (existingClient == null)
+            {
+                throw new ArgumentNullException(nameof(existingClient));
+            }
+
+            _context.Entry(existingClient).CurrentValues.SetValues(client);
             _context.SaveChanges();
         }
     }
