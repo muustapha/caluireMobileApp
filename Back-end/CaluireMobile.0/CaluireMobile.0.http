@@ -1,0 +1,6 @@
+@CaluireMobile._0_HostAddress = http://localhost:5127
+
+GET {{CaluireMobile._0_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

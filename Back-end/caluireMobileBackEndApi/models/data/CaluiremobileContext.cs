@@ -160,13 +160,13 @@ public partial class CaluiremobileContext : DbContext
 
             entity.ToTable("produits");
 
-            entity.HasIndex(e => e.IdTypesProduit, "Id_typesProduit");
+            entity.HasIndex(e => e.IdTypesproduit, "Id_typesProduit");
 
             entity.Property(e => e.IdProduit).HasColumnName("Id_produit");
             entity.Property(e => e.FlagClientEmploye)
                 .HasMaxLength(50)
                 .HasColumnName("flag_client_employe_");
-            entity.Property(e => e.IdTypesProduit).HasColumnName("Id_typesProduit");
+            entity.Property(e => e.IdTypesproduit).HasColumnName("Id_typesProduit");
             entity.Property(e => e.Marque)
                 .HasMaxLength(50)
                 .HasColumnName("marque");

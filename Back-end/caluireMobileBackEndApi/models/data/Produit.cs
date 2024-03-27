@@ -22,7 +22,7 @@ public partial class Produit
     public int IdTypesproduit { get; set; }
     public int IdOperation { get; set; }
 
-    public virtual Typesproduit TypesproduitNavigation { get; set; }
+    public virtual Typesproduit Typesproduit { get; set; }
 
-    public virtual Operation OperationNavigation { get; set; }
+    public virtual Operation Operation { get; set; }
 }
