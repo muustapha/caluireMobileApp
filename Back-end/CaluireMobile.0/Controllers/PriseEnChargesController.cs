@@ -1,9 +1,9 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using AutoMapper;
+using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,65 +21,41 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<PriseEnChargeDto>> GetAllPriseEnCharges()
+        public ActionResult<IEnumerable<PriseEnChargeDtoOut>> GetAllPriseEnCharges()
         {
             var priseEnCharges = _service.GetAllPriseEnCharges();
-            return Ok(_mapper.Map<IEnumerable<PriseEnChargeDto>>(priseEnCharges));
+            return Ok(_mapper.Map<IEnumerable<PriseEnChargeDtoOut>>(priseEnCharges));
         }
 
-        [HttpGet("{id}", Name = "GetPriseEnChargeById")]
-        public ActionResult<PriseEnChargeDto> GetPriseEnChargeById(int id)
+        [HttpGet("{id}")]
+        public ActionResult<PriseEnChargeDtoAvecEmployeEtOperation> GetPriseEnChargeById(int id)
         {
             var priseEnCharge = _service.GetPriseEnChargeById(id);
             if (priseEnCharge == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<PriseEnChargeDto>(priseEnCharge));
-        }
-
-        [HttpPost]
-        public ActionResult<PriseEnChargeDto> AddPriseEnCharge(PriseEnChargeCreateDto priseEnChargeCreateDto)
-        {
-            var priseEnChargeModel = _mapper.Map<PriseEnCharge>(priseEnChargeCreateDto);
-            _service.AddPriseEnCharge(priseEnChargeModel);
-            return CreatedAtRoute(nameof(GetPriseEnChargeById), new { Id = priseEnChargeModel.Id }, _mapper.Map<PriseEnChargeDto>(priseEnChargeModel));
+            return Ok(_mapper.Map<PriseEnChargeDtoAvecEmployeEtOperation>(priseEnCharge));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdatePriseEnCharge(int id, PriseEnChargeUpdateDto priseEnChargeUpdateDto)
+        public IActionResult UpdatePriseEnCharge(int id, PriseEnChargeDtoIn priseEnChargeDtoIn)
         {
-            var priseEnChargeModelFromRepo = _service.GetPriseEnChargeById(id);
-            if (priseEnChargeModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(priseEnChargeUpdateDto, priseEnChargeModelFromRepo);
-            _service.UpdatePriseEnCharge(priseEnChargeModelFromRepo);
+            var priseEnCharge = _mapper.Map<PriseEnCharge>(priseEnChargeDtoIn);
+            _service.UpdatePriseEnCharge(id, priseEnCharge);
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public ActionResult PartialPriseEnChargeUpdate(int id, JsonPatchDocument<PriseEnChargeUpdateDto> patchDoc)
+        [HttpPost]
+        public ActionResult<PriseEnChargeDtoOut> AddPriseEnCharge(PriseEnChargeDtoIn priseEnChargeDtoIn)
         {
-            var priseEnChargeModelFromRepo = _service.GetPriseEnChargeById(id);
-            if (priseEnChargeModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            var priseEnChargeToPatch = _mapper.Map<PriseEnChargeUpdateDto>(priseEnChargeModelFromRepo);
-            patchDoc.ApplyTo(priseEnChargeToPatch, ModelState);
-            if (!TryValidateModel(priseEnChargeToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(priseEnChargeToPatch, priseEnChargeModelFromRepo);
-            _service.UpdatePriseEnCharge(priseEnChargeModelFromRepo);
-            return NoContent();
+            var priseEnCharge = _mapper.Map<PriseEnCharge>(priseEnChargeDtoIn);
+            _service.AddPriseEnCharge(priseEnCharge);
+            return CreatedAtAction(nameof(GetPriseEnChargeById), new { id = priseEnCharge.IdPriseEnCharge }, _mapper.Map<PriseEnChargeDtoOut>(priseEnCharge));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeletePriseEnCharge(int id)
+        public IActionResult DeletePriseEnCharge(int id)
         {
             var priseEnChargeModelFromRepo = _service.GetPriseEnChargeById(id);
             if (priseEnChargeModelFromRepo == null)

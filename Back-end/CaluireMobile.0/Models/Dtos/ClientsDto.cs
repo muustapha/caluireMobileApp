@@ -7,30 +7,42 @@ namespace caluireMobile.Models.Dtos
 {
     public class ClientDtoIn
     {
-        public ClientDtoIn()
-        {
-        }
+        public int IdClient { get; set; }
 
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Adresse { get; set; }
-        public string Mail { get; set; }
-        public DateTime DateEmbauche { get; set; }
-        public string Telephone { get; set; }
+        public string? Nom { get; set; }
+
+        public string? Prénom { get; set; }
+
+        public string? AdresseMail { get; set; }
+
+        public string? Login { get; set; }
+
+        public string? MotDePasse { get; set; }
+
+        public string? Adresse { get; set; }
+
+        public string? Telephone { get; set; }
+
     }
 
     public class ClientDtoOut
     {
-        public ClientDtoOut()
-        {
-        }
 
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Adresse { get; set; }
-        public string Mail { get; set; }
-        public DateTime DateEmbauche { get; set; }
-        public string Telephone { get; set; }
+
+        public string? Nom { get; set; }
+
+        public string? Prénom { get; set; }
+
+        public string? AdresseMail { get; set; }
+
+        public string? Login { get; set; }
+
+        public string? MotDePasse { get; set; }
+
+        public string? Adresse { get; set; }
+
+        public string? Telephone { get; set; }
+
     }
 
     public class ClientDtoAvecrendezVous
@@ -40,42 +52,57 @@ namespace caluireMobile.Models.Dtos
             RendezVous = new HashSet<RendezVouDtoAvecClientEtOperation>();
         }
 
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Adresse { get; set; }
-        public string Mail { get; set; }
-        public DateTime DateEmbauche { get; set; }
-        public string Telephone { get; set; }
+        public string? Nom { get; set; }
+
+        public string? Prénom { get; set; }
+
+        public string? AdresseMail { get; set; }
+
+        public string? Login { get; set; }
+
+        public string? MotDePasse { get; set; }
+
+        public string? Adresse { get; set; }
+
+        public string? Telephone { get; set; }
+
 
         public virtual ICollection<RendezVouDtoAvecClientEtOperation> RendezVous { get; set; }
     }
-    
-    
+
+
     public class ClientDtoAvecSocketios
-{
-
-
-
-
-
-    public ClientDtoAvecSocketios()
     {
-        Socketios = new HashSet<SocketioDtoAvecClientEtEmploye>();
+
+
+
+
+
+        public ClientDtoAvecSocketios()
+        {
+            Socketios = new HashSet<SocketioDtoAvecClientEtEmploye>();
+        }
+
+        public string? Nom { get; set; }
+
+        public string? Prénom { get; set; }
+
+        public string? AdresseMail { get; set; }
+
+        public string? Login { get; set; }
+
+        public string? MotDePasse { get; set; }
+
+        public string? Adresse { get; set; }
+
+        public string? Telephone { get; set; }
+
+        public virtual ICollection<SocketioDtoAvecClientEtEmploye> Socketios { get; set; }
     }
 
-    public string Nom { get; set; }
-    public string Prenom { get; set; }
-    public string Adresse { get; set; }
-    public string Mail { get; set; }
-    public DateTime DateEmbauche { get; set; }
-    public string Telephone { get; set; }
-
-    public virtual ICollection<SocketioDtoAvecClientEtEmploye> Socketios { get; set; }
-}
 
 
-    
-        public class ClientDtoAvecrendezVousEtSocketios
+    public class ClientDtoAvecrendezVousEtSocketios
     {
         public ClientDtoAvecrendezVousEtSocketios()
         {
@@ -83,12 +110,19 @@ namespace caluireMobile.Models.Dtos
             Socketios = new HashSet<SocketioDtoAvecClientEtEmploye>();
         }
 
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Adresse { get; set; }
-        public string Mail { get; set; }
-        public DateTime DateEmbauche { get; set; }
-        public string Telephone { get; set; }
+        public string? Nom { get; set; }
+
+        public string? Prénom { get; set; }
+
+        public string? AdresseMail { get; set; }
+
+        public string? Login { get; set; }
+
+        public string? MotDePasse { get; set; }
+
+        public string? Adresse { get; set; }
+
+        public string? Telephone { get; set; }
 
         public virtual ICollection<RendezVouDtoAvecClientEtOperation> RendezVous { get; set; }
         public virtual ICollection<SocketioDtoAvecClientEtEmploye> Socketios { get; set; }

@@ -46,17 +46,29 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public PriseEnCharge GetPriseEnChargebyId(int id)
+        public PriseEnCharge GetPriseEnChargeById(int id)
         {
-            return _context.PriseEnCharges
-                           .Include(p => p.Employe)
-                           .Include(p => p.Operation)
-                           .FirstOrDefault(p => p.IdPriseEnCharge == id);
-        }
+            var priseEnCharge = _context.PriseEnCharges
+                                        .Include(p => p.Employe)
+                                        .Include(p => p.Operation)
+                                        .FirstOrDefault(p => p.IdPriseEnCharge == id);
 
-        public void UpdatePriseEnCharge(PriseEnCharge priseEnCharge)
+            if (priseEnCharge == null)
+            {
+                throw new KeyNotFoundException($"PriseEnCharge with id {id} was not found.");
+            }
+
+            return priseEnCharge;
+        }
+        public void UpdatePriseEnCharge(int id, PriseEnCharge priseEnCharge)
         {
-            _context.PriseEnCharges.Update(priseEnCharge);
+            var existingPriseEnCharge = _context.PriseEnCharges.Find(id);
+            if (existingPriseEnCharge == null)
+            {
+                throw new KeyNotFoundException($"PriseEnCharge with id {id} was not found.");
+            }
+
+            _context.Entry(existingPriseEnCharge).CurrentValues.SetValues(priseEnCharge);
             _context.SaveChanges();
         }
     }

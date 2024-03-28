@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+#nullable disable
+
 
 namespace caluireMobile.Models.Dtos
 {
     public class TraiterDtoIn
     {
-        public TraiterDtoIn()
-        {
-        }
 
+        public int IdTraiter { get; set; }
         public int IdOperation { get; set; }
         public int IdProduit { get; set; }
         // Ajoutez d'autres propriétés selon vos besoins
@@ -16,10 +16,7 @@ namespace caluireMobile.Models.Dtos
 
     public class TraiterDtoOut
     {
-        public TraiterDtoOut()
-        {
-        }
-
+     
         public int IdOperation { get; set; }
         public int IdProduit { get; set; }
         // Ajoutez d'autres propriétés selon vos besoins
@@ -33,7 +30,7 @@ namespace caluireMobile.Models.Dtos
 
         public int IdOperation { get; set; }
         public int IdProduit { get; set; }
-        public OperationDto Operation { get; set; }
-        public ProduitDto Produit { get; set; }
+        public virtual OperationDtoOut Operation { get; set; }
+        public virtual ProduitDtoOut Produit { get; set; }
     }
 }

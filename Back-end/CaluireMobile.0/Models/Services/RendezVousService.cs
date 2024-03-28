@@ -46,12 +46,16 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public RendezVou GetRendezVousbyId(int id)
+        public void UpdateRendezVous(int id, RendezVou rendezVous)
         {
-            return _context.RendezVous
-                           .Include(r => r.Client)
-                           .Include(r => r.Operation)
-                           .FirstOrDefault(r => r.IdRendezVous == id);
+            var existingRendezVous = _context.RendezVous.Find(id);
+            if (existingRendezVous == null)
+            {
+                throw new KeyNotFoundException($"RendezVous with id {id} was not found.");
+            }
+
+            _context.RendezVous.Update(rendezVous);
+            _context.SaveChanges();
         }
 
         public void UpdateRendezVous(RendezVou rendezVous)

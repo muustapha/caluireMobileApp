@@ -1,10 +1,10 @@
+using AutoMapper;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using AutoMapper;
+using CaluireMobile._0.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -22,33 +22,33 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TransactionpaimentDto>> GetAllTransactionspaiment()
+        public ActionResult<IEnumerable<TransactionpaimentDtoAvecTypesProduitEtTraiters>> GetAllTransactionspaiment()
         {
             var transactionpaiments = _service.GetAllTransactionspaiment();
-            return Ok(_mapper.Map<IEnumerable<TransactionspaimentDto>>(transactionpaiments));
+            return Ok(_mapper.Map<IEnumerable<TransactionpaimentDtoAvecTypesProduitEtTraiters>>(transactionpaiments));
         }
 
         [HttpGet("{id}", Name = "GetTransactionpaimentById")]
-        public ActionResult<TransactionpaimentDto> GetTransactionpaimentById(int id)
+        public ActionResult<TransactionpaimentDtoAvecTypesProduitEtTraiters> GetTransactionpaimentById(int id)
         {
             var transactionpaiment = _service.GetTransactionpaimentById(id);
             if (transactionpaiment == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TransactionpaimentDto>(transactionpaiment));
+            return Ok(_mapper.Map<TransactionpaimentDtoAvecTypesProduitEtTraiters>(transactionpaiment));
         }
 
         [HttpPost]
-        public ActionResult<TransactionpaimentDto> AddTransactionpaiment(TransactionpaimentCreateDto transactionpaimentCreateDto)
+        public ActionResult<Transactionpaiment> AddTransactionpaiment(TransactionpaimentDtoIn transactionpaimentCreateDto)
         {
             var transactionpaimentModel = _mapper.Map<Transactionpaiment>(transactionpaimentCreateDto);
             _service.AddTransactionpaiment(transactionpaimentModel);
-            return CreatedAtRoute(nameof(GetTransactionpaimentById), new { Id = transactionpaimentModel.Id }, _mapper.Map<TransactionpaimentDto>(transactionpaimentModel));
+            return CreatedAtRoute(nameof(GetTransactionpaimentById), new { Id = transactionpaimentModel.Id }, _mapper.Map<TransactionpaimentDtoOut>(transactionpaimentModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateTransactionpaiment(int id, TransactionpaimentUpdateDto transactionpaimentUpdateDto)
+        public ActionResult UpdateTransactionpaiment(int id, TransactionpaimentDtoIn transactionpaimentUpdateDto)
         {
             var transactionpaimentModelFromRepo = _service.GetTransactionpaimentById(id);
             if (transactionpaimentModelFromRepo == null)
@@ -61,21 +61,22 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialTransactionpaimentUpdate(int id, JsonPatchDocument<TransactionpaimentUpdateDto> patchDoc)
+        public ActionResult PartialTransactionpaimentUpdate(int id, JsonPatchDocument<Transactionpaiment> patchDoc)
         {
-            var transactionpaimentModelFromRepo = _service.GetTransactionpaimentById(id);
-            if (transactionpaimentModelFromRepo == null)
+            var transactionpaimentFromRepo = _service.GetTransactionpaimentById(id);
+            if (transactionpaimentFromRepo == null)
             {
                 return NotFound();
             }
-            var transactionpaimentToPatch = _mapper.Map<TransactionpaimentUpdateDto>(transactionpaimentModelFromRepo);
-            patchDoc.ApplyTo(transactionpaimentToPatch, ModelState);
+            var transactionpaimentToPatch = _mapper.Map<Transactionpaiment>(transactionpaimentFromRepo);
+            patchDoc.ApplyTo(transactionpaimentToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("", err.ErrorMessage));
+
             if (!TryValidateModel(transactionpaimentToPatch))
             {
                 return ValidationProblem(ModelState);
             }
-            _mapper.Map(transactionpaimentToPatch, transactionpaimentModelFromRepo);
-            _service.UpdateTransactionpaiment(transactionpaimentModelFromRepo);
+            _mapper.Map(transactionpaimentToPatch, transactionpaimentFromRepo);
+            _service.UpdateTransactionpaiment(transactionpaimentFromRepo);
             return NoContent();
         }
 

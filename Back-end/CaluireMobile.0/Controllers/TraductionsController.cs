@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using caluireMobile.Models.Dtos;
+using AutoMapper;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -68,7 +69,8 @@ namespace CaluireMobile._0.Models.Controllers
                 return NotFound();
             }
             var traductionToPatch = _mapper.Map<TraductionUpdateDto>(traductionModelFromRepo);
-            patchDoc.ApplyTo(traductionToPatch, ModelState);
+            patchDoc.ApplyTo(traductionToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("", err.ErrorMessage));
+
             if (!TryValidateModel(traductionToPatch))
             {
                 return ValidationProblem(ModelState);

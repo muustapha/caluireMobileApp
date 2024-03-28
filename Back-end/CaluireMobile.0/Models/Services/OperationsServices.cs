@@ -47,20 +47,32 @@ namespace CaluireMobile._0.Models.Services
                            .Include(o => o.Transactionspaiments)
                            .ToList();
         }
+public Operation GetOperationById(int id)
+{
+    var operationFromDb = _context.Operations
+                                  .Include(o => o.PriseEnCharges)
+                                  .Include(o => o.RendezVous)
+                                  .Include(o => o.Traiter)
+                                  .Include(o => o.Transactionspaiments)
+                                  .FirstOrDefault(o => o.IdOperation == id);
 
-        public Operation GetOperationbyId(int id)
-        {
-            return _context.Operations
-                            .Include(o => o.PriseEnCharges)
-                           .Include(o => o.RendezVous)
-                           .Include(o => o.Traiter)
-                           .Include(o => o.Transactionspaiments)
-                           .FirstOrDefault(o => o.IdOperation == id);
-        }
+    if (operationFromDb == null)
+    {
+        throw new KeyNotFoundException($"Operation with id {id} was not found.");
+    }
 
-        public void UpdateOperation(Operation operation)
+    return operationFromDb;
+}
+
+        public void UpdateOperation(int id, Operation operation)
         {
-            _context.Operations.Update(operation);
+            var existingOperation = _context.Operations.Find(id);
+            if (existingOperation == null)
+            {
+                throw new KeyNotFoundException($"Operation with id {id} was not found.");
+            }
+
+            _context.Entry(existingOperation).CurrentValues.SetValues(operation);
             _context.SaveChanges();
         }
     }

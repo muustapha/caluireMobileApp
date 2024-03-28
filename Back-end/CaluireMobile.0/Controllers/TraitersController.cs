@@ -4,6 +4,7 @@ using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,33 +22,33 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TraiterDto>> GetAllTraiters()
+        public ActionResult<IEnumerable<TraiterDtoOut>> GetAllTraiters()
         {
             var traiters = _service.GetAllTraiters();
-            return Ok(_mapper.Map<IEnumerable<TraiterDto>>(traiters));
+            return Ok(_mapper.Map<IEnumerable<TraiterDtoOut>>(traiters));
         }
 
         [HttpGet("{id}", Name = "GetTraiterById")]
-        public ActionResult<TraiterDto> GetTraiterById(int id)
+        public ActionResult<TraiterDtoAvecClientEtOperation> GetTraiterById(int id)
         {
             var traiter = _service.GetTraiterById(id);
             if (traiter == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TraiterDto>(traiter));
+            return Ok(_mapper.Map<TraiterDtoAvecClientEtOperation>(traiter));
         }
 
         [HttpPost]
-        public ActionResult<TraiterDto> AddTraiter(TraiterCreateDto traiterCreateDto)
+        public ActionResult<TraiterDtoOut> AddTraiter(TraiterDtoIn traiterCreateDto)
         {
             var traiterModel = _mapper.Map<Traiter>(traiterCreateDto);
             _service.AddTraiter(traiterModel);
-            return CreatedAtRoute(nameof(GetTraiterById), new { Id = traiterModel.Id }, _mapper.Map<TraiterDto>(traiterModel));
+            return CreatedAtRoute(nameof(GetTraiterById), new { Id = traiterModel.Id }, _mapper.Map<TraiterDtoOut>(traiterModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateTraiter(int id, TraiterUpdateDto traiterUpdateDto)
+        public ActionResult UpdateTraiter(int id, TraiterDtoIn traiterUpdateDto)
         {
             var traiterModelFromRepo = _service.GetTraiterById(id);
             if (traiterModelFromRepo == null)
@@ -60,15 +61,16 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialTraiterUpdate(int id, JsonPatchDocument<TraiterUpdateDto> patchDoc)
+        public ActionResult PartialTraiterUpdate(int id, JsonPatchDocument<TraiterDtoIn> patchDoc)
         {
             var traiterModelFromRepo = _service.GetTraiterById(id);
             if (traiterModelFromRepo == null)
             {
                 return NotFound();
             }
-            var traiterToPatch = _mapper.Map<TraiterUpdateDto>(traiterModelFromRepo);
-            patchDoc.ApplyTo(traiterToPatch, ModelState);
+            var traiterToPatch = _mapper.Map<TraiterDtoIn>(traiterModelFromRepo);
+            patchDoc.ApplyTo(traiterToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("", err.ErrorMessage));
+
             if (!TryValidateModel(traiterToPatch))
             {
                 return ValidationProblem(ModelState);

@@ -1,4 +1,5 @@
 using CaluireMobile._0.Models.Datas;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,19 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public Client GetClientbyId(int id)
+        public Client GetClientById(int id)
         {
-            return _context.Clients
-                           .Include(c => c.RendezVous)
-                           .Include(c => c.Socketios)
-                           .FirstOrDefault(c => c.IdClient == id);
+            var clientFromDb = _context.Clients
+                                       .Include(c => c.RendezVous)
+                                       .Include(c => c.Socketios)
+                                       .FirstOrDefault(c => c.IdClient == id);
+
+            if (clientFromDb == null)
+            {
+                throw new KeyNotFoundException($"Client with id {id} was not found.");
+            }
+
+            return clientFromDb;
         }
         public void UpdateClient(int id, Client client)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+#nullable disable
 
 namespace caluireMobile.Models.Dtos
 {
@@ -8,7 +9,7 @@ namespace caluireMobile.Models.Dtos
         public TransactionspaimentDtoIn()
         {
         }
-
+        public int IdTransaction { get; set; }
         public decimal Montant { get; set; }
         public DateTime DateTransaction { get; set; }
         public string Status { get; set; }
@@ -27,21 +28,18 @@ namespace caluireMobile.Models.Dtos
         public DateTime DateTransaction { get; set; }
         public string Status { get; set; }
         public string MethodePayement { get; set; }
-        public int IdOperation { get; set; }
-        
+
     }
 
     public class TransactionspaimentDtoAvecOperation
     {
-        public TransactionspaimentDtoAvecOperation()
-        {
-        }
+
 
         public decimal Montant { get; set; }
         public DateTime DateTransaction { get; set; }
         public string Status { get; set; }
         public string MethodePayement { get; set; }
         public int IdOperation { get; set; }
-        public OperationDto Operation { get; set; }
+        public virtual OperationDtoOut Operation { get; set; }
     }
 }

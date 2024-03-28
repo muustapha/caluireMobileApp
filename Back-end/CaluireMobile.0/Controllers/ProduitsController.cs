@@ -1,6 +1,7 @@
+using AutoMapper;
+using caluireMobile.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -21,14 +22,14 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ProduitDto>> GetAllProduits()
+        public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetAllProduits()
         {
             var produits = _service.GetAllProduits();
-            return Ok(_mapper.Map<IEnumerable<ProduitDto>>(produits));
+            return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
         }
 
         [HttpGet("{id}", Name = "GetProduitById")]
-        public ActionResult<ProduitDto> GetProduitById(int id)
+        public ActionResult<ProduitDtoAvecTypesProduitEtTraiter> GetProduitById(int id)
         {
             var produit = _service.GetProduitById(id);
             if (produit == null)
@@ -39,7 +40,7 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ProduitDto> AddProduit(ProduitCreateDto produitCreateDto)
+        public ActionResult<Produit> AddProduit(ProduitDtoIn produitCreateDto)
         {
             var produitModel = _mapper.Map<Produit>(produitCreateDto);
             _service.AddProduit(produitModel);
@@ -47,7 +48,7 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateProduit(int id, ProduitUpdateDto produitUpdateDto)
+        public ActionResult UpdateProduit(int id, ProduitDtoIn produitUpdateDto)
         {
             var produitModelFromRepo = _service.GetProduitById(id);
             if (produitModelFromRepo == null)
@@ -60,7 +61,7 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialProduitUpdate(int id, JsonPatchDocument<ProduitUpdateDto> patchDoc)
+        public ActionResult PartialProduitUpdate(int id, JsonPatchDocument<ProduitDtoIn> patchDoc)
         {
             var produitModelFromRepo = _service.GetProduitById(id);
             if (produitModelFromRepo == null)

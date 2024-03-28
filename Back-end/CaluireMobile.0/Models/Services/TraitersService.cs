@@ -46,12 +46,19 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public Traiter GetTraiterbyId(int id)
+        public Traiter GetTraiterById(int id)
         {
-            return _context.Traiters
-                           .Include(t => t.Operation)
-                            .Include(t => t.Produit)
-                           .FirstOrDefault(t => t.IdTraiter == id);
+            var traiteurFromDb = _context.Traiters
+                                         .Include(t => t.Operation)
+                                         .Include(t => t.Produit)
+                                         .FirstOrDefault(t => t.IdTraiter == id);
+
+            if (traiteurFromDb == null)
+            {
+                throw new KeyNotFoundException($"Traiter with id {id} was not found.");
+            }
+
+            return traiteurFromDb;
         }
 
         public void UpdateTraiter(Traiter traiter)

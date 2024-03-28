@@ -35,7 +35,6 @@ public partial class Operation
 
     public virtual ICollection<RendezVou> RendezVous { get; set; } = new List<RendezVou>();
 
-    public virtual Traiter? Traiter { get; set; }
-
+    public virtual ICollection<Traiter> Traiter { get; set; } = new List<Traiter>();
     public virtual ICollection<Transactionspaiment> Transactionspaiments { get; set; } = new List<Transactionspaiment>();
 }

@@ -137,3 +137,11 @@ C:\Users\Utilisateur\Documents\CaluireMobile.0\bin\Debug\net8.0\zh-Hans\Microsof
 C:\Users\Utilisateur\Documents\CaluireMobile.0\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Utilisateur\Documents\CaluireMobile.0\bin\Debug\net8.0\MySqlConnector.dll
 C:\Users\Utilisateur\Documents\CaluireMobile.0\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.csproj.AssemblyReference.cache
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.AssemblyInfoInputs.cache
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.AssemblyInfo.cs
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.csproj.CoreCompileInputs.cache
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\obj\Debug\net8.0\CaluireMobile.0.sourcelink.json

@@ -38,7 +38,7 @@ namespace CaluireMobile._0.Models.Controllers
         [HttpGet("{id}")]
         public ActionResult<ClientDtoAvecrendezVousEtSocketios> GetClient(int id)
         {
-            var client = _service.GetClientbyId(id);
+            var client = _service.GetClientById(id);
             if (client == null)
             {
                 return NotFound();

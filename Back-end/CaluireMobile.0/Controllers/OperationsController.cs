@@ -1,9 +1,11 @@
-using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using AutoMapper;
+
+using CaluireMobile._0.Models;
+using CaluireMobile._0.Models.Datas;
+using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,71 +23,42 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<OperationDto>> GetAllOperations()
+        public ActionResult<IEnumerable<OperationDtoOut>> GetAllOperations()
         {
             var operations = _service.GetAllOperations();
-            return Ok(_mapper.Map<IEnumerable<OperationDto>>(operations));
+            return Ok(_mapper.Map<IEnumerable<OperationDtoOut>>(operations));
         }
 
-        [HttpGet("{id}", Name = "GetOperationById")]
-        public ActionResult<OperationDto> GetOperationById(int id)
+        [HttpGet("{id}")]
+        public ActionResult<OperationDtoAvecPriseEnCharges> GetOperationById(int id)
         {
             var operation = _service.GetOperationById(id);
             if (operation == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<OperationDto>(operation));
-        }
-
-        [HttpPost]
-        public ActionResult<OperationDto> AddOperation(OperationCreateDto operationCreateDto)
-        {
-            var operationModel = _mapper.Map<Operation>(operationCreateDto);
-            _service.AddOperation(operationModel);
-            return CreatedAtRoute(nameof(GetOperationById), new { Id = operationModel.Id }, _mapper.Map<OperationDto>(operationModel));
+            return Ok(_mapper.Map<OperationDtoAvecPriseEnCharges>(operation));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateOperation(int id, OperationUpdateDto operationUpdateDto)
+        public IActionResult UpdateOperation(int id, OperationDtoIn operationDtoIn)
         {
-            var operationModelFromRepo = _service.GetOperationById(id);
-            if (operationModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(operationUpdateDto, operationModelFromRepo);
-            _service.UpdateOperation(operationModelFromRepo);
+            var operation = _mapper.Map<Operation>(operationDtoIn);
+            _service.UpdateOperation(id, operation);
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public ActionResult PartialOperationUpdate(int id, JsonPatchDocument<OperationUpdateDto> patchDoc)
+        [HttpPost]
+        public ActionResult<OperationDtoOut> AddOperation(OperationDtoIn operationDtoIn)
         {
-            var operationModelFromRepo = _service.GetOperationById(id);
-            if (operationModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            var operationToPatch = _mapper.Map<OperationUpdateDto>(operationModelFromRepo);
-            patchDoc.ApplyTo(operationToPatch, ModelState);
-            if (!TryValidateModel(operationToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(operationToPatch, operationModelFromRepo);
-            _service.UpdateOperation(operationModelFromRepo);
-            return NoContent();
+            var operation = _mapper.Map<Operation>(operationDtoIn);
+            _service.AddOperation(operation);
+            return CreatedAtAction(nameof(GetOperationById), new { id = operation.IdOperation }, _mapper.Map<OperationDtoOut>(operation));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteOperation(int id)
+        public IActionResult DeleteOperation(int id)
         {
-            var operationModelFromRepo = _service.GetOperationById(id);
-            if (operationModelFromRepo == null)
-            {
-                return NotFound();
-            }
             _service.DeleteOperation(id);
             return NoContent();
         }

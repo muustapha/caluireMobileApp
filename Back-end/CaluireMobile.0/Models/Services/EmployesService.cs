@@ -46,17 +46,29 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public Employe GetEmployebyId(int id)
+        public Employe GetEmployeById(int id)
         {
-            return _context.Employes
-                           .Include(e => e.Socketios)
-                           .Include(e => e.PriseEnCharges)
-                           .FirstOrDefault(e => e.IdEmploye == id);
-        }
+            var employeFromDb = _context.Employes
+                                        .Include(e => e.Socketios)
+                                        .Include(e => e.PriseEnCharges)
+                                        .FirstOrDefault(e => e.IdEmploye == id);
 
-        public void UpdateEmploye(Employe employe)
+            if (employeFromDb == null)
+            {
+                throw new KeyNotFoundException($"Employe with id {id} was not found.");
+            }
+
+            return employeFromDb;
+        }
+        public void UpdateEmploye(int id, Employe employe)
         {
-            _context.Employes.Update(employe);
+            var existingEmploye = _context.Employes.Find(id);
+            if (existingEmploye == null)
+            {
+                throw new KeyNotFoundException($"Employe with id {id} was not found.");
+            }
+
+            _context.Entry(existingEmploye).CurrentValues.SetValues(employe);
             _context.SaveChanges();
         }
     }

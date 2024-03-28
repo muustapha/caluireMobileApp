@@ -43,9 +43,16 @@ namespace CaluireMobile._0.Models.Services
             return _context.Traductions.ToList();
         }
 
-        public Traduction GetTraductionbyId(int id)
+        public Traduction GetTraductionById(int id)
         {
-            return _context.Traductions.FirstOrDefault(t => t.IdTraduction == id);
+            var traductionFromDb = _context.Traductions.FirstOrDefault(t => t.IdTraduction == id);
+
+            if (traductionFromDb == null)
+            {
+                throw new KeyNotFoundException($"Traduction with id {id} was not found.");
+            }
+
+            return traductionFromDb;
         }
 
         public void UpdateTraduction(Traduction traduction)

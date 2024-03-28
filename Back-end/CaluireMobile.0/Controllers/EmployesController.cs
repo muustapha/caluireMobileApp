@@ -1,9 +1,12 @@
-using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using AutoMapper;
+
+using CaluireMobile._0.Models;
+using CaluireMobile._0.Models.Datas;
+using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,71 +24,42 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<EmployeDto>> GetAllEmployes()
+        public ActionResult<IEnumerable<EmployeDtoOut>> GetAllEmployes()
         {
             var employes = _service.GetAllEmployes();
-            return Ok(_mapper.Map<IEnumerable<EmployeDto>>(employes));
+            return Ok(_mapper.Map<IEnumerable<EmployeDtoOut>>(employes));
         }
 
-        [HttpGet("{id}", Name = "GetEmployeById")]
-        public ActionResult<EmployeDto> GetEmployeById(int id)
+        [HttpGet("{id}")]
+        public ActionResult<EmployeDtoAvecPriseEnChargesEtSocketios> GetEmployeById(int id)
         {
             var employe = _service.GetEmployeById(id);
             if (employe == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<EmployeDto>(employe));
-        }
-
-        [HttpPost]
-        public ActionResult<EmployeDto> AddEmploye(EmployeCreateDto employeCreateDto)
-        {
-            var employeModel = _mapper.Map<Employe>(employeCreateDto);
-            _service.AddEmploye(employeModel);
-            return CreatedAtRoute(nameof(GetEmployeById), new { Id = employeModel.Id }, _mapper.Map<EmployeDto>(employeModel));
+            return Ok(_mapper.Map<EmployeDtoAvecPriseEnChargesEtSocketios>(employe));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateEmploye(int id, EmployeUpdateDto employeUpdateDto)
+        public IActionResult UpdateEmploye(int id, EmployeDtoIn employeDtoIn)
         {
-            var employeModelFromRepo = _service.GetEmployeById(id);
-            if (employeModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(employeUpdateDto, employeModelFromRepo);
-            _service.UpdateEmploye(employeModelFromRepo);
+            var employe = _mapper.Map<Employe>(employeDtoIn);
+            _service.UpdateEmploye(id, employe);
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public ActionResult PartialEmployeUpdate(int id, JsonPatchDocument<EmployeUpdateDto> patchDoc)
+        [HttpPost]
+        public ActionResult<EmployeDtoOut> AddEmploye(EmployeDtoIn employeDtoIn)
         {
-            var employeModelFromRepo = _service.GetEmployeById(id);
-            if (employeModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            var employeToPatch = _mapper.Map<EmployeUpdateDto>(employeModelFromRepo);
-            patchDoc.ApplyTo(employeToPatch, ModelState);
-            if (!TryValidateModel(employeToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(employeToPatch, employeModelFromRepo);
-            _service.UpdateEmploye(employeModelFromRepo);
-            return NoContent();
+            var employe = _mapper.Map<Employe>(employeDtoIn);
+            _service.AddEmploye(employe);
+            return CreatedAtAction(nameof(GetEmployeById), new { id = employe.IdEmploye }, _mapper.Map<EmployeDtoOut>(employe));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteEmploye(int id)
+        public IActionResult DeleteEmploye(int id)
         {
-            var employeModelFromRepo = _service.GetEmployeById(id);
-            if (employeModelFromRepo == null)
-            {
-                return NotFound();
-            }
             _service.DeleteEmploye(id);
             return NoContent();
         }

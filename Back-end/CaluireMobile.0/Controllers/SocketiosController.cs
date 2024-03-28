@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using caluireMobile.Models.Dtos;
+using AutoMapper;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,33 +22,33 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SocketioDto>> GetAllSocketios()
+        public ActionResult<IEnumerable<SocketioDtoOut>> GetAllSocketios()
         {
             var socketios = _service.GetAllSocketios();
-            return Ok(_mapper.Map<IEnumerable<SocketioDto>>(socketios));
+            return Ok(_mapper.Map<IEnumerable<SocketioDtoOut>>(socketios));
         }
 
         [HttpGet("{id}", Name = "GetSocketioById")]
-        public ActionResult<SocketioDto> GetSocketioById(int id)
+        public ActionResult<SocketioDtoAvecClientEtOperation> GetSocketioById(int id)
         {
             var socketio = _service.GetSocketioById(id);
             if (socketio == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<SocketioDto>(socketio));
+            return Ok(_mapper.Map<SocketioDtoAvecClientEtOperation>(socketio));
         }
 
         [HttpPost]
-        public ActionResult<SocketioDto> AddSocketio(SocketioCreateDto socketioCreateDto)
+        public ActionResult<SocketioDtoOut> AddSocketio(SocketioDtoIn socketioCreateDto)
         {
             var socketioModel = _mapper.Map<Socketio>(socketioCreateDto);
             _service.AddSocketio(socketioModel);
-            return CreatedAtRoute(nameof(GetSocketioById), new { Id = socketioModel.Id }, _mapper.Map<SocketioDto>(socketioModel));
+            return CreatedAtRoute(nameof(GetSocketioById), new { Id = socketioModel.IdSocketio }, _mapper.Map<SocketioDtoOut>(socketioModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateSocketio(int id, SocketioUpdateDto socketioUpdateDto)
+        public ActionResult UpdateSocketio(int id, SocketioDtoIn socketioUpdateDto)
         {
             var socketioModelFromRepo = _service.GetSocketioById(id);
             if (socketioModelFromRepo == null)
@@ -60,15 +61,16 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialSocketioUpdate(int id, JsonPatchDocument<SocketioUpdateDto> patchDoc)
+        public ActionResult PartialSocketioUpdate(int id, JsonPatchDocument<SocketioDtoIn> patchDoc)
         {
             var socketioModelFromRepo = _service.GetSocketioById(id);
             if (socketioModelFromRepo == null)
             {
                 return NotFound();
             }
-            var socketioToPatch = _mapper.Map<SocketioUpdateDto>(socketioModelFromRepo);
-            patchDoc.ApplyTo(socketioToPatch, ModelState);
+            var socketioToPatch = _mapper.Map<SocketioDtoIn>(socketioModelFromRepo);
+            patchDoc.ApplyTo(socketioToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("", err.ErrorMessage));
+
             if (!TryValidateModel(socketioToPatch))
             {
                 return ValidationProblem(ModelState);

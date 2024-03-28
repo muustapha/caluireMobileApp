@@ -46,14 +46,20 @@ namespace CaluireMobile._0.Models.Services
             .ToList();
         }
 
-        public Socketio GetSocketiobyId(int id)
+        public Socketio GetSocketioById(int id)
         {
-            return _context.Socketios
-             .Include(s => s.Client)
-            .Include(s => s.Employe)
-           .FirstOrDefault(r => r.IdSocketio == id);
-        }
+            var socketioFromDb = _context.Socketios
+                                          .Include(s => s.Client)
+                                          .Include(s => s.Employe)
+                                          .FirstOrDefault(s => s.IdSocketio == id);
 
+            if (socketioFromDb == null)
+            {
+                throw new KeyNotFoundException($"Socketio with id {id} was not found.");
+            }
+
+            return socketioFromDb;
+        }
         public void UpdateSocketio(Socketio Socketio)
         {
             _context.Socketios.Update(Socketio);

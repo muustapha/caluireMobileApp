@@ -46,12 +46,19 @@ namespace CaluireMobile._0.Models.Services
                            .ToList();
         }
 
-        public Produit GetProduitbyId(int id)
+        public Produit GetProduitById(int id)
         {
-            return _context.Produits
-                           .Include(p => p.Traiters)
-                           .Include(p => p.TypesProduit)
-                           .FirstOrDefault(p => p.IdProduit == id);
+            var produitFromDb = _context.Produits
+                                        .Include(p => p.Traiters)
+                                        .Include(p => p.TypesProduit)
+                                        .FirstOrDefault(p => p.IdProduit == id);
+
+            if (produitFromDb == null)
+            {
+                throw new KeyNotFoundException($"Produit with id {id} was not found.");
+            }
+
+            return produitFromDb;
         }
 
         public void UpdateProduit(Produit produit)

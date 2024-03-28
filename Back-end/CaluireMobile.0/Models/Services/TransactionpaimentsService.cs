@@ -45,12 +45,18 @@ namespace CaluireMobile._0.Models.Services
             .ToList();
         }
 
-        public Transactionspaiment GetTransactionbyId(int id)
+        public Transactionspaiment GetTransactionById(int id)
         {
-            return _context.Transactionspaiments
-                        .Include(t => t.Operation)
-                        .FirstOrDefault(t => t.IdTransactionPaiment == id);
+            var transactionFromDb = _context.Transactionspaiments
+                                            .Include(t => t.Operation)
+                                            .FirstOrDefault(t => t.IdTransactionPaiment == id);
 
+            if (transactionFromDb == null)
+            {
+                throw new KeyNotFoundException($"Transaction with id {id} was not found.");
+            }
+
+            return transactionFromDb;
         }
 
         public void UpdateTransaction(Transactionspaiment transaction)

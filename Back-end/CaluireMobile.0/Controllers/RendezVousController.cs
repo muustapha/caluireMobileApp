@@ -21,33 +21,33 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<RendezVousDto>> GetAllRendezVous()
+        public ActionResult<IEnumerable<RendezVouDtoOut>> GetAllRendezVous()
         {
             var rendezVous = _service.GetAllRendezVous();
-            return Ok(_mapper.Map<IEnumerable<RendezVousDto>>(rendezVous));
+            return Ok(_mapper.Map<IEnumerable<RendezVouDtoOut>>(rendezVous));
         }
 
         [HttpGet("{id}", Name = "GetRendezVousById")]
-        public ActionResult<RendezVousDto> GetRendezVousById(int id)
+        public ActionResult<RendezVouDtoAvecClientEtOperation> GetRendezVousById(int id)
         {
             var rendezVous = _service.GetRendezVousById(id);
             if (rendezVous == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<RendezVousDto>(rendezVous));
+            return Ok(_mapper.Map<RendezVouDtoAvecClientEtOperation>(rendezVous));
         }
 
         [HttpPost]
-        public ActionResult<RendezVousDto> AddRendezVous(RendezVousCreateDto rendezVousCreateDto)
+        public ActionResult<RendezVouDtoOut> AddRendezVous(RendezVouDtoIn rendezVousCreateDto)
         {
             var rendezVousModel = _mapper.Map<RendezVous>(rendezVousCreateDto);
             _service.AddRendezVous(rendezVousModel);
-            return CreatedAtRoute(nameof(GetRendezVousById), new { Id = rendezVousModel.Id }, _mapper.Map<RendezVousDto>(rendezVousModel));
+            return CreatedAtRoute(nameof(GetRendezVousById), new { Id = rendezVousModel.Id }, _mapper.Map<RendezVouDtoOut>(rendezVousModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateRendezVous(int id, RendezVousUpdateDto rendezVousUpdateDto)
+        public ActionResult UpdateRendezVous(int id, RendezVouDtoIn rendezVousUpdateDto)
         {
             var rendezVousModelFromRepo = _service.GetRendezVousById(id);
             if (rendezVousModelFromRepo == null)
@@ -60,14 +60,14 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialRendezVousUpdate(int id, JsonPatchDocument<RendezVousUpdateDto> patchDoc)
+        public ActionResult PartialRendezVousUpdate(int id, JsonPatchDocument<RendezVouDtoIn> patchDoc)
         {
             var rendezVousModelFromRepo = _service.GetRendezVousById(id);
             if (rendezVousModelFromRepo == null)
             {
                 return NotFound();
             }
-            var rendezVousToPatch = _mapper.Map<RendezVousUpdateDto>(rendezVousModelFromRepo);
+            var rendezVousToPatch = _mapper.Map<RendezVouDtoIn>(rendezVousModelFromRepo);
             patchDoc.ApplyTo(rendezVousToPatch, ModelState);
             if (!TryValidateModel(rendezVousToPatch))
             {
