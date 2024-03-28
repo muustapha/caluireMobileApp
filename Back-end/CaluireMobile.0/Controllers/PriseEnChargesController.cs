@@ -53,6 +53,28 @@ namespace CaluireMobile._0.Models.Controllers
             _service.AddPriseEnCharge(priseEnCharge);
             return CreatedAtAction(nameof(GetPriseEnChargeById), new { id = priseEnCharge.IdPriseEnCharge }, _mapper.Map<PriseEnChargeDtoOut>(priseEnCharge));
         }
+ [HttpPatch("{id}")]
+public ActionResult PartialPriseEnChargeUpdate(int id, JsonPatchDocument<PriseEnChargeDtoIn> patchDoc)
+{
+    var priseEnChargeFromRepo = _service.GetPriseEnChargeById(id);
+    if (priseEnChargeFromRepo == null)
+    {
+        return NotFound();
+    }
+
+    var priseEnChargeToPatch = _mapper.Map<PriseEnChargeDtoIn>(priseEnChargeFromRepo);
+    patchDoc.ApplyTo(priseEnChargeToPatch, error => ModelState.AddModelError("", error.ErrorMessage));
+
+    if (!TryValidateModel(priseEnChargeToPatch))
+    {
+        return ValidationProblem(ModelState);
+    }
+
+    _mapper.Map(priseEnChargeToPatch, priseEnChargeFromRepo);
+    _service.UpdatePriseEnCharge(id, priseEnChargeFromRepo);
+
+    return NoContent();
+}
 
         [HttpDelete("{id}")]
         public IActionResult DeletePriseEnCharge(int id)

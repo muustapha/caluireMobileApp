@@ -1,6 +1,7 @@
+using AutoMapper;
+using caluireMobile.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -41,9 +42,9 @@ namespace CaluireMobile._0.Models.Controllers
         [HttpPost]
         public ActionResult<RendezVouDtoOut> AddRendezVous(RendezVouDtoIn rendezVousCreateDto)
         {
-            var rendezVousModel = _mapper.Map<RendezVous>(rendezVousCreateDto);
+            var rendezVousModel = _mapper.Map<RendezVou>(rendezVousCreateDto);
             _service.AddRendezVous(rendezVousModel);
-            return CreatedAtRoute(nameof(GetRendezVousById), new { Id = rendezVousModel.Id }, _mapper.Map<RendezVouDtoOut>(rendezVousModel));
+            return CreatedAtRoute(nameof(GetRendezVousById), new { Id = rendezVousModel.IdRendezVous }, _mapper.Map<RendezVouDtoOut>(rendezVousModel));
         }
 
         [HttpPut("{id}")]
@@ -67,14 +68,18 @@ namespace CaluireMobile._0.Models.Controllers
             {
                 return NotFound();
             }
+
             var rendezVousToPatch = _mapper.Map<RendezVouDtoIn>(rendezVousModelFromRepo);
-            patchDoc.ApplyTo(rendezVousToPatch, ModelState);
+            patchDoc.ApplyTo(rendezVousToPatch, error => ModelState.AddModelError("", error.ErrorMessage));
+
             if (!TryValidateModel(rendezVousToPatch))
             {
                 return ValidationProblem(ModelState);
             }
+
             _mapper.Map(rendezVousToPatch, rendezVousModelFromRepo);
             _service.UpdateRendezVous(rendezVousModelFromRepo);
+
             return NoContent();
         }
 

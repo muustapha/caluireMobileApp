@@ -36,7 +36,7 @@ namespace CaluireMobile._0.Models.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<ProduitDto>(produit));
+            return Ok(_mapper.Map<ProduitDtoAvecTypesProduitEtTraiter>(produit));
         }
 
         [HttpPost]
@@ -44,7 +44,7 @@ namespace CaluireMobile._0.Models.Controllers
         {
             var produitModel = _mapper.Map<Produit>(produitCreateDto);
             _service.AddProduit(produitModel);
-            return CreatedAtRoute(nameof(GetProduitById), new { Id = produitModel.Id }, _mapper.Map<ProduitDto>(produitModel));
+            return CreatedAtRoute(nameof(GetProduitById), new { Id = produitModel.IdProduit }, _mapper.Map<ProduitDtoIn>(produitModel));
         }
 
         [HttpPut("{id}")]
@@ -61,21 +61,25 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialProduitUpdate(int id, JsonPatchDocument<ProduitDtoIn> patchDoc)
+        public ActionResult PartialProduitUpdate(int id, JsonPatchDocument<Produit> patchDoc)
         {
             var produitModelFromRepo = _service.GetProduitById(id);
             if (produitModelFromRepo == null)
             {
                 return NotFound();
             }
-            var produitToPatch = _mapper.Map<ProduitUpdateDto>(produitModelFromRepo);
-            patchDoc.ApplyTo(produitToPatch, ModelState);
+
+            var produitToPatch = _mapper.Map<Produit>(produitModelFromRepo);
+            patchDoc.ApplyTo(produitToPatch, error => ModelState.AddModelError("", error.ErrorMessage));
+
             if (!TryValidateModel(produitToPatch))
             {
                 return ValidationProblem(ModelState);
             }
+
             _mapper.Map(produitToPatch, produitModelFromRepo);
             _service.UpdateProduit(produitModelFromRepo);
+
             return NoContent();
         }
 

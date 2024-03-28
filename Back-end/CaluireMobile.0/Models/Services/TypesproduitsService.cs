@@ -38,7 +38,7 @@ namespace CaluireMobile._0.Models.Services
             _context.SaveChanges();
         }
 
-        public IEnumerable<Typesproduit> GetAllTypesproduitss()
+        public IEnumerable<Typesproduit> GetAllTypesproduits()
         {
             return _context.Typesproduits
             .Include(t => t.Produits)

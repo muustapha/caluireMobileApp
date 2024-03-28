@@ -22,8 +22,7 @@ namespace caluireMobile.Models.Dtos
         {
         }
 
-        public int IdClient { get; set; }
-        public int IdOperation { get; set; }
+        
         public string Description { get; set; }
         public DateTime DateHeureRdv { get; set; }
         // Ajoutez d'autres propriétés selon vos besoins
@@ -53,7 +52,6 @@ namespace caluireMobile.Models.Dtos
         }
 
         public int IdClient { get; set; }
-        public int IdOperation { get; set; }
         public string Description { get; set; }
         public DateTime DateHeureRdv { get; set; }
         public virtual ClientDtoOut Client { get; set; }
@@ -66,7 +64,6 @@ namespace caluireMobile.Models.Dtos
             Operation = new OperationDtoOut();
         }
 
-        public int IdClient { get; set; }
         public int IdOperation { get; set; }
         public string Description { get; set; }
         public DateTime DateHeureRdv { get; set; }

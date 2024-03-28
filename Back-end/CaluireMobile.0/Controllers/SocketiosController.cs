@@ -1,10 +1,10 @@
+using AutoMapper;
+using caluireMobile.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using caluireMobile.Models.Dtos;
-using AutoMapper;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -12,31 +12,31 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class SocketiosController : ControllerBase
     {
-        private readonly SocketiosService _service;
+        private readonly SocketioServices _service;
         private readonly IMapper _mapper;
 
-        public SocketiosController(SocketiosService service, IMapper mapper)
+        public SocketiosController(SocketioServices service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SocketioDtoOut>> GetAllSocketios()
+        public ActionResult<IEnumerable<SocketioDtoOut>> GetAllSocketio()
         {
-            var socketios = _service.GetAllSocketios();
+            var socketios = _service.GetAllSocketio();
             return Ok(_mapper.Map<IEnumerable<SocketioDtoOut>>(socketios));
         }
 
         [HttpGet("{id}", Name = "GetSocketioById")]
-        public ActionResult<SocketioDtoAvecClientEtOperation> GetSocketioById(int id)
+        public ActionResult<SocketioDtoAvecClientEtEmploye> GetSocketioById(int id)
         {
             var socketio = _service.GetSocketioById(id);
             if (socketio == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<SocketioDtoAvecClientEtOperation>(socketio));
+            return Ok(_mapper.Map<SocketioDtoAvecClientEtEmploye>(socketio));
         }
 
         [HttpPost]

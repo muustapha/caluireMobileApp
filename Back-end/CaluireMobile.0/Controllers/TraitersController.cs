@@ -1,10 +1,11 @@
+using AutoMapper;
+using caluireMobile.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
-using CaluireMobile._0.Models.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using AutoMapper;
+
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -29,14 +30,14 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet("{id}", Name = "GetTraiterById")]
-        public ActionResult<TraiterDtoAvecClientEtOperation> GetTraiterById(int id)
+        public ActionResult<TraiterDtoAvecOperationEtProduit> GetTraiterById(int id)
         {
             var traiter = _service.GetTraiterById(id);
             if (traiter == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TraiterDtoAvecClientEtOperation>(traiter));
+            return Ok(_mapper.Map<TraiterDtoAvecOperationEtProduit>(traiter));
         }
 
         [HttpPost]
@@ -44,7 +45,7 @@ namespace CaluireMobile._0.Models.Controllers
         {
             var traiterModel = _mapper.Map<Traiter>(traiterCreateDto);
             _service.AddTraiter(traiterModel);
-            return CreatedAtRoute(nameof(GetTraiterById), new { Id = traiterModel.Id }, _mapper.Map<TraiterDtoOut>(traiterModel));
+            return CreatedAtRoute(nameof(GetTraiterById), new { Id = traiterModel.IdTraiter }, _mapper.Map<TraiterDtoOut>(traiterModel));
         }
 
         [HttpPut("{id}")]

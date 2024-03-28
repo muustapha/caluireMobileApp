@@ -3,6 +3,7 @@ using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -20,48 +21,48 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TypesproduitDtoAvecProduitsEtTraiters>> GetAllTypesproduits()
+        public ActionResult<IEnumerable<TypesproduitDtoAvecProduits>> GetAllTypesproduits()
         {
             var typesproduits = _service.GetAllTypesproduits();
-            return Ok(_mapper.Map<IEnumerable<TypesproduitDtoAvecProduitsEtTraiters>>(typesproduits));
+            return Ok(_mapper.Map<IEnumerable<TypesproduitDtoAvecProduits>>(typesproduits));
         }
 
         [HttpGet("{id}", Name = "GetTypesproduitById")]
-        public ActionResult<TypesproduitDtoAvecProduitsEtTraiters> GetTypesproduitById(int id)
+        public ActionResult<TypesproduitDtoAvecProduits> GetTypesproduitById(int id)
         {
-            var typesproduit = _service.GetTypesproduitById(id);
+            var typesproduit = _service.GetTypesproduitsById(id);
             if (typesproduit == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TypesproduitDtoAvecProduitsEtTraiters>(typesproduit));
+            return Ok(_mapper.Map<TypesproduitDtoAvecProduits>(typesproduit));
         }
 
         [HttpPost]
         public ActionResult<Typesproduit> AddTypesproduit(TypesproduitDtoIn typesproduitCreateDto)
         {
             var typesproduitModel = _mapper.Map<Typesproduit>(typesproduitCreateDto);
-            _service.AddTypesproduit(typesproduitModel);
-            return CreatedAtRoute(nameof(GetTypesproduitById), new { Id = typesproduitModel.Id }, _mapper.Map<TypesproduitDtoOut>(typesproduitModel));
+            _service.AddTypesproduits(typesproduitModel);
+            return CreatedAtRoute(nameof(GetTypesproduitById), new { Id = typesproduitModel.IdTypesProduit }, _mapper.Map<TypesproduitDtoOut>(typesproduitModel));
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateTypesproduit(int id, TypesproduitDtoIn typesproduitUpdateDto)
         {
-            var typesproduitModelFromRepo = _service.GetTypesproduitById(id);
+            var typesproduitModelFromRepo = _service.GetTypesproduitsById(id);
             if (typesproduitModelFromRepo == null)
             {
                 return NotFound();
             }
             _mapper.Map(typesproduitUpdateDto, typesproduitModelFromRepo);
-            _service.UpdateTypesproduit(typesproduitModelFromRepo);
+            _service.UpdateTypesproduits(typesproduitModelFromRepo);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public ActionResult PartialTypesproduitUpdate(int id, JsonPatchDocument<Typesproduit> patchDoc)
         {
-            var typesproduitFromRepo = _service.GetTypesproduitById(id);
+            var typesproduitFromRepo = _service.GetTypesproduitsById(id);
             if (typesproduitFromRepo == null)
             {
                 return NotFound();
@@ -74,19 +75,19 @@ namespace CaluireMobile._0.Models.Controllers
                 return ValidationProblem(ModelState);
             }
             _mapper.Map(typesproduitToPatch, typesproduitFromRepo);
-            _service.UpdateTypesproduit(typesproduitFromRepo);
+            _service.UpdateTypesproduits(typesproduitFromRepo);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public ActionResult DeleteTypesproduit(int id)
         {
-            var typesproduitModelFromRepo = _service.GetTypesproduitById(id);
+            var typesproduitModelFromRepo = _service.GetTypesproduitsById(id);
             if (typesproduitModelFromRepo == null)
             {
                 return NotFound();
             }
-            _service.DeleteTypesproduit(id);
+            _service.DeleteTypesproduits(id);
             return NoContent();
         }
     }
