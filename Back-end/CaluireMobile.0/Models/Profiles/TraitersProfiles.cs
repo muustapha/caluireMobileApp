@@ -1,6 +1,6 @@
 using AutoMapper;
+using caluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
-using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Profiles
 {
@@ -17,12 +17,12 @@ namespace CaluireMobile._0.Models.Profiles
             CreateMap<TraiterDtoOut, Traiter>();
 
             // Map from Traiter to TraiterDtoAvecOperationEtProduit and vice versa
-            CreateMap<Traiter, TraiterDtoAvecOperationEtProduit>();
-            CreateMap<TraiterDtoAvecOperationEtProduit, Traiter>();
-
-            // Map from Traiter to TraiterDtoAvecOperation and vice versa
             CreateMap<Traiter, TraiterDtoAvecOperation>();
             CreateMap<TraiterDtoAvecOperation, Traiter>();
+
+            // Map from Traiter to TraiterDtoAvecOperation and vice versa
+            CreateMap<Traiter, TraiterDtoAvecOperationEtProduit>();
+            CreateMap<TraiterDtoAvecOperationEtProduit, Traiter>();
 
             // Map from Traiter to TraiterDtoAvecProduit and vice versa
             CreateMap<Traiter, TraiterDtoAvecProduit>();

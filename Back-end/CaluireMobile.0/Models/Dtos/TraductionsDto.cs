@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 #nullable disable
 
 
-namespace caluireMobile.Models.Dtos
+namespace caluireMobile._0.Models.Dtos
 {
     public class TraductionDtoIn
     {

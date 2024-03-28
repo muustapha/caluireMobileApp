@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CaluireMobile._0.Models.Datas;
+﻿namespace CaluireMobile._0.Models.Datas;
 
 public partial class Socketio
 {

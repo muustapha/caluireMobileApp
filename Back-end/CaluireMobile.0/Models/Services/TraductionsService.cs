@@ -1,8 +1,4 @@
 using CaluireMobile._0.Models.Datas;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CaluireMobile._0.Models.Services
 {

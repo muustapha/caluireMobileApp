@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using caluireMobile.Models.Dtos;
-using CaluireMobile._0.Models.Datas;
 #nullable disable
 
-namespace caluireMobile.Models.Dtos
+using caluireMobile._0.Models.Dtos;
+
+namespace caluireMobile._0.Models.Dtos
 {
     public class ProduitDtoIn
     {

@@ -1,11 +1,8 @@
 using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using AutoMapper;
-
-using CaluireMobile._0.Models;
 using CaluireMobile._0.Models.Datas;
-using caluireMobile.Models.Dtos;
+using caluireMobile._0.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {

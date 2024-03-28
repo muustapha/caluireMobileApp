@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using CaluireMobile._0.Models.Datas;
-
-namespace caluireMobile.Models.Dtos
+namespace caluireMobile._0.Models.Dtos
 {
     public class OperationDtoIn
     {

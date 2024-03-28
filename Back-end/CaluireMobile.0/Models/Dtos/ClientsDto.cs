@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using CaluireMobile._0.Models.Datas;
-using caluireMobile.Models.Dtos;
-
-namespace caluireMobile.Models.Dtos
+namespace caluireMobile._0.Models.Dtos
 {
     public class ClientDtoIn
     {

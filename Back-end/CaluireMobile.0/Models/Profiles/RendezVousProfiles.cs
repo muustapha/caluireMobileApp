@@ -1,6 +1,6 @@
 using AutoMapper;
+using caluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
-using caluireMobile.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Profiles
 {

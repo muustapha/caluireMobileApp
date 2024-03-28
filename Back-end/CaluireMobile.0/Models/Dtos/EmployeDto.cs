@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace caluireMobile.Models.Dtos
+namespace caluireMobile._0.Models.Dtos
 {
     public class EmployeDtoIn
     {
