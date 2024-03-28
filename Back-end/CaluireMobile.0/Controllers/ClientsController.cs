@@ -4,7 +4,6 @@ using AutoMapper;
 using CaluireMobile._0.Models.Datas;
 using caluireMobile._0.Models.Dtos;
 
-
 namespace CaluireMobile._0.Models.Controllers
 {
     [Route("api/[controller]")]
@@ -19,9 +18,6 @@ namespace CaluireMobile._0.Models.Controllers
             _service = service;
             _mapper = mapper;
         }
-
-        // GET: api/Clients
-        // ...
 
         // GET: api/Clients
         [HttpGet]
@@ -43,8 +39,6 @@ namespace CaluireMobile._0.Models.Controllers
             return Ok(_mapper.Map<ClientDtoAvecrendezVousEtSocketios>(client));
         }
 
-        // ...
-
         // PUT: api/Clients/5
         [HttpPut("{id}")]
         public IActionResult UpdateClient(int id, ClientDtoIn clientDtoIn)
@@ -56,13 +50,13 @@ namespace CaluireMobile._0.Models.Controllers
 
         // POST: api/Clients
         [HttpPost]
-        [HttpPost]
         public ActionResult<ClientDtoOut> CreateClient(ClientDtoIn clientDtoIn)
         {
             var client = _mapper.Map<Client>(clientDtoIn);
             _service.AddClient(client);
             return CreatedAtAction(nameof(GetClient), new { id = client.IdClient }, _mapper.Map<ClientDtoOut>(client));
         }
+
         // DELETE: api/Clients/5
         [HttpDelete("{id}")]
         public IActionResult DeleteClient(int id)
