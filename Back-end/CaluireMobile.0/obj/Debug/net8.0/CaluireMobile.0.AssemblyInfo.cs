@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CaluireMobile.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0232e725d80bbd01e3d3e09ae10900bcff5aded")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca16dde7d68de42a8e1923743e445f0fa88961ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("CaluireMobile.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CaluireMobile.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
