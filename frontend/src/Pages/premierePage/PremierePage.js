@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from '../../components/header/header';
 
-const Logo = ''; // Remplacez par le chemin de votre fichier de logo
+const Logo = require('../../asset/images/logo.png');
 
 const PremierePage = ({ navigation }) => {
   return (
@@ -10,7 +10,7 @@ const PremierePage = ({ navigation }) => {
       <Header />
       <Image source={Logo} style={styles.logo} />
       <Text style={styles.title}>Caluire Mobile</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PageAcceuiVlisiteur')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PageAcceuillVisiteur')}>
         <Text style={styles.buttonText}>Visiter</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PageConnection')}>
@@ -40,6 +40,13 @@ const styles = StyleSheet.create({
     buttonText: {
       color: '#fff',
       textAlign: 'center',
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      marginBottom:0,
     },
   });
   
