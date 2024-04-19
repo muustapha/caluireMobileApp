@@ -1,29 +1,31 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
-const Header = () => (
-  <View style={styles.header}>
-    <Text style={styles.headerText}>Caluire Mobile</Text>
-  </View>
-);
-
+import LinearGradient from 'react-native-linear-gradient';
+const Header = ({ title }) => {
+  return (<LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+  colors={['#8d9293', '#313131']} style={styles.container}>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>{title}</Text>
+    </View>
+    </LinearGradient>
+  );
+};
 const styles = StyleSheet.create({
   header: {
     height: 60,
-    width: '100%',
-    backgroundColor: '#9dcbd5',
+    width: '104%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 15,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    elevation: 2,
-    position: 'relative',
+    
   },
   headerText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 'semi-bold',
     color: '#fff',
+    alignContent: 'center',
+    alignItems: 'center',
+paddingLeft: 7,
+paddingRight: 7,
   },
 });
 
