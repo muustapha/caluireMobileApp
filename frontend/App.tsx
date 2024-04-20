@@ -12,8 +12,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="PremierePage">
         <Stack.Screen name="PremierePage" component={PremierePage} options={{ headerShown: false }} />
-        <Stack.Screen name="PageConnection" component={PageConnection} />
-        <Stack.Screen name="PageAcceuillVisiteur" component={PageAcceuilVisiteur} />
+        <Stack.Screen name="PageConnection" component={PageConnection} options={{ headerShown: false }} />
+        <Stack.Screen name="PageAcceuillVisiteur" component={PageAcceuilVisiteur} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,32 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text,TouchableOpacity, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-const Header = ({ title }) => {
+import styles from './StyleHeader';
+
+
+const Header = ({icon, title,navigation }) => {
   return (<LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-  colors={['#8d9293', '#313131']} style={styles.container}>
-    <View style={styles.header}>
+  colors={['#B8DBED', '#61A0C1']} style={styles.header}>
+<TouchableOpacity onPress={() => { navigation.goBack(); }}>
+  <Image source={icon} style={styles.icon} />
+</TouchableOpacity>
       <Text style={styles.headerText}>{title}</Text>
-    </View>
+  
     </LinearGradient>
   );
 };
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    width: '104%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'semi-bold',
-    color: '#fff',
-    alignContent: 'center',
-    alignItems: 'center',
-paddingLeft: 7,
-paddingRight: 7,
-  },
-});
 
 export default Header;

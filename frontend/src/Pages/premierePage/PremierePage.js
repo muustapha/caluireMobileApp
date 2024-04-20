@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Header from '../../components/header/header';
+import Header from '../../components/header/Header1';
 import LinearGradient from 'react-native-linear-gradient';
+import Header1 from '../../components/header/Header1';
 
 const Logo = require('../../asset/images/logo.png');
 
@@ -9,7 +10,7 @@ const PremierePage = ({ navigation }) => {
   return (
     <LinearGradient colors={['#ecf4f9', '#6aa6c5']} style={styles.container}>
     
-      <Header  title="Produits disponible : 20 téléphones, 3 tablette, 2 ordinateur"  />
+      <Header1  title="Produits disponible : 20 téléphones, 3 tablette, 2 ordinateur"  />
      
       <View style={styles.containerLogo}>
         <Image source={Logo} style={styles.logo} />
@@ -34,13 +35,9 @@ const PremierePage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-container: {
-    flex: 1,
-    justifyContent: 'center',
-   
-},
+
   title1: {
-    fontSize: 24,
+    fontSize: 31,
     textAlign: 'center',
     color: '#fff',
     marginBottom: 20,
@@ -52,16 +49,15 @@ title: {
     color: '#030303',
     marginBottom: 20,
     fontWeight: 'bold',
+    fontFamily: 'times new roman',
   },
 
-  logo: {
-
-    backgroundColor: 'transparent',
-    width: 300,
-    height: 300,
-    resizeMode: 'contain',
-
-  },
+ logo: {
+  backgroundColor: 'transparent',
+  width: '75%',
+  height: '75%',
+  resizeMode: 'contain',
+},
   button: {
     backgroundColor: '#fffdfd',
     padding: 10,
@@ -77,36 +73,40 @@ title: {
   },
   container: {
     flex: 1,
-    justifyContent: 'start',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    height: '50%',
+
   },
   containerLogo: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%', // Ajoutez une largeur
+    height: '50%', // Ajoutez une hauteur
     marginBottom: 20,
     marginTop: 60,
-
   },
   containerbouttons: {
     justifyContent: 'center',
-    flex: 0.85,
+    flex: 0.75,
     backgroundColor: '#313131',
     width: '100%',
-    marginBottom: 85,
-    marginTop: 20,
+    
 },
  title2: {
-    textAlign: 'left',
-    fontSize: 11,
-    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 15,
     fontWeight: 'bold',
-    flexWrap: 'wrap',
+   alignContent: 'flex-end',
+    color: '#fff',
+fontFamily: 'popins',
+paddingTop: 20,
 },
   footer: {
-    flex: 0.15,
+   flex: 0.25,
     width: '100%',
-},
+    height : '0.5%',
+
+    },
 
 });
 
