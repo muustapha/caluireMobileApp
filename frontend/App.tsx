@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import PremierePage from './src/Pages/premierePage/PremierePage';
 import PageConnection from './src/Pages/ConnectionMenbre/PageConnection';
 import PageAcceuilVisiteur from './src/Pages/pageAcceuilVisiteur/PageAcceuilVisiteur';
-
+import CreerProfile from './src/Pages/Profil/creerProfil/CreerProfile';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
         <Stack.Screen name="PremierePage" component={PremierePage} options={{ headerShown: false }} />
         <Stack.Screen name="PageConnection" component={PageConnection} options={{ headerShown: false }} />
         <Stack.Screen name="PageAcceuillVisiteur" component={PageAcceuilVisiteur} options={{ headerShown: false }}/>
+        <Stack.Screen name="CreerProfile" component={CreerProfile} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
