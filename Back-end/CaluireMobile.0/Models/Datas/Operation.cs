@@ -26,7 +26,7 @@ public partial class Operation
 
     public int? Quantite { get; set; }
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; } = null!;
 
     public virtual ICollection<PriseEnCharge> PriseEnCharges { get; set; } = new List<PriseEnCharge>();
 

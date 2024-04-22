@@ -281,19 +281,27 @@ public partial class CaluireMobileContext : DbContext
         modelBuilder.Entity<Traiter>(entity =>
         {
             entity.HasKey(e => e.IdTraiter).HasName("PRIMARY");
-
+        
             entity.ToTable("traiters");
-
+        
             entity.HasIndex(e => e.IdOperation, "Id_operation").IsUnique();
-
+        
             entity.HasIndex(e => e.IdProduit, "Id_produit");
-
+        
             entity.Property(e => e.IdTraiter).HasColumnName("idTraiter");
             entity.Property(e => e.IdOperation).HasColumnName("Id_operation");
             entity.Property(e => e.IdProduit).HasColumnName("Id_produit");
-           
+            entity.HasOne(d => d.Operation)
+                .WithMany(p => p.Traiter) 
+                .HasForeignKey(d => d.IdOperation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Traiter_Operation");
+            entity.HasOne(d => d.Produit)
+                .WithMany(p => p.Traiters)
+                .HasForeignKey(d => d.IdProduit)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Traiter_Produit");
         });
-
         modelBuilder.Entity<Transactionspaiment>(entity =>
         {
             entity.HasKey(e => e.IdTransactionPaiment).HasName("PRIMARY");
