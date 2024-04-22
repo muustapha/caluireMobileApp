@@ -11,7 +11,15 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         width: '100%',
+        marginTop: '10%',
+    },
+    text: {
+        fontSize: 25,
+        fontFamily: 'times new roman',
+        textAlign: 'center',
         marginTop: '15%',
+        color: '#075B3F',
+        fontWeight: 'bold',
     },
 });
 

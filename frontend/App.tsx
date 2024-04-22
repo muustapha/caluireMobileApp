@@ -5,6 +5,8 @@ import PremierePage from './src/Pages/premierePage/PremierePage';
 import PageConnection from './src/Pages/ConnectionMenbre/PageConnection';
 import PageAcceuilVisiteur from './src/Pages/pageAcceuilVisiteur/PageAcceuilVisiteur';
 import CreerProfile from './src/Pages/Profil/creerProfil/CreerProfile';
+import EditerProfile from './src/Pages/Profil/editerProfil/EditerProfile';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -15,7 +17,8 @@ const App = () => {
         <Stack.Screen name="PageConnection" component={PageConnection} options={{ headerShown: false }} />
         <Stack.Screen name="PageAcceuillVisiteur" component={PageAcceuilVisiteur} options={{ headerShown: false }}/>
         <Stack.Screen name="CreerProfile" component={CreerProfile} options={{ headerShown: false }}/>
-      </Stack.Navigator>
+        <Stack.Screen name="EditerProfile" component={EditerProfile} options={{ headerShown: false }}/>
+        </Stack.Navigator>
     </NavigationContainer>
   );
 };

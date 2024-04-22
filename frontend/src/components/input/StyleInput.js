@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: '5%',
     },
-    icon: {
+    iconContainer: {
         width: '10%',
-        height: '10%',
+        
         marginLeft: 10,
     },
     input: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         color: '#000',
         padding: 7,
         marginTop: 5,
-        textAlign: 'center',
+        textAlign: 'left',
     },
     focused: {
         borderColor: '#5FCDA6',

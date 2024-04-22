@@ -9,7 +9,9 @@ const Input = ({ icon, placeholder, value, onChangeText, secureTextEntry }) => {
   return (
   
         <View style={[styles.container, isFocused ? styles.focused : {}]}>
-      {icon}
+      <View style={styles.iconContainer}> 
+        {icon}
+      </View>
       <TextInput
         style={styles.input}
         value={value}
