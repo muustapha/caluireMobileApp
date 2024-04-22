@@ -14,6 +14,8 @@ builder.Services.AddControllers(
     )
     .AddXmlDataContractSerializerFormatters();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // Ajout des services
 builder.Services.AddTransient<ClientsService>();
@@ -54,7 +56,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    // Pas besoin d'appeler MapControllers si vous définissez toutes vos routes au niveau supérieur
+endpoints.MapControllers();
 });
 
 app.Run();

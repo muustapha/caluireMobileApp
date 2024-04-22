@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj": {}
+    "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj": {
+    "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
+        "projectUniqueName": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
         "projectName": "CaluireMobile.0",
-        "projectPath": "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
+        "projectPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
         "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\obj\\",
+        "outputPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Utilisateur\\AppData\\Roaming\\NuGet\\NuGet.Config"

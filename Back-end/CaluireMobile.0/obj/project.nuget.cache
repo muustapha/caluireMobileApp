@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8Ya1aW/v9UrH7yD6tnFRV5p2V8GHXEdi0UUAyyKrKzOXTfzD0AxDM2h7ohP1RoN+Lb1Ut6fNo98VypEofwdT/A==",
+  "dgSpecHash": "pBQ1IzkvJyuZBeCJ6UiZsr0fTO3JfY8sP156jGl0fG16S32er29NtZR31KURziXy3L7bz9Dvcm+UR9fQV0bJ6A==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
+  "projectFilePath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilisateur\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Utilisateur\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

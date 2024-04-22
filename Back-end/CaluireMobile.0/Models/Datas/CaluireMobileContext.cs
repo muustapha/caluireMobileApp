@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CaluireMobile._0.Models.Datas;
 
 public partial class CaluireMobileContext : DbContext
 {
-    public CaluireMobileContext()
-    {
-    }
+    private readonly IConfiguration _configuration;
 
-    public CaluireMobileContext(DbContextOptions<CaluireMobileContext> options)
+    public CaluireMobileContext(DbContextOptions<CaluireMobileContext> options, IConfiguration configuration)
         : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<Client> Clients { get; set; }
@@ -36,8 +36,9 @@ public partial class CaluireMobileContext : DbContext
     public virtual DbSet<Typesproduit> Typesproduits { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("maConnection", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31-mysql"));
-
+    {
+        optionsBuilder.UseMySql(_configuration.GetConnectionString("maConnection"), new MySqlServerVersion(new Version(8, 0, 31)));
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
