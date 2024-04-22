@@ -157,6 +157,16 @@ public partial class CaluireMobileContext : DbContext
             entity.Property(e => e.IdPriseEnCharge).HasColumnName("idPriseEnCharge");
             entity.Property(e => e.IdEmploye).HasColumnName("Id_employe");
             entity.Property(e => e.IdOperation).HasColumnName("Id_operation");
+            entity.HasOne(d => d.Employe)
+                 .WithMany(p => p.PriseEnCharges)
+                 .HasForeignKey(d => d.IdEmploye)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_PriseEnCharge_Employe");
+            entity.HasOne(d => d.Operation)
+                 .WithMany(p => p.PriseEnCharges)
+                 .HasForeignKey(d => d.IdOperation)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_PriseEnCharge_Operation");
         });
 
         modelBuilder.Entity<Produit>(entity =>
@@ -186,6 +196,11 @@ public partial class CaluireMobileContext : DbContext
                 .HasPrecision(10, 2)
                 .HasColumnName("prix");
             entity.Property(e => e.Stock).HasColumnName("stock");
+            entity.HasOne(d => d.TypesProduit)
+                 .WithMany(p => p.Produits)
+                 .HasForeignKey(d => d.IdTypesProduit)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_Produit_TypesProduit");
         });
 
         modelBuilder.Entity<RendezVou>(entity =>
@@ -207,6 +222,17 @@ public partial class CaluireMobileContext : DbContext
                 .HasColumnName("description");
             entity.Property(e => e.IdClient).HasColumnName("Id_client");
             entity.Property(e => e.IdOperation).HasColumnName("Id_operation");
+            entity.HasOne(d => d.Client)
+                 .WithMany(p => p.RendezVous)
+                 .HasForeignKey(d => d.IdClient)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_RendezVou_Client");
+            entity.HasOne(d => d.Operation)
+                 .WithMany(p => p.RendezVous)
+                 .HasForeignKey(d => d.IdOperation)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_RendezVou_Operation");     
+
         });
 
         modelBuilder.Entity<Socketio>(entity =>
@@ -222,6 +248,16 @@ public partial class CaluireMobileContext : DbContext
             entity.Property(e => e.IdClient).HasColumnName("Id_client");
             entity.Property(e => e.IdEmploye).HasColumnName("Id_employe");
             entity.Property(e => e.NomUtilisateur).HasMaxLength(50);
+            entity.HasOne(d => d.Client)
+                 .WithMany(p => p.Socketios)
+                 .HasForeignKey(d => d.IdClient)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_Socketio_Client");
+            entity.HasOne(d => d.Employe)
+                    .WithMany(p => p.Socketios)
+                    .HasForeignKey(d => d.IdEmploye)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Socketio_Employe");     
         });
 
         modelBuilder.Entity<Traduction>(entity =>
@@ -255,6 +291,7 @@ public partial class CaluireMobileContext : DbContext
             entity.Property(e => e.IdTraiter).HasColumnName("idTraiter");
             entity.Property(e => e.IdOperation).HasColumnName("Id_operation");
             entity.Property(e => e.IdProduit).HasColumnName("Id_produit");
+           
         });
 
         modelBuilder.Entity<Transactionspaiment>(entity =>
@@ -279,6 +316,11 @@ public partial class CaluireMobileContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasColumnName("status");
+            entity.HasOne(d => d.Operation)
+                 .WithMany(p => p.Transactionspaiments)
+                 .HasForeignKey(d => d.IdOperation)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_TransactionsPaiment_Operation");
         });
 
         modelBuilder.Entity<Typesproduit>(entity =>
@@ -291,6 +333,7 @@ public partial class CaluireMobileContext : DbContext
             entity.Property(e => e.NomTypes)
                 .HasMaxLength(50)
                 .HasColumnName("nomTypes");
+           
         });
 
         OnModelCreatingPartial(modelBuilder);
