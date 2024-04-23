@@ -5,11 +5,10 @@ import Header from '../../../components/header/Header';
 import Input from '../../../components/input/Input';
 import styles from './StyleEditerProfile';
 import Boutton from '../../../components/boutton/Boutton';
-import IconNom from '../../../asset/icons/Nom.svg';
-import IconEmail from '../../../asset/icons/arobase.svg';
+import Arobase from '../../../asset/icons/Arobase.svg';
+import Cadena from '../../../asset/icons/Cadena.svg';
 
 const retour = require('../../../asset/icons/flecheRetour.png');
-const IconPassword = require('../../../asset/icons/Cadena.png');
 
 const EditerProfile = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -54,13 +53,13 @@ const EditerProfile = ({ navigation }) => {
           value={email}
           onChangeText={setEmail}
           placeholder="E-mail" 
-          icon={<IconEmail/>}
+          icon={<Arobase/>}
         />
         <Input
           value={password}
           onChangeText={setPassword}
           placeholder="Password" 
-          icon={<IconPassword/>}
+          icon={<Cadena/>}
         />
 
         <Text style={styles.text1}>Veuillez vérifier votre mot de passe : </Text>

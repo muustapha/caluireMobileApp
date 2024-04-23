@@ -15,10 +15,10 @@ const CreerProfile = ({ navigation }) => {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
   const [adresse, setAdresse] = useState('');
-  const [numeroDeTelephone, setNumeroDeTelephone] = useState('');
+  const [Telephone, setTelephone] = useState('');
 
   const handleSubmit = () => {
-    fetch('https://your-api-url.com/profile', { // Remplacez par l'URL de votre API
+    fetch('http://10.0.2.2:5127/api/Clients', { // Remplacez par l'URL de votre API
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const CreerProfile = ({ navigation }) => {
         nom: nom,
         prenom: prenom,
         adresse: adresse,
-        numeroDeTelephone: numeroDeTelephone,
+        Telephone: Telephone,
       }),
     })
       .then((response) => response.json())
@@ -68,8 +68,8 @@ const CreerProfile = ({ navigation }) => {
           icon={<IconAdresse/>}
         />
         <Input
-          value={numeroDeTelephone}
-          onChangeText={setNumeroDeTelephone}
+          value={Telephone}
+          onChangeText={setTelephone}
           placeholder="Numéro de téléphone" 
           icon={<IconTelephone/>}
         />
