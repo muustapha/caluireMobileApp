@@ -6,6 +6,7 @@ import PageConnection from './src/Pages/ConnectionMenbre/PageConnection';
 import PageAcceuilVisiteur from './src/Pages/pageAcceuilVisiteur/PageAcceuilVisiteur';
 import CreerProfile from './src/Pages/Profil/creerProfil/CreerProfile';
 import EditerProfile from './src/Pages/Profil/editerProfil/EditerProfile';
+import VerificationProfile from './src/Pages/Profil/validerProfil/VerificationProfil';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const App = () => {
         <Stack.Screen name="PageAcceuillVisiteur" component={PageAcceuilVisiteur} options={{ headerShown: false }}/>
         <Stack.Screen name="CreerProfile" component={CreerProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="EditerProfile" component={EditerProfile} options={{ headerShown: false }}/>
+        <Stack.Screen name="VerificationProfile" component={VerificationProfile} options={{ headerShown: false }}/>
         </Stack.Navigator>
     </NavigationContainer>
   );

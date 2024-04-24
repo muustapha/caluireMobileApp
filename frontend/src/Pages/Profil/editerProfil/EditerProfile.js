@@ -7,13 +7,14 @@ import styles from './StyleEditerProfile';
 import Boutton from '../../../components/boutton/Boutton';
 import Arobase from '../../../asset/icons/Arobase.svg';
 import Cadena from '../../../asset/icons/Cadena.svg';
+import VerificationProfile from '../validerProfil/VerificationProfil';
 
 const retour = require('../../../asset/icons/flecheRetour.png');
 
 const EditerProfile = ({ route,navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Ajoutez cette ligne
+  const [AdresseMail, setAdressemail] = useState('');
+  const [MotDePasse, setMotDePasse] = useState('');
+  const [ConfirmMotDePasse, setConfirmMotDePasse] = useState(''); // Ajoutez cette ligne
   const { clientId } = route.params; // Récupérer l'ID du client depuis les paramètres de navigation
   
   useEffect(() => {
@@ -22,7 +23,7 @@ const EditerProfile = ({ route,navigation }) => {
   }, []);
 
   const handleSubmit = () => {
-    if (password !== confirmPassword) {
+    if (MotDePasse !== ConfirmMotDePasse) {
       Alert.alert('Erreur', 'Les mots de passe ne correspondent pas. Veuillez entrer le même mot de passe.');
       return;
     }
@@ -33,15 +34,15 @@ const EditerProfile = ({ route,navigation }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        AdresseMail: email, 
-        MotDePasse: password,
+        AdresseMail: AdresseMail, 
+        MotDePasse: MotDePasse,
       }),
     })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
         Alert.alert('Profil mis à jour avec succès');
-        navigation.goBack(); // Ou navigation vers une autre page
+        navigation.navigate(VerificationProfile); // Ou navigation vers une autre page
       } else {
         Alert.alert('Erreur', data.message);
       }
@@ -59,22 +60,22 @@ const EditerProfile = ({ route,navigation }) => {
       <Text style={styles.text}>Veuillez remplir les champs suivants : </Text>
       <View style={styles.container0}>
         <Input
-          value={email}
-          onChangeText={setEmail}
+          value={AdresseMail}
+          onChangeText={setAdressemail}
           placeholder="E-mail" 
           icon={<Arobase/>}
         />
         <Input
-          value={password}
-          onChangeText={setPassword}
+          value={MotDePasse}
+          onChangeText={setMotDePasse}
           placeholder="Password" 
           icon={<Cadena/>}
         />
 
         <Text style={styles.text1}>Veuillez vérifier votre mot de passe : </Text>
         <Input
-          value={confirmPassword} // Modifiez cette ligne
-          onChangeText={setConfirmPassword} // Modifiez cette ligne
+          value={ConfirmMotDePasse} // Modifiez cette ligne
+          onChangeText={setConfirmMotDePasse} // Modifiez cette ligne
           placeholder="Confirmez le mot de passe" // Modifiez cette ligne
           icon={<Cadena/>}
         />

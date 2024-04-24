@@ -177,6 +177,8 @@ C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\MySqlConnector.dll
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\SendGrid.dll
+C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\StarkbankEcdsa.dll
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Utilisateur\Desktop\caluireMobileApp\Back-end\CaluireMobile.0\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll

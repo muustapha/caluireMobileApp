@@ -65,9 +65,17 @@
               "target": "Package",
               "version": "[8.0.3, )"
             },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.29.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

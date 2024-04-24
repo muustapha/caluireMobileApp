@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../../components/header/Header';
 import Input from '../../../components/input/Input';
-import styles from './StyleEditerProfile';
+import styles from './StyleVerificationProfil';
 import Boutton from '../../../components/boutton/Boutton';
 
 

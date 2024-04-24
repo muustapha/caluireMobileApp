@@ -15,7 +15,18 @@ builder.Services.AddControllers(
     .AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddMemoryCache(); // Ajoute cela pour activer le caching
+builder.Services.AddControllers();
 
+// Lire la configuration
+var configuration = builder.Configuration;
+
+// Récupérer la valeur de configuration nécessaire
+var sendGridApiKey = configuration.GetSection("SendGridApiKey").Value;
+var senderEmailAddress = configuration.GetSection("SenderEmailAddress").Value;
+
+// Ajouter la valeur de configuration au conteneur d'injection de dépendances
+builder.Services.AddTransient<EmailService>(sp => new EmailService(sendGridApiKey, senderEmailAddress));
 
 // Ajout des services
 builder.Services.AddTransient<ClientsService>();
