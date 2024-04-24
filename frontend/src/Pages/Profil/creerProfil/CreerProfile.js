@@ -11,38 +11,45 @@ import IconTelephone from '../../../asset/icons/Telephone.svg';
 
 const retour = require('../../../asset/icons/flecheRetour.png');
 
+
 const CreerProfile = ({ navigation }) => {
   const [nom, setNom] = useState('');
-  const [prenom, setPrenom] = useState('');
+  const [prénom, setPrénom] = useState('');
   const [adresse, setAdresse] = useState('');
   const [Telephone, setTelephone] = useState('');
 
   const handleSubmit = () => {
-    fetch('http://10.0.2.2:5127/api/Clients', { // Remplacez par l'URL de votre API
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nom: nom,
-        prenom: prenom,
-        adresse: adresse,
-        Telephone: Telephone,
-      }),
+    fetch('http://10.0.2.2:5127/api/Clients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nom: nom,
+            prénom: prénom,
+            adresse: adresse,
+            Telephone: Telephone,
+        }),
     })
-      .then((response) => response.json())
-      .then((data) => {
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
         if (data.success) {
-          Alert.alert('Profil créé avec succès');
-          // Ici, vous pouvez naviguer vers une autre page si nécessaire
+            Alert.alert('étape passée avec succes', '',
+                [
+                    {text: 'OK', onPress: () => navigation.navigate('EditerProfile', { clientId: data.clientId })}
+                ]
+            );
         } else {
-          Alert.alert('Erreur', data.message);
+            Alert.alert('Erreur', data.message);
         }
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.error('Erreur:', error);
-      });
-  };
+        Alert.alert('Erreur Réseau', 'Un problème est survenu avec la demande réseau.');
+    });
+};
+
 
   return (
     <LinearGradient colors={['#ffffff', '#999999']} style={styles.container}>
@@ -56,8 +63,8 @@ const CreerProfile = ({ navigation }) => {
           icon={<IconNom/>}
         />
         <Input
-          value={prenom}
-          onChangeText={setPrenom}
+          value={prénom}
+          onChangeText={setPrénom}
           placeholder="Prénom" 
           icon={<IconNom/>}
         />

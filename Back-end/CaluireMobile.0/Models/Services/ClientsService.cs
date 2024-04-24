@@ -11,6 +11,10 @@ namespace CaluireMobile._0.Models.Services
         {
             _context = context;
         }
+           public void Save()
+    {
+        _context.SaveChanges();
+    }
 
         public void AddClient(Client client)
         {
@@ -69,4 +73,5 @@ namespace CaluireMobile._0.Models.Services
             _context.SaveChanges();
         }
     }
+    
 }
