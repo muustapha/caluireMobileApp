@@ -9,8 +9,10 @@ height: '100%',
     },
     container0 : {
         alignItems: 'center',
-        justifyContent: 'center',
         height: '80%',
+        flexDirection: 'row',
+        width: '20%',
+
     },
 });
 

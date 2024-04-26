@@ -1,46 +1,73 @@
+using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
-namespace CaluireMobile._0.Models.Services
+public class EmailService
 {
-    public class EmailService 
+    private readonly string _mailjetApiKey; // Clé API Mailjet
+    private readonly string _mailjetApiSecret; // Clé secrète API Mailjet
+    private readonly string _senderEmailAddress; // Adresse e-mail de l'expéditeur
+public EmailService(string mailjetApiKey, string mailjetApiSecret, string senderEmailAddress)
+{
+    _mailjetApiKey = mailjetApiKey ?? throw new ArgumentNullException(nameof(mailjetApiKey));
+    _mailjetApiSecret = mailjetApiSecret ?? throw new ArgumentNullException(nameof(mailjetApiSecret));
+    _senderEmailAddress = senderEmailAddress ?? throw new ArgumentNullException(nameof(senderEmailAddress));
+   
+   
+    Console.WriteLine($"Sender email address: {_senderEmailAddress}");
+}
+
+
+public async Task SendEmailAsync(string recipientEmail, string subject, string body)
+{
+    try
     {
-        private readonly string _sendGridApiKey; // Clé API SendGrid
-        private readonly string _senderEmailAddress; // Adresse e-mail de l'expéditeur
+        MailjetClient client = new MailjetClient(_mailjetApiKey, _mailjetApiSecret);
+Console.WriteLine($"Sending email to {recipientEmail}");
+Console.WriteLine($"Email subject: {subject}");
+Console.WriteLine($"Email body: {body}");
 
-        public EmailService(string sendGridApiKey, string senderEmailAddress)
+        MailjetRequest request = new MailjetRequest
         {
-            _sendGridApiKey = sendGridApiKey;
-            _senderEmailAddress = senderEmailAddress;
+            Resource = Send.Resource,
         }
-
-        public async Task SendEmailAsync(string emailAddress, string subject, string body)
-        {
-            // Créez un client SendGrid en utilisant votre clé API
-            var client = new SendGridClient(_sendGridApiKey);
-
-            // Créez le message e-mail
-            var msg = new SendGridMessage()
-            {
-                From = new EmailAddress(_senderEmailAddress, "Votre application"),
-                Subject = subject,
-                PlainTextContent = body,
-                HtmlContent = body
-            };
-
-            // Ajoutez le destinataire
-            msg.AddTo(new EmailAddress(emailAddress));
-
-            // Envoyez l'e-mail
-            var response = await client.SendEmailAsync(msg);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.Accepted)
-            {
-                // Gestion des erreurs d'envoi d'e-mail
-                throw new ApplicationException($"Erreur lors de l'envoi de l'e-mail : {response.StatusCode}");
+        .Property(Send.Messages, new JArray {
+            new JObject {
+                {"sender", new JObject {
+                    {"Email", _senderEmailAddress},
+                    {"Name", "Caluire Mobile"}
+                }},
+                {"To", new JArray {
+                    new JObject {
+                        {"Email", recipientEmail}
+                    }
+                }},
+                {"Subject", subject},
+                {"TextPart", body},
+                {"HTMLPart", body}
             }
+        });
+        // Log avant l'envoi de l'email
+        Console.WriteLine($"Sending email to {recipientEmail} with subject '{subject}'.");
+
+        MailjetResponse response = await client.PostAsync(request);
+        if (!response.IsSuccessStatusCode)
+        {
+              Console.WriteLine($"StatusCode: {response.StatusCode}");
+            Console.WriteLine($"ErrorInfo: {response.GetErrorInfo()}");
+            Console.WriteLine($"ErrorMessage: {response.GetErrorMessage()}");
+            throw new ApplicationException($"Erreur lors de l'envoi de l'email: {response.StatusCode}");
         }
     }
+    catch (Exception ex)
+    {
+         Console.WriteLine($"An error occurred while sending email: {ex.Message}");
+        // Log the exception or handle it further up the stack
+        throw new InvalidOperationException($"An error occurred while sending email: {ex.Message}", ex);
+    }
 }
+
+}
+

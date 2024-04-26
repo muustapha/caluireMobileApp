@@ -48,27 +48,37 @@ namespace CaluireMobile._0.Models.Controllers
         }
 
         // PUT: api/Clients/5
-        [HttpPut("{id}")]
-        public IActionResult UpdateClient(int id, ClientDtoIn clientDtoIn)
-        {
-            var clientInDb = _service.GetClientById(id);
-            if (clientInDb == null)
-            {
-                return NotFound();
-            }
+[HttpPut("{id}")]
+public async Task<IActionResult> UpdateClient(int id, ClientDtoIn clientDtoIn)
+{
+    var clientInDb = _service.GetClientById(id);
+    if (clientInDb == null)
+    {
+        return NotFound();
+    }
 
-            // Mappage manuel des champs, en vérifiant qu'ils ne sont pas null ou vides
-            if (!string.IsNullOrWhiteSpace(clientDtoIn.AdresseMail))
-                clientInDb.AdresseMail = clientDtoIn.AdresseMail;
-            if (!string.IsNullOrWhiteSpace(clientDtoIn.MotDePasse))
-                clientInDb.MotDePasse = clientDtoIn.MotDePasse;
+    // Mise à jour des champs du profil client
+    if (!string.IsNullOrWhiteSpace(clientDtoIn.AdresseMail))
+        clientInDb.AdresseMail = clientDtoIn.AdresseMail;
+    if (!string.IsNullOrWhiteSpace(clientDtoIn.MotDePasse))
+        clientInDb.MotDePasse = clientDtoIn.MotDePasse;
 
-            // Il est important de sauvegarder les changements dans la base de données
-            _service.Save();
+    _service.Save(); // Sauvegarder les modifications
 
-            // Retourner une réponse de succès
-            return Ok(new { success = true, message = "Profil mis à jour avec succès." });
-        }
+    // Envoyer un email de confirmation
+    var emailSubject = "Confirmation de mise à jour du profil";
+    var emailBody = "Votre profil a été mis à jour avec succès.";
+    try
+    {
+        await _emailService.SendEmailAsync(clientInDb.AdresseMail, emailSubject, emailBody);
+        return Ok(new { success = true, message = "Profil mis à jour avec succès. Email de confirmation envoyé." });
+    }
+    catch (Exception ex)
+    {
+        // Log de l'exception ou gestion d'erreur
+        return StatusCode(500, new { success = false, message = "Profil mis à jour, mais l'email n'a pas pu être envoyé. " + ex.Message });
+    }
+}
 
         // POST: api/Clients
         [HttpPost]
@@ -86,6 +96,37 @@ namespace CaluireMobile._0.Models.Controllers
                 return BadRequest(new { success = false, message = "Impossible de créer le client" });
             }
         }
+// POST: api/Clients/SendEmail
+[HttpPost("SendEmail/{id}")]
+public async Task<IActionResult> SendEmail(int id)
+{     Console.WriteLine("SendEmail method called"); // Ajout du log
+
+    try
+    {
+        var client = _service.GetClientById(id);
+        if (client == null)
+        {
+            return NotFound("Client not found");
+        }
+
+        var emailSubject = "Confirmation de mise à jour du profil";
+        var emailBody = $"Cher {client.Nom}, votre profil a été mis à jour. Si vous n'avez pas demandé cette mise à jour, veuillez contacter le support.";
+
+        // Envoyer l'e-mail avec l'adresse e-mail du client
+        await _emailService.SendEmailAsync(client.AdresseMail, emailSubject, emailBody);
+
+        return Ok(new { success = true, message = "Email de confirmation envoyé." });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { success = false, message = "Erreur lors de l'envoi de l'email.", details = ex.Message });
+    }
+}
+
+
+
+
+
 
         // DELETE: api/Clients/5
         [HttpDelete("{id}")]
@@ -139,4 +180,5 @@ namespace CaluireMobile._0.Models.Controllers
             var body = $"Votre code de vérification est : {verificationCode}";
             await _emailService.SendEmailAsync(emailAddress, subject, body);        }
     }
+    
 }

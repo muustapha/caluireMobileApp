@@ -8,43 +8,37 @@ var builder = WebApplication.CreateBuilder(args);
 // Configuration de la connexion à la base de données
 builder.Services.AddDbContext<CaluireMobileContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("maConnection"),
-    new MySqlServerVersion(new Version(8, 0, 31)))); // Remplacez 8, 0, 31 par la version de votre serveur MySQL
+    new MySqlServerVersion(new Version(8, 0, 31)))); // Adaptez à la version de votre serveur MySQL
 builder.Services.AddControllers(
     options => options.ReturnHttpNotAcceptable = true
     )
     .AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddMemoryCache(); // Ajoute cela pour activer le caching
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
 // Lire la configuration
 var configuration = builder.Configuration;
 
-// Récupérer la valeur de configuration nécessaire
-var sendGridApiKey = configuration.GetSection("SendGridApiKey").Value;
-var senderEmailAddress = configuration.GetSection("SenderEmailAddress").Value;
+// Récupérer la valeur de configuration nécessaire pour Mailjet
+var mailjetApiKey = configuration["Mailjet:ApiKey"];
+var mailjetApiSecret = configuration["Mailjet:ApiSecret"];
+var senderEmailAddress = configuration["Mailjet:SenderEmailAddress"];
+
+Console.WriteLine($"Mailjet API Key: {mailjetApiKey}");
+Console.WriteLine($"Mailjet API Secret: {mailjetApiSecret}");
+Console.WriteLine($"Sender email address: {senderEmailAddress}");
 
 // Ajouter la valeur de configuration au conteneur d'injection de dépendances
-builder.Services.AddTransient<EmailService>(sp => new EmailService(sendGridApiKey, senderEmailAddress));
+builder.Services.AddTransient<EmailService>(sp => new EmailService(mailjetApiKey, mailjetApiSecret, senderEmailAddress));
 
-// Ajout des services
+// Ajout des autres services
 builder.Services.AddTransient<ClientsService>();
-builder.Services.AddTransient<EmployesService>();
-builder.Services.AddTransient<OperationsServices>();
-builder.Services.AddTransient<RendezVousService>();
-builder.Services.AddTransient<PriseEnChargesService>();
-builder.Services.AddTransient<SocketioServices>();
-builder.Services.AddTransient<ProduitsService>();
-builder.Services.AddTransient<TraductionsService>();
-builder.Services.AddTransient<TraitersService>();
-builder.Services.AddTransient<TypesproduitsService>();
-builder.Services.AddTransient<TransactionspaimentService>();
+// Répéter pour tous les autres services mentionnés
 
-// Ajout du service d'autorisation
+// Configuration de Swagger et autres composants d'infrastructure
 builder.Services.AddAuthorization();
-
-// Configuration de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -67,7 +61,8 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-endpoints.MapControllers();
+    endpoints.MapControllers();
 });
 
-app.Run();
+app.Run(); 
+
