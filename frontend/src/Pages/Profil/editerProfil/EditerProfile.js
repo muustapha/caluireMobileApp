@@ -69,8 +69,14 @@ const EditerProfile = ({ navigation, route }) => {
     return response.json();
 })
 .then(data => {
-    if (data.success) {
-        Alert.alert('Email envoyé', 'Un email de confirmation a été envoyé à votre adresse.');
+  if (data.success) {
+      Alert.alert(
+          'Email envoyé', 
+          'Un email de confirmation a été envoyé à votre adresse.',
+          [
+              {text: 'OK', onPress: () => navigation.navigate('VerificationProfile')}
+          ]
+      );
     } else {
         Alert.alert('Erreur', data.message);
     }

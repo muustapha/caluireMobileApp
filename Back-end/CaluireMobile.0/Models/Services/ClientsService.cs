@@ -72,6 +72,22 @@ namespace CaluireMobile._0.Models.Services
             _context.Entry(existingClient).CurrentValues.SetValues(client);
             _context.SaveChanges();
         }
+
+  public Client GetClientByAdresseMail(string adresseMail)
+        {
+            var client = _context.Clients
+                                 .FirstOrDefault(c => c.AdresseMail == adresseMail);
+
+            if (client == null)
+            {
+                throw new KeyNotFoundException($"Client with email {adresseMail} was not found.");
+            }
+
+            return client;
+        }
+
+
+        
     }
     
 }

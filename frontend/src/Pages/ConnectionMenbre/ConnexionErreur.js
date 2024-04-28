@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Modal, TouchableOpacity, Image, } from 'react-native';
-import Header from '../../components/header/Header';
+import HeaderErreur from '../../components/header/HeaderErreur';
 import LinearGradient from 'react-native-linear-gradient';
 import Arobase from '../../asset/icons/Arobase.svg';
 import Cadena from '../../asset/icons/Cadena.svg';
@@ -10,7 +10,9 @@ import Boutton from '../../components/boutton/Boutton';
 
 const retour = require('../../asset/icons/flecheRetour.png');
 
-const PageConnection = ({ navigation }) => {
+
+
+const ConnexionErreur = ({ navigation }) => { // Ajoutez 'navigation' ici
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,42 +20,39 @@ const PageConnection = ({ navigation }) => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-  const [isLoading, setIsLoading] = useState(false); // Ajout d'un état de chargement
 
   const handlePress = () => {
-    setIsLoading(true); // Début du chargement
-    console.log("Envoi de la requête de connexion avec:", { adresseMail: email, motDePasse: password });
-fetch('http://10.0.2.2:5127/api/Clients/Login', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    adresseMail: email,
-    motDePasse: password,
-  }),
-})
-.then(response => response.json())
-.then(data => {
-  console.log("Réponse de l'API:", data);
-  if (data.success) {
-    Alert.alert('Connexion réussie', 'Vous êtes maintenant connecté.');
-    navigation.navigate('PageAcceuilMenbre');
-  } else {
-    Alert.alert('Erreur de connexion', data.message);
-    navigation.navigate('ConnexionErreur');
-  }
-})
-.catch(error => {
-  console.error('Erreur:', error);
-  Alert.alert('Erreur de réseau', 'Impossible de se connecter au serveur.');
-  navigation.navigate('ConnexionErreur');
-});
-  }
+    fetch('https://your-api-url.com/auth', { // Remplacez par l'URL de votre API
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        AdresseMail: email, // Assurez-vous que ces clés correspondent à ce que votre API attend
+        MotDePasse: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Alert.alert('Connexion réussie', 'Vous êtes maintenant connecté.');
+          navigation.navigate('AccueilMembre'); // Assurez-vous que 'AccueilMembre' est le bon nom de la route
+        } else {
+          Alert.alert('Erreur de connexion', data.message);
+          navigation.navigate('ErreurConnexion'); // Assurez-vous que 'ErreurConnexion' est le bon nom de la route
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur:', error);
+        Alert.alert('Erreur de réseau', 'Impossible de se connecter au serveur.');
+        navigation.navigate('ErreurConnexion'); // Navigation en cas d'erreur réseau
+      });
+  };
+  
 
   return (
     <LinearGradient colors={['#ffffff', '#999999']} style={styles.containerPage}>
-      <Header icon={retour} title={'HEUREUX DE VOUS REVOIR'} navigation={navigation} />
+      <HeaderErreur icon={retour} title={'oups!Adresse mail ou mot de passe incorrect.'} navigation={navigation} />
       <Text style={styles.title}>Connectez-vous</Text>
       <View style={styles.container0}>
         <View style={[styles.container, isEmailFocused ? styles.focused : {}]}>
@@ -92,7 +91,7 @@ fetch('http://10.0.2.2:5127/api/Clients/Login', {
 
 
       <View style={styles.container2}>
-<Boutton title='Se connecter' onPress={handlePress} />
+        <Boutton title = 'Se connecter'onPress={() => { }}/>
         </View>
       
         <View style={styles.containerText}>
@@ -162,4 +161,4 @@ fetch('http://10.0.2.2:5127/api/Clients/Login', {
 };
 
 
-export default PageConnection;
+export default ConnexionErreur;

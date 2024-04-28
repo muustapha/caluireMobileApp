@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import Header from '../../components/header/Header';
+import Header from '../../../components/header/Header';
 import LinearGradient from 'react-native-linear-gradient';
-import Footer from '../../components/Footer/Footer';
+import Footer from '../../../components/Footer/Footer';
 
-const retour = require('../../asset/icons/flecheRetour.png');
+const retour = require('../../../asset/icons/flecheRetour.png');
 
 
 const PageAcceuilVisiteur = ({ navigation }) => {

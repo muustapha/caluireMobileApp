@@ -7,6 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CaluireMobile._0.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -26,6 +27,29 @@ namespace CaluireMobile._0.Models.Controllers
             _memoryCache = memoryCache;
             _emailService = emailService;
         }
+
+   [HttpPost("Login")]
+public async Task<IActionResult> Login([FromBody] LoginModel model)
+{
+    var client = _service.GetClientByAdresseMail(model.AdresseMail);
+    if (client == null)
+    {
+        return NotFound(new { success = false, message = "Utilisateur non trouvé." });
+    }
+
+    if (!VerifyPassword(model.MotDePasse, client.MotDePasse))
+    {
+        return Unauthorized(new { success = false, message = "Mot de passe incorrect." });
+    }
+
+    return Ok(new { success = true, message = "Connexion réussie.", clientId = client.IdClient });
+}
+
+    private bool VerifyPassword(string enteredPassword, string storedPasswordHash)
+    {
+        // Implémentation du hachage de mot de passe à insérer ici, retourne true si le mot de passe correspond
+        return enteredPassword == storedPasswordHash; // Exemple simpliste, utilisez un meilleur hachage dans la pratique
+    }
 
         // GET: api/Clients
         [HttpGet]
