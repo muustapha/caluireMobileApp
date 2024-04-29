@@ -20,6 +20,13 @@ namespace CaluireMobile._0.Models.Controllers
             _mapper = mapper;
         }
 
+[HttpGet("magasin/telephone")]
+public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinTelephone()
+{
+    var produits = _service.GetProduitsByFlagAndType("magasin", "telephone");
+    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
+}
+
         [HttpGet]
         public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetAllProduits()
         {

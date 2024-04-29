@@ -35,6 +35,7 @@ builder.Services.AddTransient<EmailService>(sp => new EmailService(mailjetApiKey
 
 // Ajout des autres services
 builder.Services.AddTransient<ClientsService>();
+builder.Services.AddScoped<ProduitsService>();
 // Répéter pour tous les autres services mentionnés
 
 // Configuration de Swagger et autres composants d'infrastructure

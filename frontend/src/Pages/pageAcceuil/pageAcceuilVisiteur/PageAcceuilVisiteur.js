@@ -13,9 +13,9 @@ const PageAcceuilVisiteur = ({ navigation }) => {
 
       <Header icon={retour} title={"ACCEUIL"} navigation={navigation}/>
       <Text style={styles.title}>Veuillez sélectionner un type de produit</Text>
-      <TouchableOpacity style={styles.button} onPress={() => { }}>
-        <Text style={styles.buttonText}>Téléphones</Text>
-      </TouchableOpacity>
+     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Telephone')}>
+  <Text style={styles.buttonText}>Téléphones</Text>
+</TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => { }}>
         <Text style={styles.buttonText}>Ordinateurs</Text>
       </TouchableOpacity>

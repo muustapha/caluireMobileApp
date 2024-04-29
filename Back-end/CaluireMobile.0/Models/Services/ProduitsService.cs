@@ -58,6 +58,10 @@ namespace CaluireMobile._0.Models.Services
             return produitFromDb;
         }
 
+public IEnumerable<Produit> GetProduitsByFlagAndType(string flag, string typeProduit)
+{
+    return _context.Produits.Where(p => p.FlagProduit == flag && p.TypesProduit.NomTypes == typeProduit).ToList();
+}
         public void UpdateProduit(Produit produit)
         {
             _context.Produits.Update(produit);

@@ -16,7 +16,6 @@ public EmailService(string mailjetApiKey, string mailjetApiSecret, string sender
     _senderEmailAddress = senderEmailAddress ?? throw new ArgumentNullException(nameof(senderEmailAddress));
    
    
-    Console.WriteLine($"Sender email address: {_senderEmailAddress}");
 }
 
 
@@ -25,9 +24,6 @@ public async Task SendEmailAsync(string recipientEmail, string subject, string b
     try
     {
         MailjetClient client = new MailjetClient(_mailjetApiKey, _mailjetApiSecret);
-Console.WriteLine($"Sending email to {recipientEmail}");
-Console.WriteLine($"Email subject: {subject}");
-Console.WriteLine($"Email body: {body}");
 
         MailjetRequest request = new MailjetRequest
         {
@@ -35,7 +31,7 @@ Console.WriteLine($"Email body: {body}");
         }
         .Property(Send.Messages, new JArray {
             new JObject {
-                {"sender", new JObject {
+                {"From", new JObject {
                     {"Email", _senderEmailAddress},
                     {"Name", "Caluire Mobile"}
                 }},
