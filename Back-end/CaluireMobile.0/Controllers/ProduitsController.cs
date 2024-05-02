@@ -26,6 +26,24 @@ public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduit
     var produits = _service.GetProduitsByFlagAndType("magasin", "telephone");
     return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
 }
+[HttpGet("magasin/tablette")]
+public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinTablette()
+{
+    var produits = _service.GetProduitsByFlagAndType("magasin", "tablette");
+    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
+}
+[HttpGet("magasin/ordinateur")]
+public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinOrdinateur()
+{
+    var produits = _service.GetProduitsByFlagAndType("magasin", "ordinateur");
+    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
+}
+[HttpGet("magasin/accessoire")]
+public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinAccessoire()
+{
+    var produits = _service.GetProduitsByFlagAndType("magasin", "accessoire");
+    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
+}
 
         [HttpGet]
         public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetAllProduits()
