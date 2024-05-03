@@ -1,14 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useState, useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import Boutton from '../boutton/AjouterPanier';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AjouterPanier from '../boutton/AjouterPanier';
+
 
 // Assurez-vous d'importer les données produits ou de les passer comme props au composant
 const Produit = ({ item, navigation, produits, setProduits }) => {
-  const [filtre, setFiltre] = useState('');
-  const clickCount = useRef(0);
-
+const [panier, setPanier] = useState([]);
   const handlePress = () => {
-    clickCount.current++;
+    ;
     
   };
 
@@ -18,31 +19,33 @@ const Produit = ({ item, navigation, produits, setProduits }) => {
  
       
       <View style={styles.container0}>
-        <TouchableOpacity onPress={handlePress}>
+        <TouchableOpacity  onPress={handlePress}>
           <Image
             style={styles.image}
             source={{ uri: item.photographie }}
           />
           <Text style={styles.text}>{item.nomProduit}</Text>
-          <Text style={styles.text}>{item.prix}</Text>
+          <Text style={styles.text}>{item.prix}€</Text>
         </TouchableOpacity>
+<AjouterPanier
+  produit={{ nomProduit: item.nomProduit, prix: item.prix, photographie: item.photographie }}
+  title="Ajouter"
+/>
       </View>
   )
 };
 
 const styles = StyleSheet.create({
   image: {
-    width: 100,
-    height: 100,
+    width: '80%',
+    height: '50%',
     borderRadius: 15,
     marginVertical: 10,
   },
   container0: {
     padding: 5,
-    marginVertical: 8,
-    marginHorizontal: 8,
-    width: '85%',
-    height: '48%',
+    width: '25%',
+    height: '90%',
     marginLeft: 5,
     borderRadius: 15,
     backgroundColor: '#f8f8f8', // Corrigé la valeur de couleur
