@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View, Modal, Button, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import  styles  from './StyleAjouterPanier';
+import styles from './StyleAjouterPanier';
 
 const ajouterAuPanier = async (produit) => {
     let panier = await AsyncStorage.getItem('panier');
@@ -32,13 +32,23 @@ const AjouterPanier = ({ produit, title }) => {
                         />}
                         <Text style={styles.modalText}> {produit.nomProduit}</Text>
                         <Text style={styles.modalText}>Prix: {produit.prix}€</Text>
-                        <Button
-                            title="Ajout au panier"
+                        <TouchableOpacity
+                            style={styles.bouttonModal}
                             onPress={() => {
                                 ajouterAuPanier(produit);
                                 setModalVisible(!modalVisible);
                             }}
-                        />
+                        >
+                            <Text style={styles.bouttonText}>Ajouter au panier</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.bouttonAnnuler}
+                            onPress={() => {
+                                setModalVisible(false);
+                            }}
+                        >
+                            <Text style={styles.bouttonText}>Annuler</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>

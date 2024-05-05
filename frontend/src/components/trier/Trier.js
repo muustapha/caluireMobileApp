@@ -32,6 +32,12 @@ const Trier = ({ produits, setProduits }) => {
 
 const styles = StyleSheet.create({
   picker: {
+    width: '100%',
+    height: '10%',
+    color: 'black',
+
+    fontSize: 19,
+    fontWeight: 'bold',
    
   },
 });

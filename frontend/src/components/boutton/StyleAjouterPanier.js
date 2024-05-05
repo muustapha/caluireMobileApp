@@ -5,13 +5,16 @@ const styles = StyleSheet.create({
         width: '100%',
        
         alignItems: 'center',
+   position: 'absolute',
+    bottom:0,
+    marginBottom: 10,
     },
     boutton: {
         backgroundColor: 'red',
         padding: 1,
            borderRadius: 15,
         width: '70%',
-        height: '35%', 
+        height: '95%', 
         borderWidth: 1,
         borderColor: '#000',
         
@@ -25,23 +28,48 @@ const styles = StyleSheet.create({
 
     },
    image: {
-width: '40%',
-height: '25%',
+width: '60%',
+height: '45%',
+borderRadius: 15,
+marginVertical: '20%',
    },
    centeredView: {
 
 width: '100%',
 height: '100%',
-
+backgroundColor: 'rgba(0,0,0,0.5)',
    },
 modalView: {
-    flex: 1,
-width: '40%',
-height: '40%',
+width: '80%',
+height: '70%',
+backgroundColor: '#999999',
+alignItems: 'center',
+marginTop: '25%',
+marginLeft: '10%',
+borderRadius: 20,
+padding: 15,
 
+},
 
-
-}
-
+modalText: {
+fontSize: 25,
+textAlign: 'center',
+fontWeight: 'bold',
+fontFamily: 'popins',   
+},
+bouttonModal: {
+backgroundColor: 'red',
+padding: 10,
+borderRadius: 15,
+width: '50%',
+marginTop: 20,
+},
+bouttonAnnuler: {
+backgroundColor: 'red',
+padding: 10,
+borderRadius: 15,
+width: '50%',
+marginTop: 20,
+},
     });
 export default styles;

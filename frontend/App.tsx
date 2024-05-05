@@ -10,6 +10,7 @@ import VerificationProfile from './src/Pages/Profil/validerProfil/VerificationPr
 import ConnexionErreur from './src/Pages/ConnectionMenbre/ConnexionErreur';
 import PageAcceuilMenbre from './src/Pages/pageAcceuil/pageAcceuilMenbre/PageAcceuilMenbre';
 import Telephones from './src/Pages/telephone/TelephoneVisiteur';
+import Panier from './src/Pages/panier/Panier';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const App = () => {
         <Stack.Screen name="VerificationProfile" component={VerificationProfile} options={{ headerShown: false }}/>
        <Stack.Screen name="ConnexionErreur" component={ConnexionErreur} options={{ headerShown: false }}/>
        <Stack.Screen name="PageAcceuilMenbre" component={PageAcceuilMenbre} options={{ headerShown: false }}/>
+        <Stack.Screen name="Panier" component={Panier} options={{ headerShown: false }}/>
 <Stack.Screen name="Telephone" component={Telephones} options={{ headerShown: false }}/>
        
        
