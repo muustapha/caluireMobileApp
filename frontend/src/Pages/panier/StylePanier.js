@@ -9,12 +9,12 @@ const styles = StyleSheet.create({
     },
     boutton: {
         width: '20%',
-        height: '55%',
+        height: '25%',
         backgroundColor: '#DAD5A0',
         borderRadius: 15,
-        justifyContent: 'center',
         alignItems: 'center',
         elevation: 5,
+        marginTop: 30,
     },
     textBoutton: {
         fontFamily: 'popins',
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
 
     produitContainer: {
         width: '100%',
-        height: 50,
+        height: '10%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10,
 
 
-        padding: 5,
+        padding: 1,
         borderBottomWidth: 1,
         borderBottomColor: '#000000',
         backgroundColor: '#ffffff',
@@ -41,10 +41,12 @@ const styles = StyleSheet.create({
     image: {
         width: '10%',
         height: '70%',
+        borderRadius: 10,
+        marginTop: 10,
     },
 container0: {
         width: '100%',
-        height:300,
+        
     },
     Text: {
         fontFamily: 'popins',

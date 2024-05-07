@@ -41,7 +41,7 @@ backgroundColor: 'rgba(0,0,0,0.5)',
    },
 modalView: {
 width: '80%',
-height: '70%',
+height: '80%',
 backgroundColor: '#999999',
 alignItems: 'center',
 marginTop: '25%',

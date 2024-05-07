@@ -36,6 +36,26 @@ const AdminAddPhone = () => {
         console.error('Error:', error);
       });
   };
+  const selectImage = () => {
+    const options = {
+      title: 'Sélectionner une photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+  
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('L\'utilisateur a annulé la prise de photo');
+      } else if (response.error) {
+        console.log('Erreur ImagePicker : ', response.error);
+      } else {
+        const source = { uri: response.uri };
+        setPhotographie(source.uri);
+      }
+    });
+  };
 
   return (
     <View>
@@ -65,11 +85,14 @@ const AdminAddPhone = () => {
         value={stock}
         onChangeText={setStock}
       />
-      <TextInput
-        placeholder="URL de la photographie"
-        value={photographie}
-        onChangeText={setPhotographie}
-      />
+      <Button title="Sélectionner une photo" onPress={selectImage} />
+
+<TextInput
+  placeholder="URL de la photographie"
+  value={photographie}
+  onChangeText={setPhotographie}
+/>
+
       <TextInput
         placeholder="Description"
         value={description}

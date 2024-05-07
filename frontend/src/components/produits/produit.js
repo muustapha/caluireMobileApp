@@ -9,7 +9,7 @@ import AjouterPanier from '../boutton/AjouterPanier';
 const Produit = ({ item, navigation, produits, setProduits }) => {
 const [panier, setPanier] = useState([]);
   const handlePress = () => {
-    ;
+    navigation.navigate('Focus', { item: item });
     
   };
 
@@ -26,6 +26,7 @@ const [panier, setPanier] = useState([]);
           />
           <Text style={styles.text}>{item.nomProduit}</Text>
           <Text style={styles.text}>{item.prix}€</Text>
+          {/* <Text style={styles.text}>Quantité : {item.stock}</Text> */}
         </TouchableOpacity>
 <AjouterPanier
   produit={{ nomProduit: item.nomProduit, prix: item.prix, photographie: item.photographie }}
@@ -38,17 +39,17 @@ const [panier, setPanier] = useState([]);
 const styles = StyleSheet.create({
   image: {
     width: '80%',
-    height: '50%',
+    height: '40%',
     borderRadius: 15,
     marginVertical: 10,
   },
   container0: {
     padding: 5,
-    width: '25%',
+    width: '30%',
     height: '90%',
-    marginLeft: 5,
+    marginLeft: 1.5,
     borderRadius: 15,
-    backgroundColor: '#f8f8f8', // Corrigé la valeur de couleur
+    backgroundColor: '#f8f8f8', 
   },
   text: {
     fontSize: 17,

@@ -16,13 +16,13 @@ const PageAcceuilVisiteur = ({ navigation }) => {
      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Telephone')}>
   <Text style={styles.buttonText}>Téléphones</Text>
 </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => { }}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ordinateur')}>
         <Text style={styles.buttonText}>Ordinateurs</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => { }}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tablette')}>
         <Text style={styles.buttonText}>Tablettes</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => { }}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accessoire')}>
         <Text style={styles.buttonText}>Accessoires</Text>
       </TouchableOpacity>
       <Footer />

@@ -1,133 +1,77 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
-import Header from '../../components/header/Header';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet,FlatList } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Header from '../../components/header/Header';
 import Footer from '../../components/Footer/Footer';
-import { Picker } from '@react-native-picker/picker';
-import ImageView from 'react-native-image-pan-zoom';
+import Produit from '../../components/produits/produit';
+import Trier from '../../components/trier/Trier';
 
 const retour = require('../../asset/icons/flecheRetour.png');
 
 const OrdinateurVisiteur = ({ navigation }) => {
-    const [ordinateurs, setOrdinateurs] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [filtre, setFiltre] = useState('');
-    const clickCount = useRef(0);
-    const [zoomed, setZoomed] = useState(false);
+    const [ordinateurs, setordinateurs] = useState([]);
 
-    useEffect(() => {
-      fetch('http://10.0.2.2:5127/api/Produits/magasin/Ordinateurs')
-        .then(response => response.json())
-        .then(data => setOrdinateurs(data))
-        .catch(error => console.error('Erreur:', error));
-    }, []);
+   useEffect(() => {
+  fetch('http://10.0.2.2:5127/api/Produits/magasin/ordinateur')
+    .then(response => {
+      // Affichez la réponse brute pour le débogage
+      console.log('Réponse brute:', response);
 
-    useEffect(() => {
-      let ordinateursTries = [...ordinateurs];
-      if (filtre === 'marque') {
-        ordinateursTries.sort((a, b) => a.marque.localeCompare(b.marque));
-      } else if (filtre === 'prix croissant') {
-        ordinateursTries.sort((a, b) => a.prix - b.prix);
-      } else if (filtre === 'prix décroissant') {
-        ordinateursTries.sort((a, b) => b.prix - a.prix);
+      // Vérifiez que le type de contenu est du JSON avant de parser
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        return response.json();
+      } else {
+        throw new TypeError("Oops, nous n'avons pas du JSON!");
       }
-      setOrdinateurs(ordinateursTries);
-    }, [filtre]);
-
-    const handlePress = () => {
-      clickCount.current++;
-      setTimeout(() => {
-        if (clickCount.current > 1) {
-          navigation.navigate('Focus');
-        } else {
-          setZoomed(true);
-        }
-        clickCount.current = 0;
-      }, 300); // Délai pour le double clic
-    };
-    
+    })
+    .then(data => {
+      console.log('Données brutes:', data);
+      setordinateurs(data);
+    })
+    .catch(error => console.error('Erreur:', error));
+}, []);
     return (
       <LinearGradient colors={['#ffffff', '#999999']} style={styles.container}>
-        <Header icon={retour} title={"Ordinateurs"} navigation={navigation}/>
-        <View>
-          <Picker selectedValue={filtre} onValueChange={(itemValue) => setFiltre(itemValue)}>
-            <Picker.Item style={styles.picker} label="Trier par marque" value="marque" />
-            <Picker.Item style={styles.picker} label="Trier par prix croissant" value="prix croissant" />
-            <Picker.Item style={styles.picker} label="Trier par prix décroissant" value="prix décroissant" />
-          </Picker>
-          <FlatList style={styles.container1}  
-            data={ordinateurs}
-            numColumns={4}
-            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.container0}>
-                <TouchableOpacity onPress={handlePress}>
-                  {zoomed ? (
-                    <ImageView
-                      cropWidth={Dimensions.get('window').width}
-                      cropHeight={Dimensions.get('window').height}
-                      imageWidth={200}
-                      imageHeight={200}
-                    >
-                      <Image
-                        style={styles.image}
-                        source={{ uri: item.photographie }}
-                      />
-                    </ImageView>
-                  ) : (
-                    <Image
-                      style={styles.image}
-                      source={{ uri: item.photographie }}
-                    />
-                  )}
-                </TouchableOpacity>
-                <Text style={styles.text}>{item.nomProduit}</Text>
-                <Text style={styles.text}>{item.prix}</Text>
-              </View>
-            )}
-          />
-        </View>
+        <Header icon={retour} title="ORDINATEURS" navigation={navigation} />
+ 
+        <Trier produits={ordinateurs} setProduits={setordinateurs} />
+<View style={styles.container1}>
+  <View style={styles.container2}>
+  {ordinateurs.map((item, index) => {
+    return (
+      <Produit key={index.toString()} item={item} navigation={navigation} produits={ordinateurs} setProduits={setordinateurs} />
+    );
+  })}
+</View>
+</View>
         <Footer />
       </LinearGradient>
     );
 };
-
+    
 const styles = StyleSheet.create({
-  container1: {
-    height: '80%',
-    flexDirection: 'row', 
-    flexWrap: 'wrap',
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 15,
-    marginVertical: 10,
-  },
-  container0: {
-    padding: 5,
-    marginVertical: 8,
-    marginHorizontal: 8,
-    width:'17%',
-    height: '90%',
-    marginLeft: 5,
-    borderRadius: 15,
-    backgroundColor: '#f8f8f8f8',
-  },
   container: {
     width: '100%',
-    height: '100%',
+    height: '100%', 
+  
   },
-  text: {
-    fontSize: 17,
-    textAlign: 'center',
-    fontWeight: 'bold',
+
+  container1: {
+
+    width: '100%',
+    height: '80%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
-  picker: {
-    fontSize: 20,
-    fontFamily: 'arial',
-  },
+    container2: {
+    width: '100%',
+    height: '37%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal  : 25,
+
+    }
 });
 
 export default OrdinateurVisiteur;

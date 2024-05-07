@@ -1,36 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../components/header/Header';
 import Footer from '../../components/Footer/Footer';
 import styles from './StylePanier';
+import panierContext from './paniercontext';
+
 
 const retour = require('../../asset/icons/flecheRetour.png');
 
 const Panier = ({ navigation }) => {
-  const [panier, setPanier] = useState([]);
+  const {panier, setPanier} = useContext(panierContext);
 
-  useEffect(() => {
-    const recupererPanier = async () => {
-      let panier = await AsyncStorage.getItem('panier');
-      panier = panier != null ? JSON.parse(panier) : [];
-      setPanier(panier);
-    };
 
-    recupererPanier();
-  }, []);
-
-  const total = panier.reduce((sum, produit) => sum + produit.prix, 0);
-  const fraisDeLivraison = 5; // Mettez ici le montant des frais de livraison
-  const totalAvecLivraison = total + fraisDeLivraison;
 
   const supprimerDuPanier = async (index) => {
-    let nouveauPanier = [...panier];
-    nouveauPanier.splice(index, 1);
-    setPanier(nouveauPanier);
-    await AsyncStorage.setItem('panier', JSON.stringify(nouveauPanier));
+    setPanier(prevPanier => {
+      let nouveauPanier = [...prevPanier];
+      nouveauPanier.splice(index, 1);
+      AsyncStorage.setItem('panier', JSON.stringify(nouveauPanier));
+      return nouveauPanier;
+    });
   };
+
+  const total = panier.reduce((sum, item) => sum + (item.produit.prix * item.quantite), 0);
+  const fraisDeLivraison = 5;
+  const totalAvecLivraison = total + fraisDeLivraison;
 
   const validerCommande = () => {
     // Ici, vous pouvez appeler votre API pour valider la commande
@@ -40,19 +36,22 @@ const Panier = ({ navigation }) => {
     <LinearGradient colors={['#ffffff', '#999999']} style={styles.container}>
       <Header icon={retour} title="PANIER" navigation={navigation} />
 
-      {panier.map((produit, index) => (
-        <View key={index} style={styles.produitContainer}>
-          <Image
-            style={styles.image}
-            source={{ uri: produit.photographie }}
-          />
-          <Text style={styles.Text}>{produit.nomProduit}</Text>
-          <Text style={styles.Text}>{produit.prix}€</Text>
-          <TouchableOpacity style={styles.boutton} onPress={() => supprimerDuPanier(index)}>
-            <Text style={styles.textBoutton}>Supprimer</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+{panier.map((item, index) => (
+  item.produit && (
+    <View key={index} style={styles.produitContainer}>
+      <Image
+        style={styles.image}
+        source={{ uri: item.produit.photographie }}
+      />
+      <Text style={styles.Text}>{item.produit.nomProduit}</Text>
+      <Text style={styles.Text}>{item.produit.prix}€</Text>
+      <Text style={styles.Text}>Quantité : {item.quantite}</Text> 
+      <TouchableOpacity style={styles.boutton} onPress={() => supprimerDuPanier(index)}>
+        <Text style={styles.textBoutton}>Supprimer</Text>
+      </TouchableOpacity>
+    </View>
+  )
+))}
       <View style={styles.container1}>
         <View style={styles.containertext}>
         <Text style={styles.Text}>Sous-Total : {total}€</Text></View>
@@ -63,8 +62,7 @@ const Panier = ({ navigation }) => {
       <TouchableOpacity style={styles.boutton0} onPress={validerCommande}>
         <Text style={styles.textBoutton}>Valider</Text>
       </TouchableOpacity>
-<View style={styles.container2}>
-      <Footer /></View>
+
     </LinearGradient>
   );
 };
