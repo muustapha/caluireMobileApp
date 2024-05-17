@@ -9,14 +9,19 @@ public class EmailService
     private readonly string _mailjetApiKey; // Clé API Mailjet
     private readonly string _mailjetApiSecret; // Clé secrète API Mailjet
     private readonly string _senderEmailAddress; // Adresse e-mail de l'expéditeur
-public EmailService(string mailjetApiKey, string mailjetApiSecret, string senderEmailAddress)
-{
-    _mailjetApiKey = mailjetApiKey ?? throw new ArgumentNullException(nameof(mailjetApiKey));
-    _mailjetApiSecret = mailjetApiSecret ?? throw new ArgumentNullException(nameof(mailjetApiSecret));
-    _senderEmailAddress = senderEmailAddress ?? throw new ArgumentNullException(nameof(senderEmailAddress));
-   
-   
-}
+
+    public EmailService(string mailjetApiKey, string mailjetApiSecret, string senderEmailAddress)
+    {
+        if (string.IsNullOrEmpty(senderEmailAddress))
+        {
+            throw new ArgumentException("senderEmailAddress cannot be null or empty", nameof(senderEmailAddress));
+        }
+
+        _mailjetApiKey = mailjetApiKey ?? throw new ArgumentNullException(nameof(mailjetApiKey));
+        _mailjetApiSecret = mailjetApiSecret ?? throw new ArgumentNullException(nameof(mailjetApiSecret));
+        _senderEmailAddress = senderEmailAddress;
+    }
+
 
 
 public async Task SendEmailAsync(string recipientEmail, string subject, string body)

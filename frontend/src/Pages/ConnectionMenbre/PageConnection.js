@@ -20,36 +20,39 @@ const PageConnection = ({ navigation }) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isLoading, setIsLoading] = useState(false); // Ajout d'un état de chargement
 
-  const handlePress = () => {
-    setIsLoading(true); // Début du chargement
-    console.log("Envoi de la requête de connexion avec:", { adresseMail: email, motDePasse: password });
-fetch('http://10.0.2.2:5127/api/Clients/Login', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    adresseMail: email,
-    motDePasse: password,
-  }),
-})
-.then(response => response.json())
-.then(data => {
-  console.log("Réponse de l'API:", data);
-  if (data.success) {
-    Alert.alert('Connexion réussie', 'Vous êtes maintenant connecté.');
-    navigation.navigate('PageAcceuilMenbre');
-  } else {
-    Alert.alert('Erreur de connexion', data.message);
+ const [clientId, setClientId] = useState(null); // Ajout d'un nouvel état pour stocker l'ID du client
+
+const handlePress = () => {
+  setIsLoading(true); // Début du chargement
+  console.log("Envoi de la requête de connexion avec:", { adresseMail: email, motDePasse: password });
+  fetch('http://10.0.2.2:5127/api/Clients/Login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      adresseMail: email,
+      motDePasse: password,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Réponse de l'API:", data);
+    if (data.success) {
+      setClientId(data.clientId); // Stocker l'ID du client
+      Alert.alert('Connexion réussie', 'Vous êtes maintenant connecté.');
+      navigation.navigate('PageAcceuil', { clientId: data.clientId }); // Passer l'ID du client à la page d'accueil
+    } else {
+      Alert.alert('Erreur de connexion', data.message);
+      navigation.navigate('ConnexionErreur');
+    }
+  })
+  .catch(error => {
+    console.error('Erreur:', error);
+    Alert.alert('Erreur de réseau', 'Impossible de se connecter au serveur.');
     navigation.navigate('ConnexionErreur');
-  }
-})
-.catch(error => {
-  console.error('Erreur:', error);
-  Alert.alert('Erreur de réseau', 'Impossible de se connecter au serveur.');
-  navigation.navigate('ConnexionErreur');
-});
-  }
+  });
+}
 
   return (
     <LinearGradient colors={['#ffffff', '#999999']} style={styles.containerPage}>
