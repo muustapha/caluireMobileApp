@@ -20,28 +20,10 @@ namespace CaluireMobile._0.Models.Controllers
             _mapper = mapper;
         }
 
-[HttpGet("magasin/telephone")]
-public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinTelephone()
+[HttpGet("{flag}/{type}")]
+public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsByFlagAndType(string flag, string type)
 {
-    var produits = _service.GetProduitsByFlagAndType("magasin", "telephone");
-    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
-}
-[HttpGet("magasin/tablette")]
-public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinTablette()
-{
-    var produits = _service.GetProduitsByFlagAndType("magasin", "tablette");
-    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
-}
-[HttpGet("magasin/ordinateur")]
-public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinOrdinateur()
-{
-    var produits = _service.GetProduitsByFlagAndType("magasin", "ordinateur");
-    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
-}
-[HttpGet("magasin/accessoire")]
-public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsMagasinAccessoire()
-{
-    var produits = _service.GetProduitsByFlagAndType("magasin", "accessoire");
+    var produits = _service.GetProduitsByFlagAndType(flag, type);
     return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
 }
 
