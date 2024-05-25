@@ -9120,24 +9120,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Utilisateur\\.nuget\\packages\\": {}
+    "C:\\Users\\elaft\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
+      "projectUniqueName": "C:\\test\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
       "projectName": "CaluireMobile.0",
-      "projectPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
-      "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Utilisateur\\Desktop\\caluireMobileApp\\Back-end\\CaluireMobile.0\\obj\\",
+      "projectPath": "C:\\test\\caluireMobileApp\\Back-end\\CaluireMobile.0\\CaluireMobile.0.csproj",
+      "packagesPath": "C:\\Users\\elaft\\.nuget\\packages\\",
+      "outputPath": "C:\\test\\caluireMobileApp\\Back-end\\CaluireMobile.0\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Utilisateur\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\elaft\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -9227,7 +9229,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
