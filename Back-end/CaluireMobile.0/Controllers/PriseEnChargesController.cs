@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using caluireMobile._0.Models.Dtos;
+using CaluireMobile._0.Models.IService;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -11,10 +12,10 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class PriseEnChargesController : ControllerBase
     {
-        private readonly PriseEnChargesService _service;
+        private readonly IPriseEnChargesService _service;
         private readonly IMapper _mapper;
 
-        public PriseEnChargesController(PriseEnChargesService service, IMapper mapper)
+        public PriseEnChargesController(IPriseEnChargesService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -53,8 +54,8 @@ namespace CaluireMobile._0.Models.Controllers
             _service.AddPriseEnCharge(priseEnCharge);
             return CreatedAtAction(nameof(GetPriseEnChargeById), new { id = priseEnCharge.IdPriseEnCharge }, _mapper.Map<PriseEnChargeDtoOut>(priseEnCharge));
         }
- [HttpPatch("{id}")]
-public ActionResult PartialPriseEnChargeUpdate(int id, JsonPatchDocument<PriseEnChargeDtoIn> patchDoc)
+        [HttpPatch("{id}")]
+        public ActionResult PartialPriseEnChargeUpdate(int id, JsonPatchDocument<PriseEnChargeDtoIn> patchDoc)
 {
     var priseEnChargeFromRepo = _service.GetPriseEnChargeById(id);
     if (priseEnChargeFromRepo == null)

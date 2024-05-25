@@ -1,6 +1,7 @@
 using AutoMapper;
 using caluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,10 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class TypesproduitsController : ControllerBase
     {
-        private readonly TypesproduitsService _service;
+        private readonly ITypesproduitsService _service;
         private readonly IMapper _mapper;
 
-        public TypesproduitsController(TypesproduitsService service, IMapper mapper)
+        public TypesproduitsController(ITypesproduitsService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;

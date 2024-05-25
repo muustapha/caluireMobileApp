@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CaluireMobile._0.Models.Dtos;
+using CaluireMobile._0.Models.IService;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -15,12 +16,12 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        private readonly ClientsService _service;
+        private readonly IClientsService _service;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
-        private readonly EmailService _emailService; // Ajout du service d'e-mail
+        private readonly IEmailService _emailService; // Ajout du service d'e-mail
 
-        public ClientsController(ClientsService service, IMapper mapper, IMemoryCache memoryCache, EmailService emailService)
+        public ClientsController(IClientsService service, IMapper mapper, IMemoryCache memoryCache, IEmailService emailService)
         {
             _service = service;
             _mapper = mapper;
@@ -28,28 +29,28 @@ namespace CaluireMobile._0.Models.Controllers
             _emailService = emailService;
         }
 
-   [HttpPost("Login")]
-public async Task<IActionResult> Login([FromBody] LoginModel model)
-{
-    var client = _service.GetClientByAdresseMail(model.AdresseMail);
-    if (client == null)
-    {
-        return NotFound(new { success = false, message = "Utilisateur non trouvé." });
-    }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            var client = _service.GetClientByAdresseMail(model.AdresseMail);
+            if (client == null)
+            {
+                return NotFound(new { success = false, message = "Utilisateur non trouvé." });
+            }
 
-    if (!VerifyPassword(model.MotDePasse, client.MotDePasse))
-    {
-        return Unauthorized(new { success = false, message = "Mot de passe incorrect." });
-    }
+            if (!VerifyPassword(model.MotDePasse, client.MotDePasse))
+            {
+                return Unauthorized(new { success = false, message = "Mot de passe incorrect." });
+            }
 
-    return Ok(new { success = true, message = "Connexion réussie.", clientId = client.IdClient });
-}
+            return Ok(new { success = true, message = "Connexion réussie.", clientId = client.IdClient });
+        }
 
-    private bool VerifyPassword(string enteredPassword, string storedPasswordHash)
-    {
-        // Implémentation du hachage de mot de passe à insérer ici, retourne true si le mot de passe correspond
-        return enteredPassword == storedPasswordHash; // Exemple simpliste, utilisez un meilleur hachage dans la pratique
-    }
+        private bool VerifyPassword(string enteredPassword, string storedPasswordHash)
+        {
+            // Implémentation du hachage de mot de passe à insérer ici, retourne true si le mot de passe correspond
+            return enteredPassword == storedPasswordHash; // Exemple simpliste, utilisez un meilleur hachage dans la pratique
+        }
 
         // GET: api/Clients
         [HttpGet]
@@ -72,37 +73,37 @@ public async Task<IActionResult> Login([FromBody] LoginModel model)
         }
 
         // PUT: api/Clients/5
-[HttpPut("{id}")]
-public async Task<IActionResult> UpdateClient(int id, ClientDtoIn clientDtoIn)
-{
-    var clientInDb = _service.GetClientById(id);
-    if (clientInDb == null)
-    {
-        return NotFound();
-    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClient(int id, ClientDtoIn clientDtoIn)
+        {
+            var clientInDb = _service.GetClientById(id);
+            if (clientInDb == null)
+            {
+                return NotFound();
+            }
 
-    // Mise à jour des champs du profil client
-    if (!string.IsNullOrWhiteSpace(clientDtoIn.AdresseMail))
-        clientInDb.AdresseMail = clientDtoIn.AdresseMail;
-    if (!string.IsNullOrWhiteSpace(clientDtoIn.MotDePasse))
-        clientInDb.MotDePasse = clientDtoIn.MotDePasse;
+            // Mise à jour des champs du profil client
+            if (!string.IsNullOrWhiteSpace(clientDtoIn.AdresseMail))
+                clientInDb.AdresseMail = clientDtoIn.AdresseMail;
+            if (!string.IsNullOrWhiteSpace(clientDtoIn.MotDePasse))
+                clientInDb.MotDePasse = clientDtoIn.MotDePasse;
 
-    _service.Save(); // Sauvegarder les modifications
+            _service.Save(); // Sauvegarder les modifications
 
-    // Envoyer un email de confirmation
-    var emailSubject = "Confirmation de mise à jour du profil";
-    var emailBody = "Votre profil a été mis à jour avec succès.";
-    try
-    {
-        await _emailService.SendEmailAsync(clientInDb.AdresseMail, emailSubject, emailBody);
-        return Ok(new { success = true, message = "Profil mis à jour avec succès. Email de confirmation envoyé." });
-    }
-    catch (Exception ex)
-    {
-        // Log de l'exception ou gestion d'erreur
-        return StatusCode(500, new { success = false, message = "Profil mis à jour, mais l'email n'a pas pu être envoyé. " + ex.Message });
-    }
-}
+            // Envoyer un email de confirmation
+            var emailSubject = "Confirmation de mise à jour du profil";
+            var emailBody = "Votre profil a été mis à jour avec succès.";
+            try
+            {
+                await _emailService.SendEmailAsync(clientInDb.AdresseMail, emailSubject, emailBody);
+                return Ok(new { success = true, message = "Profil mis à jour avec succès. Email de confirmation envoyé." });
+            }
+            catch (Exception ex)
+            {
+                // Log de l'exception ou gestion d'erreur
+                return StatusCode(500, new { success = false, message = "Profil mis à jour, mais l'email n'a pas pu être envoyé. " + ex.Message });
+            }
+        }
 
         // POST: api/Clients
         [HttpPost]
@@ -120,32 +121,33 @@ public async Task<IActionResult> UpdateClient(int id, ClientDtoIn clientDtoIn)
                 return BadRequest(new { success = false, message = "Impossible de créer le client" });
             }
         }
-// POST: api/Clients/SendEmail
-[HttpPost("SendEmail/{id}")]
-public async Task<IActionResult> SendEmail(int id)
-{     Console.WriteLine("SendEmail method called"); // Ajout du log
-
-    try
-    {
-        var client = _service.GetClientById(id);
-        if (client == null)
+        // POST: api/Clients/SendEmail
+        [HttpPost("SendEmail/{id}")]
+        public async Task<IActionResult> SendEmail(int id)
         {
-            return NotFound("Client not found");
+            Console.WriteLine("SendEmail method called"); // Ajout du log
+
+            try
+            {
+                var client = _service.GetClientById(id);
+                if (client == null)
+                {
+                    return NotFound("Client not found");
+                }
+
+                var emailSubject = "Confirmation de mise à jour du profil";
+                var emailBody = $"Cher {client.Nom}, votre profil a été mis à jour. Si vous n'avez pas demandé cette mise à jour, veuillez contacter le support.";
+
+                // Envoyer l'e-mail avec l'adresse e-mail du client
+                await _emailService.SendEmailAsync(client.AdresseMail, emailSubject, emailBody);
+
+                return Ok(new { success = true, message = "Email de confirmation envoyé." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Erreur lors de l'envoi de l'email.", details = ex.Message });
+            }
         }
-
-        var emailSubject = "Confirmation de mise à jour du profil";
-        var emailBody = $"Cher {client.Nom}, votre profil a été mis à jour. Si vous n'avez pas demandé cette mise à jour, veuillez contacter le support.";
-
-        // Envoyer l'e-mail avec l'adresse e-mail du client
-        await _emailService.SendEmailAsync(client.AdresseMail, emailSubject, emailBody);
-
-        return Ok(new { success = true, message = "Email de confirmation envoyé." });
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, new { success = false, message = "Erreur lors de l'envoi de l'email.", details = ex.Message });
-    }
-}
 
 
 
@@ -194,15 +196,17 @@ public async Task<IActionResult> SendEmail(int id)
         private void StoreVerificationCode(int clientId, string verificationCode)
         {
             // Implémentation de la logique pour stocker le code de vérification
- var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)); // Expiration dans 5 minutes
-            _memoryCache.Set(clientId.ToString(), verificationCode, cacheEntryOptions);        }
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)); // Expiration dans 5 minutes
+            _memoryCache.Set(clientId.ToString(), verificationCode, cacheEntryOptions);
+        }
 
         private async Task SendVerificationEmail(string emailAddress, string verificationCode)
         {
             // Implémentation de la logique pour envoyer l'e-mail de vérification
-  var subject = "Code de vérification";
+            var subject = "Code de vérification";
             var body = $"Votre code de vérification est : {verificationCode}";
-            await _emailService.SendEmailAsync(emailAddress, subject, body);        }
+            await _emailService.SendEmailAsync(emailAddress, subject, body);
+        }
     }
-    
+
 }

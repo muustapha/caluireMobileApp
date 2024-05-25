@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class OperationsServices
+    public class OperationsServices : IOperationsServices
     {
         private readonly CaluireMobileContext _context;
 
@@ -44,7 +45,7 @@ namespace CaluireMobile._0.Models.Services
                            .Include(o => o.Transactionspaiments)
                            .ToList();
         }
-public Operation GetOperationById(int id)
+        public Operation GetOperationById(int id)
 {
     var operationFromDb = _context.Operations
                                   .Include(o => o.PriseEnCharges)

@@ -4,6 +4,7 @@ using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using caluireMobile._0.Models.Dtos;
+using CaluireMobile._0.Models.IService;
 
 
 namespace CaluireMobile._0.Models.Controllers
@@ -12,10 +13,10 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class RendezVousController : ControllerBase
     {
-        private readonly RendezVousService _service;
+        private readonly IRendezVousService _service;
         private readonly IMapper _mapper;
 
-        public RendezVousController(RendezVousService service, IMapper mapper)
+        public RendezVousController(IRendezVousService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;

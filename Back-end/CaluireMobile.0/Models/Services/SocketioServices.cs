@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class SocketioServices
+    public class SocketioServices : ISocketioServices
     {
         private readonly CaluireMobileContext _context;
 

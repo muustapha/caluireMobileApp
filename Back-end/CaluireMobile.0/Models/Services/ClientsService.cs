@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class ClientsService
+    public class ClientsService : IClientsService
     {
         private readonly CaluireMobileContext _context;
 
@@ -11,7 +12,7 @@ namespace CaluireMobile._0.Models.Services
         {
             _context = context;
         }
-           public void Save()
+        public void Save()
     {
         _context.SaveChanges();
     }
@@ -73,7 +74,7 @@ namespace CaluireMobile._0.Models.Services
             _context.SaveChanges();
         }
 
-  public Client GetClientByAdresseMail(string adresseMail)
+        public Client GetClientByAdresseMail(string adresseMail)
         {
             var client = _context.Clients
                                  .FirstOrDefault(c => c.AdresseMail == adresseMail);

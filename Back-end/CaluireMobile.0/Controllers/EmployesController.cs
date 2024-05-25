@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaluireMobile._0.Models.Datas;
 using caluireMobile._0.Models.Dtos;
+using CaluireMobile._0.Models.IService;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -10,10 +11,10 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class EmployesController : ControllerBase
     {
-        private readonly EmployesService _service;
+        private readonly IEmployesService _service;
         private readonly IMapper _mapper;
 
-        public EmployesController(EmployesService service, IMapper mapper)
+        public EmployesController(IEmployesService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;

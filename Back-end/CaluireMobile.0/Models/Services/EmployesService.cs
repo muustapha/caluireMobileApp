@@ -1,9 +1,10 @@
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class EmployesService
+    public class EmployesService : IEmployesService
     {
         private readonly CaluireMobileContext _context;
 

@@ -1,8 +1,9 @@
 using CaluireMobile._0.Models.Datas;
+using CaluireMobile._0.Models.IService;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class TraductionsService
+    public class TraductionsService: ITraductionsService
     {
         private readonly CaluireMobileContext _context;
 

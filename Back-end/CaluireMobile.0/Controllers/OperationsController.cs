@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaluireMobile._0.Models.Datas;
 using caluireMobile._0.Models.Dtos;
+using CaluireMobile._0.Models.IService;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -10,10 +11,10 @@ namespace CaluireMobile._0.Models.Controllers
     [ApiController]
     public class OperationsController : ControllerBase
     {
-        private readonly OperationsServices _service;
+        private readonly IOperationsServices _service;
         private readonly IMapper _mapper;
 
-        public OperationsController(OperationsServices service, IMapper mapper)
+        public OperationsController(IOperationsServices service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
