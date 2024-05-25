@@ -1,5 +1,6 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
+using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -31,11 +32,11 @@ Console.WriteLine($"Mailjet API Secret: {mailjetApiSecret}");
 Console.WriteLine($"Sender email address: {senderEmailAddress}");
 
 // Ajouter la valeur de configuration au conteneur d'injection de dépendances
-builder.Services.AddTransient<EmailService>(sp => new EmailService(mailjetApiKey, mailjetApiSecret, senderEmailAddress));
+builder.Services.AddTransient<IEmailService>(sp => new EmailService(mailjetApiKey, mailjetApiSecret, senderEmailAddress));
 
 // Ajout des autres services
-builder.Services.AddTransient<ClientsService>();
-builder.Services.AddScoped<ProduitsService>();
+builder.Services.AddTransient<IClientsService, ClientsService>();
+builder.Services.AddScoped<IProduitsService, ProduitsService>();
 // Répéter pour tous les autres services mentionnés
 
 // Configuration de Swagger et autres composants d'infrastructure
@@ -65,5 +66,4 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.Run(); 
-
+app.Run();
