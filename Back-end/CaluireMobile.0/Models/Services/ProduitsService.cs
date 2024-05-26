@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class ProduitsService : IProduitsService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public ProduitsService(CaluireMobileContext context)
+        public ProduitsService(ICaluireMobileContext context)
         {
             _context = context;
         }

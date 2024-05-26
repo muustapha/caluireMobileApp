@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class TransactionspaimentService: ITransactionspaimentService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public TransactionspaimentService(CaluireMobileContext context)
+        public TransactionspaimentService(ICaluireMobileContext context)
         {
             _context = context;
         }

@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class ClientsService : IClientsService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public ClientsService(CaluireMobileContext context)
+        public ClientsService(ICaluireMobileContext context)
         {
             _context = context;
         }
@@ -86,9 +86,6 @@ namespace CaluireMobile._0.Models.Services
 
             return client;
         }
-
-
-        
     }
     
 }

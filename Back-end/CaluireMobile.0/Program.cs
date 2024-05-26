@@ -33,10 +33,20 @@ Console.WriteLine($"Sender email address: {senderEmailAddress}");
 
 // Ajouter la valeur de configuration au conteneur d'injection de dépendances
 builder.Services.AddTransient<IEmailService>(sp => new EmailService(mailjetApiKey, mailjetApiSecret, senderEmailAddress));
+builder.Services.AddTransient<ICaluireMobileContext, CaluireMobileContext>();
 
 // Ajout des autres services
 builder.Services.AddTransient<IClientsService, ClientsService>();
-builder.Services.AddScoped<IProduitsService, ProduitsService>();
+builder.Services.AddTransient<IProduitsService, ProduitsService>();
+builder.Services.AddTransient<IEmployesService, EmployesService>();
+builder.Services.AddTransient<IOperationsServices, OperationsServices>();
+builder.Services.AddTransient<IPriseEnChargesService, PriseEnChargesService>();
+builder.Services.AddTransient<IRendezVousService, RendezVousService>();
+builder.Services.AddTransient<ISocketioServices,SocketioServices>();
+builder.Services.AddTransient<ITraductionsService, TraductionsService>();
+builder.Services.AddTransient<ITraitersService, TraitersService>();
+builder.Services.AddTransient<ITransactionspaimentService, TransactionspaimentService>();
+builder.Services.AddTransient<ITypesproduitsService,TypesproduitsService>();
 // Répéter pour tous les autres services mentionnés
 
 // Configuration de Swagger et autres composants d'infrastructure

@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class EmployesService : IEmployesService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public EmployesService(CaluireMobileContext context)
+        public EmployesService(ICaluireMobileContext context)
         {
             _context = context;
         }
@@ -63,7 +63,7 @@ namespace CaluireMobile._0.Models.Services
             var existingEmploye = _context.Employes.Find(id);
             if (existingEmploye == null)
             {
-                throw new KeyNotFoundException($"Employe with id {id} was not found.");
+                throw new ArgumentNullException(nameof(existingEmploye));
             }
 
             _context.Entry(existingEmploye).CurrentValues.SetValues(employe);

@@ -5,9 +5,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class TraductionsService: ITraductionsService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public TraductionsService(CaluireMobileContext context)
+        public TraductionsService(ICaluireMobileContext context)
         {
             _context = context;
         }

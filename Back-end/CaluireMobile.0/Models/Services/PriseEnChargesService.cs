@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class PriseEnChargesService : IPriseEnChargesService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public PriseEnChargesService(CaluireMobileContext context)
+        public PriseEnChargesService(ICaluireMobileContext context)
         {
             _context = context;
         }

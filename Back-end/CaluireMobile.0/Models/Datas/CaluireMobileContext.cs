@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CaluireMobile._0.Models.IService;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 
 namespace CaluireMobile._0.Models.Datas;
 
-public partial class CaluireMobileContext : DbContext
+public partial class CaluireMobileContext : DbContext, ICaluireMobileContext
 {
     private readonly IConfiguration _configuration;
 
@@ -348,4 +350,8 @@ public partial class CaluireMobileContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    public virtual EntityEntry<T> Entry<T>(T entity) where T : class
+{
+    return base.Entry(entity);
+}
 }

@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class TraitersService: ITraitersService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public TraitersService(CaluireMobileContext context)
+        public TraitersService(ICaluireMobileContext context)
         {
             _context = context;
         }

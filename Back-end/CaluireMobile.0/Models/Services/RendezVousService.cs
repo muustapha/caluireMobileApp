@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class RendezVousService : IRendezVousService
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public RendezVousService(CaluireMobileContext context)
+        public RendezVousService(ICaluireMobileContext context)
         {
             _context = context;
         }

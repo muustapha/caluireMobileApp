@@ -6,9 +6,9 @@ namespace CaluireMobile._0.Models.Services
 {
     public class SocketioServices : ISocketioServices
     {
-        private readonly CaluireMobileContext _context;
+        private readonly ICaluireMobileContext _context;
 
-        public SocketioServices(CaluireMobileContext context)
+        public SocketioServices(ICaluireMobileContext context)
         {
             _context = context;
         }
