@@ -6,9 +6,10 @@ using caluireMobile._0.Models.Dtos;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using CaluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.IService;
+using CaluireMobile._0.Models.Dtos;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -19,7 +20,7 @@ namespace CaluireMobile._0.Models.Controllers
         private readonly IClientsService _service;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
-        private readonly IEmailService _emailService; // Ajout du service d'e-mail
+        private readonly IEmailService _emailService;
 
         public ClientsController(IClientsService service, IMapper mapper, IMemoryCache memoryCache, IEmailService emailService)
         {
@@ -32,13 +33,18 @@ namespace CaluireMobile._0.Models.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var client = _service.GetClientByAdresseMail(model.AdresseMail);
+            if (model == null || string.IsNullOrEmpty(model.AdresseMail) || string.IsNullOrEmpty(model.MotDePasse))
+            {
+                return BadRequest(new { success = false, message = "Adresse mail et mot de passe requis." });
+            }
+
+            var client = await _service.GetClientByAdresseMailAsync(model.AdresseMail);
             if (client == null)
             {
                 return NotFound(new { success = false, message = "Utilisateur non trouvé." });
             }
 
-            if (!VerifyPassword(model.MotDePasse, client.MotDePasse))
+            if (!VerifyPassword(model.MotDePasse, client.MotDePasse ?? string.Empty))
             {
                 return Unauthorized(new { success = false, message = "Mot de passe incorrect." });
             }
@@ -48,23 +54,22 @@ namespace CaluireMobile._0.Models.Controllers
 
         private bool VerifyPassword(string enteredPassword, string storedPasswordHash)
         {
-            // Implémentation du hachage de mot de passe à insérer ici, retourne true si le mot de passe correspond
             return enteredPassword == storedPasswordHash; // Exemple simpliste, utilisez un meilleur hachage dans la pratique
         }
 
         // GET: api/Clients
         [HttpGet]
-        public ActionResult<IEnumerable<ClientDtoOut>> GetClients()
+        public async Task<ActionResult<IEnumerable<ClientDtoOut>>> GetClients()
         {
-            var clients = _service.GetAllClients();
+            var clients = await _service.GetAllClientsAsync();
             return Ok(_mapper.Map<IEnumerable<ClientDtoOut>>(clients));
         }
 
         // GET: api/Clients/5
         [HttpGet("{id}")]
-        public ActionResult<ClientDtoAvecrendezVousEtSocketios> GetClient(int id)
+        public async Task<ActionResult<ClientDtoAvecrendezVousEtSocketios>> GetClient(int id)
         {
-            var client = _service.GetClientById(id);
+            var client = await _service.GetClientByIdAsync(id);
             if (client == null)
             {
                 return NotFound();
@@ -76,44 +81,57 @@ namespace CaluireMobile._0.Models.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateClient(int id, ClientDtoIn clientDtoIn)
         {
-            var clientInDb = _service.GetClientById(id);
+            if (clientDtoIn == null)
+            {
+                return BadRequest("ClientDtoIn ne peut pas être null.");
+            }
+
+            var clientInDb = await _service.GetClientByIdAsync(id);
             if (clientInDb == null)
             {
                 return NotFound();
             }
 
-            // Mise à jour des champs du profil client
             if (!string.IsNullOrWhiteSpace(clientDtoIn.AdresseMail))
                 clientInDb.AdresseMail = clientDtoIn.AdresseMail;
             if (!string.IsNullOrWhiteSpace(clientDtoIn.MotDePasse))
                 clientInDb.MotDePasse = clientDtoIn.MotDePasse;
 
-            _service.Save(); // Sauvegarder les modifications
+            await _service.UpdateClientAsync(id, clientInDb);
 
-            // Envoyer un email de confirmation
             var emailSubject = "Confirmation de mise à jour du profil";
             var emailBody = "Votre profil a été mis à jour avec succès.";
             try
             {
-                await _emailService.SendEmailAsync(clientInDb.AdresseMail, emailSubject, emailBody);
-                return Ok(new { success = true, message = "Profil mis à jour avec succès. Email de confirmation envoyé." });
+                if (!string.IsNullOrEmpty(clientInDb.AdresseMail))
+                {
+                    await _emailService.SendEmailAsync(clientInDb.AdresseMail, emailSubject, emailBody);
+                    return Ok(new { success = true, message = "Profil mis à jour avec succès. Email de confirmation envoyé." });
+                }
+                else
+                {
+                    return Ok(new { success = true, message = "Profil mis à jour avec succès. L'adresse email est manquante, aucun email de confirmation envoyé." });
+                }
             }
             catch (Exception ex)
             {
-                // Log de l'exception ou gestion d'erreur
                 return StatusCode(500, new { success = false, message = "Profil mis à jour, mais l'email n'a pas pu être envoyé. " + ex.Message });
             }
         }
 
         // POST: api/Clients
         [HttpPost]
-        public ActionResult<ClientDtoOut> CreateClient(ClientDtoIn clientDtoIn)
+        public async Task<ActionResult<ClientDtoOut>> CreateClient(ClientDtoIn clientDtoIn)
         {
+            if (clientDtoIn == null)
+            {
+                return BadRequest(new { success = false, message = "ClientDtoIn ne peut pas être null." });
+            }
+
             var client = _mapper.Map<Client>(clientDtoIn);
-            _service.AddClient(client);
+            await _service.AddClientAsync(client);
             if (client.IdClient > 0)
             {
-                // Supposons que l'ID du client est correctement défini après l'ajout
                 return Ok(new { success = true, clientId = client.IdClient, client = _mapper.Map<ClientDtoOut>(client) });
             }
             else
@@ -121,15 +139,16 @@ namespace CaluireMobile._0.Models.Controllers
                 return BadRequest(new { success = false, message = "Impossible de créer le client" });
             }
         }
-        // POST: api/Clients/SendEmail
+
+        // POST: api/Clients/SendEmail/{id}
         [HttpPost("SendEmail/{id}")]
         public async Task<IActionResult> SendEmail(int id)
         {
-            Console.WriteLine("SendEmail method called"); // Ajout du log
+            Console.WriteLine("SendEmail method called");
 
             try
             {
-                var client = _service.GetClientById(id);
+                var client = await _service.GetClientByIdAsync(id);
                 if (client == null)
                 {
                     return NotFound("Client not found");
@@ -138,7 +157,11 @@ namespace CaluireMobile._0.Models.Controllers
                 var emailSubject = "Confirmation de mise à jour du profil";
                 var emailBody = $"Cher {client.Nom}, votre profil a été mis à jour. Si vous n'avez pas demandé cette mise à jour, veuillez contacter le support.";
 
-                // Envoyer l'e-mail avec l'adresse e-mail du client
+                if (string.IsNullOrEmpty(client.AdresseMail))
+                {
+                    return BadRequest(new { success = false, message = "Adresse email manquante." });
+                }
+
                 await _emailService.SendEmailAsync(client.AdresseMail, emailSubject, emailBody);
 
                 return Ok(new { success = true, message = "Email de confirmation envoyé." });
@@ -149,16 +172,11 @@ namespace CaluireMobile._0.Models.Controllers
             }
         }
 
-
-
-
-
-
         // DELETE: api/Clients/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteClient(int id)
+        public async Task<IActionResult> DeleteClient(int id)
         {
-            _service.DeleteClient(id);
+            await _service.DeleteClientAsync(id);
             return NoContent();
         }
 
@@ -166,28 +184,28 @@ namespace CaluireMobile._0.Models.Controllers
         [HttpPost("Verify/{id}")]
         public async Task<IActionResult> VerifyClient(int id)
         {
-            var client = _service.GetClientById(id);
+            var client = await _service.GetClientByIdAsync(id);
             if (client == null)
             {
                 return NotFound();
             }
 
-            // Générer le code de vérification
             var verificationCode = GenerateVerificationCode();
 
-            // Stocker le code de vérification
             StoreVerificationCode(client.IdClient, verificationCode);
 
-            // Envoyer le code de vérification par e-mail
+            if (string.IsNullOrEmpty(client.AdresseMail))
+            {
+                return BadRequest(new { success = false, message = "Adresse email manquante." });
+            }
+
             await SendVerificationEmail(client.AdresseMail, verificationCode);
 
-            // Retourner une réponse de succès
             return Ok(new { success = true, message = "Code de vérification envoyé avec succès." });
         }
 
         private string GenerateVerificationCode()
         {
-            // Implémentation de la logique pour générer un code de vérification
             Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray());
@@ -195,18 +213,15 @@ namespace CaluireMobile._0.Models.Controllers
 
         private void StoreVerificationCode(int clientId, string verificationCode)
         {
-            // Implémentation de la logique pour stocker le code de vérification
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)); // Expiration dans 5 minutes
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
             _memoryCache.Set(clientId.ToString(), verificationCode, cacheEntryOptions);
         }
 
         private async Task SendVerificationEmail(string emailAddress, string verificationCode)
         {
-            // Implémentation de la logique pour envoyer l'e-mail de vérification
             var subject = "Code de vérification";
             var body = $"Votre code de vérification est : {verificationCode}";
             await _emailService.SendEmailAsync(emailAddress, subject, body);
         }
     }
-
 }

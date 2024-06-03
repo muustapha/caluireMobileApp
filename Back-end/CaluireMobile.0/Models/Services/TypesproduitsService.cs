@@ -1,10 +1,13 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CaluireMobile._0.Models.Services
 {
-    public class TypesproduitsService: ITypesproduitsService
+    public class TypesproduitsService : ITypesproduitsService
     {
         private readonly ICaluireMobileContext _context;
 
@@ -13,41 +16,36 @@ namespace CaluireMobile._0.Models.Services
             _context = context;
         }
 
-        public void AddTypesproduits(Typesproduit Typesproduits)
+        public async Task AddTypesproduitAsync(Typesproduit typesproduit)
         {
-            if (Typesproduits == null)
+            await _context.Typesproduits.AddAsync(typesproduit);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTypesproduitsAsync(int id)
+        {
+            var typesproduit = await _context.Typesproduits.FirstOrDefaultAsync(t => t.IdTypesProduit == id);
+            if (typesproduit == null)
             {
-                throw new ArgumentNullException(nameof(Typesproduits));
+                throw new ArgumentNullException(nameof(typesproduit));
             }
 
-            _context.Typesproduits.Add(Typesproduits);
-            _context.SaveChanges();
+            _context.Typesproduits.Remove(typesproduit);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteTypesproduits(int id)
+        public async Task<IEnumerable<Typesproduit>> GetAllTypesproduitsAsync()
         {
-            var Typesproduits = _context.Typesproduits.FirstOrDefault(t => t.IdTypesProduit == id);
-            if (Typesproduits == null)
-            {
-                throw new ArgumentNullException(nameof(Typesproduits));
-            }
-
-            _context.Typesproduits.Remove(Typesproduits);
-            _context.SaveChanges();
+            return await _context.Typesproduits
+                                 .Include(t => t.Produits)
+                                 .ToListAsync();
         }
 
-        public IEnumerable<Typesproduit> GetAllTypesproduits()
+        public async Task<Typesproduit> GetTypesproduitsByIdAsync(int id)
         {
-            return _context.Typesproduits
-            .Include(t => t.Produits)
-            .ToList();
-        }
-
-        public Typesproduit GetTypesproduitsById(int id)
-        {
-            var typesproduitFromDb = _context.Typesproduits
-                                             .Include(t => t.Produits)
-                                             .FirstOrDefault(t => t.IdTypesProduit == id);
+            var typesproduitFromDb = await _context.Typesproduits
+                                                   .Include(t => t.Produits)
+                                                   .FirstOrDefaultAsync(t => t.IdTypesProduit == id);
 
             if (typesproduitFromDb == null)
             {
@@ -56,10 +54,11 @@ namespace CaluireMobile._0.Models.Services
 
             return typesproduitFromDb;
         }
-        public void UpdateTypesproduits(Typesproduit Typesproduits)
+
+        public async Task UpdateTypesproduitsAsync(Typesproduit typesproduit)
         {
-            _context.Typesproduits.Update(Typesproduits);
-            _context.SaveChanges();
+            _context.Typesproduits.Update(typesproduit);
+            await _context.SaveChangesAsync();
         }
     }
 }

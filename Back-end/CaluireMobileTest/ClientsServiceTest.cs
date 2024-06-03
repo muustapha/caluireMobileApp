@@ -3,8 +3,10 @@ using Moq;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.Services;
 using System;
+using System.Threading.Tasks;
 using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
+
 namespace CaluireMobileTest
 {
     public class ClientsServiceTests
@@ -19,55 +21,56 @@ namespace CaluireMobileTest
         }
 
         [Fact]
-        public void AddClient_NullClient_ThrowsArgumentNullException()
+        public async Task AddClient_NullClient_ThrowsArgumentNullException()
         {
             // Arrange
             Client client = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => _clientsService.AddClient(client));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _clientsService.AddClientAsync(client));
         }
 
         [Fact]
-        public void AddClient_ValidClient_AddsClientToContext()
+        public async Task AddClient_ValidClient_AddsClientToContext()
         {
             // Arrange
             var client = new Client();
             var mockSet = new Mock<DbSet<Client>>();
             _mockContext.Setup(c => c.Clients).Returns(mockSet.Object);
+            _mockContext.Setup(c => c.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
-            _clientsService.AddClient(client);
+            await _clientsService.AddClientAsync(client);
 
             // Assert
-            mockSet.Verify(m => m.Add(It.IsAny<Client>()), Times.Once());
-            _mockContext.Verify(c => c.SaveChanges(), Times.Once());
+            mockSet.Verify(m => m.AddAsync(It.IsAny<Client>(), It.IsAny<CancellationToken>()), Times.Once());
+            _mockContext.Verify(c => c.SaveChangesAsync(), Times.Once());
         }
 
         [Fact]
-        public void DeleteClient_NonExistingClient_ThrowsArgumentNullException()
+        public async Task DeleteClient_NonExistingClient_ThrowsKeyNotFoundException()
         {
             // Arrange
-            _mockContext.Setup(c => c.Clients.Find(It.IsAny<int>())).Returns((Client)null);
+            _mockContext.Setup(c => c.Clients.FindAsync(It.IsAny<int>())).ReturnsAsync((Client)null);
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => _clientsService.DeleteClient(1));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => _clientsService.DeleteClientAsync(1));
         }
 
         [Fact]
-        public void DeleteClient_ExistingClient_RemovesClientFromContext()
+        public async Task DeleteClient_ExistingClient_RemovesClientFromContext()
         {
             // Arrange
             var client = new Client();
-            _mockContext.Setup(c => c.Clients.Find(It.IsAny<int>())).Returns(client);
+            _mockContext.Setup(c => c.Clients.FindAsync(It.IsAny<int>())).ReturnsAsync(client);
+            _mockContext.Setup(c => c.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
-            _clientsService.DeleteClient(1);
+            await _clientsService.DeleteClientAsync(1);
 
             // Assert
             _mockContext.Verify(c => c.Clients.Remove(client), Times.Once);
-            _mockContext.Verify(c => c.SaveChanges(), Times.Once);
+            _mockContext.Verify(c => c.SaveChangesAsync(), Times.Once);
         }
-
     }
 }

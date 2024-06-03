@@ -13,13 +13,14 @@ const styles = StyleSheet.create({
       height: '80%',
       flexDirection: 'row',
       flexWrap: 'wrap',
+      marginLeft: 0.1,
     },
       container2: {
       width: '100%',
       height: '37%',
       flexDirection: 'row',
       flexWrap: 'wrap',
-      marginHorizontal  : 25,
+      marginHorizontal  : 9,
   
       }
   });

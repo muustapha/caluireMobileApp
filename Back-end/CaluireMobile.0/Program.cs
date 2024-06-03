@@ -27,6 +27,11 @@ var mailjetApiKey = configuration["Mailjet:ApiKey"];
 var mailjetApiSecret = configuration["Mailjet:ApiSecret"];
 var senderEmailAddress = configuration["Mailjet:SenderEmailAddress"];
 
+if (string.IsNullOrEmpty(mailjetApiKey) || string.IsNullOrEmpty(mailjetApiSecret) || string.IsNullOrEmpty(senderEmailAddress))
+{
+    throw new ArgumentException("MailjetApiKey, MailjetApiSecret et SenderEmailAddress doivent être configurés.");
+}
+
 Console.WriteLine($"Mailjet API Key: {mailjetApiKey}");
 Console.WriteLine($"Mailjet API Secret: {mailjetApiSecret}");
 Console.WriteLine($"Sender email address: {senderEmailAddress}");
@@ -42,12 +47,11 @@ builder.Services.AddTransient<IEmployesService, EmployesService>();
 builder.Services.AddTransient<IOperationsServices, OperationsServices>();
 builder.Services.AddTransient<IPriseEnChargesService, PriseEnChargesService>();
 builder.Services.AddTransient<IRendezVousService, RendezVousService>();
-builder.Services.AddTransient<ISocketioServices,SocketioServices>();
+builder.Services.AddTransient<ISocketioServices, SocketioServices>();
 builder.Services.AddTransient<ITraductionsService, TraductionsService>();
 builder.Services.AddTransient<ITraitersService, TraitersService>();
 builder.Services.AddTransient<ITransactionspaimentService, TransactionspaimentService>();
-builder.Services.AddTransient<ITypesproduitsService,TypesproduitsService>();
-// Répéter pour tous les autres services mentionnés
+builder.Services.AddTransient<ITypesproduitsService, TypesproduitsService>();
 
 // Configuration de Swagger et autres composants d'infrastructure
 builder.Services.AddAuthorization();
@@ -76,4 +80,4 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.Run();
+await app.RunAsync();

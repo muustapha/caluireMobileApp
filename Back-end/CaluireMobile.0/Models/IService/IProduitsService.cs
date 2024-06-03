@@ -1,14 +1,16 @@
 ﻿using CaluireMobile._0.Models.Datas;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CaluireMobile._0.Models.IService
 {
     public interface IProduitsService
     {
-        public void AddProduit(Produit produit);
-        public void DeleteProduit(int id);
-        public IEnumerable<Produit> GetAllProduits();
-        public Produit GetProduitById(int id);
-        public IEnumerable<Produit> GetProduitsByFlagAndType(string flag, string typeProduit);
-        public void UpdateProduit(Produit produit);
+        Task AddProduitAsync(Produit produit);
+        Task DeleteProduitAsync(int id);
+        Task<IEnumerable<Produit>> GetAllProduitsAsync();
+        Task<Produit> GetProduitByIdAsync(int id);
+        Task<IEnumerable<Produit>> GetProduitsByFlagAndTypeAsync(string flag, string typeProduit);
+        Task UpdateProduitAsync(Produit produit);
     }
 }

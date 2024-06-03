@@ -2,9 +2,10 @@ using AutoMapper;
 using caluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.IService;
-using CaluireMobile._0.Models.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CaluireMobile._0.Models.Controllers
 {
@@ -21,24 +22,24 @@ namespace CaluireMobile._0.Models.Controllers
             _mapper = mapper;
         }
 
-[HttpGet("{flag}/{type}")]
-public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitsByFlagAndType(string flag, string type)
-{
-    var produits = _service.GetProduitsByFlagAndType(flag, type);
-    return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
-}
-
-        [HttpGet]
-        public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetAllProduits()
+        [HttpGet("{flag}/{type}")]
+        public async Task<ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>> GetProduitsByFlagAndTypeAsync(string flag, string type)
         {
-            var produits = _service.GetAllProduits();
+            var produits = await _service.GetProduitsByFlagAndTypeAsync(flag, type);
             return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
         }
 
-        [HttpGet("{id}", Name = "GetProduitById")]
-        public ActionResult<ProduitDtoAvecTypesProduitEtTraiter> GetProduitById(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>> GetAllProduitsAsync()
         {
-            var produit = _service.GetProduitById(id);
+            var produits = await _service.GetAllProduitsAsync();
+            return Ok(_mapper.Map<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>>(produits));
+        }
+
+        [HttpGet("{id}", Name = "GetProduitByIdAsync")]
+        public async Task<ActionResult<ProduitDtoAvecTypesProduitEtTraiter>> GetProduitByIdAsync(int id)
+        {
+            var produit = await _service.GetProduitByIdAsync(id);
             if (produit == null)
             {
                 return NotFound();
@@ -47,30 +48,30 @@ public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduit
         }
 
         [HttpPost]
-        public ActionResult<Produit> AddProduit(ProduitDtoIn produitCreateDto)
+        public async Task<ActionResult<Produit>> AddProduitAsync(ProduitDtoIn produitCreateDto)
         {
             var produitModel = _mapper.Map<Produit>(produitCreateDto);
-            _service.AddProduit(produitModel);
-            return CreatedAtRoute(nameof(GetProduitById), new { Id = produitModel.IdProduit }, _mapper.Map<ProduitDtoIn>(produitModel));
+            await _service.AddProduitAsync(produitModel);
+            return CreatedAtRoute(nameof(GetProduitByIdAsync), new { Id = produitModel.IdProduit }, _mapper.Map<ProduitDtoIn>(produitModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateProduit(int id, ProduitDtoIn produitUpdateDto)
+        public async Task<ActionResult> UpdateProduitAsync(int id, ProduitDtoIn produitUpdateDto)
         {
-            var produitModelFromRepo = _service.GetProduitById(id);
+            var produitModelFromRepo = await _service.GetProduitByIdAsync(id);
             if (produitModelFromRepo == null)
             {
                 return NotFound();
             }
             _mapper.Map(produitUpdateDto, produitModelFromRepo);
-            _service.UpdateProduit(produitModelFromRepo);
+            await _service.UpdateProduitAsync(produitModelFromRepo);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public ActionResult PartialProduitUpdate(int id, JsonPatchDocument<Produit> patchDoc)
+        public async Task<ActionResult> PartialProduitUpdateAsync(int id, JsonPatchDocument<Produit> patchDoc)
         {
-            var produitModelFromRepo = _service.GetProduitById(id);
+            var produitModelFromRepo = await _service.GetProduitByIdAsync(id);
             if (produitModelFromRepo == null)
             {
                 return NotFound();
@@ -85,20 +86,20 @@ public ActionResult<IEnumerable<ProduitDtoAvecTypesProduitEtTraiter>> GetProduit
             }
 
             _mapper.Map(produitToPatch, produitModelFromRepo);
-            _service.UpdateProduit(produitModelFromRepo);
+            await _service.UpdateProduitAsync(produitModelFromRepo);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteProduit(int id)
+        public async Task<ActionResult> DeleteProduitAsync(int id)
         {
-            var produitModelFromRepo = _service.GetProduitById(id);
+            var produitModelFromRepo = await _service.GetProduitByIdAsync(id);
             if (produitModelFromRepo == null)
             {
                 return NotFound();
             }
-            _service.DeleteProduit(id);
+            await _service.DeleteProduitAsync(id);
             return NoContent();
         }
     }

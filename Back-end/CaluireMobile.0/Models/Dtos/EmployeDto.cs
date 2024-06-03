@@ -10,19 +10,17 @@ namespace caluireMobile._0.Models.Dtos
         public string? Mail { get; set; }
         public DateTime? DateEmbauche { get; set; }
         public string? Telephone { get; set; }
-        // Ajoutez d'autres propriétés selon vos besoins
     }
 
     public class EmployeDtoOut
     {
-     
+
         public string? Nom { get; set; }
         public string? Prenom { get; set; }
         public string? Adresse { get; set; }
         public string? Mail { get; set; }
         public DateTime? DateEmbauche { get; set; }
         public string? Telephone { get; set; }
-        // Ajoutez d'autres propriétés selon vos besoins
     }
 
     public class EmployeDtoAvecPriseEnCharges
@@ -56,10 +54,9 @@ namespace caluireMobile._0.Models.Dtos
         public string? Mail { get; set; }
         public DateTime? DateEmbauche { get; set; }
         public string? Telephone { get; set; }
-        // Ajoutez d'autres propriétés selon vos besoins
         public virtual ICollection<SocketioDtoAvecClientEtEmploye> Socketios { get; set; }
     }
-    
+
     public class EmployeDtoAvecPriseEnChargesEtSocketios
     {
         public EmployeDtoAvecPriseEnChargesEtSocketios()
@@ -74,7 +71,6 @@ namespace caluireMobile._0.Models.Dtos
         public string? Mail { get; set; }
         public DateTime? DateEmbauche { get; set; }
         public string? Telephone { get; set; }
-        // Ajoutez d'autres propriétés selon vos besoins
         public virtual ICollection<PriseEnChargeDtoOut> PriseEnCharges { get; set; }
         public virtual ICollection<SocketioDtoAvecClientEtEmploye> Socketios { get; set; }
     }

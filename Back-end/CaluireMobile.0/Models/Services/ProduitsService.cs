@@ -16,43 +16,43 @@ namespace CaluireMobile._0.Models.Services
             _context = context;
         }
 
-        public void AddProduit(Produit produit)
+        public async Task AddProduitAsync(Produit produit)
         {
             if (produit == null)
             {
                 throw new ArgumentNullException(nameof(produit));
             }
 
-            _context.Produits.Add(produit);
-            _context.SaveChanges();
+            await _context.Produits.AddAsync(produit);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteProduit(int id)
+        public async Task DeleteProduitAsync(int id)
         {
-            var produit = _context.Produits.Find(id);
+            var produit = await _context.Produits.FindAsync(id);
             if (produit == null)
             {
                 throw new ArgumentNullException(nameof(produit));
             }
 
             _context.Produits.Remove(produit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Produit> GetAllProduits()
+        public async Task<IEnumerable<Produit>> GetAllProduitsAsync()
         {
-            return _context.Produits
-                           .Include(p => p.Traiters)
-                           .Include(p => p.TypesProduit)
-                           .ToList();
+            return await _context.Produits
+                                 .Include(p => p.Traiters)
+                                 .Include(p => p.TypesProduit)
+                                 .ToListAsync();
         }
 
-        public Produit GetProduitById(int id)
+        public async Task<Produit> GetProduitByIdAsync(int id)
         {
-            var produitFromDb = _context.Produits
-                                        .Include(p => p.Traiters)
-                                        .Include(p => p.TypesProduit)
-                                        .FirstOrDefault(p => p.IdProduit == id);
+            var produitFromDb = await _context.Produits
+                                              .Include(p => p.Traiters)
+                                              .Include(p => p.TypesProduit)
+                                              .FirstOrDefaultAsync(p => p.IdProduit == id);
 
             if (produitFromDb == null)
             {
@@ -62,14 +62,18 @@ namespace CaluireMobile._0.Models.Services
             return produitFromDb;
         }
 
-        public IEnumerable<Produit> GetProduitsByFlagAndType(string flag, string typeProduit)
+        public async Task<IEnumerable<Produit>> GetProduitsByFlagAndTypeAsync(string flag, string typeProduit)
         {
-            return _context.Produits.Where(p => p.FlagProduit == flag && p.TypesProduit.NomTypes == typeProduit).ToList();
+            return await _context.Produits
+                                 .Include(p => p.TypesProduit)
+                                 .Where(p => p.FlagProduit == flag && p.TypesProduit.NomTypes == typeProduit)
+                                 .ToListAsync();
         }
-        public void UpdateProduit(Produit produit)
+
+        public async Task UpdateProduitAsync(Produit produit)
         {
             _context.Produits.Update(produit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -73,6 +73,7 @@ const App = () => {
             <Stack.Screen name="Focus" component={Focus} options={{ headerShown: false }} />
             <Stack.Screen name="MonProfil" component={MonProfil} options={{ headerShown: false }} />
             <Stack.Screen name="Contact" component={Contact} options={{ headerShown: false }} />
+            <Stack.Screen name="Panier" component={Panier} options={{ headerShown: false }} />
             <Stack.Screen name="Drawers" component={Drawers} options={{ headerShown: false }} />
           </Stack.Navigator>
         )}

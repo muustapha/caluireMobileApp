@@ -1,6 +1,9 @@
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.IService;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CaluireMobile._0.Models.Services
 {
@@ -12,12 +15,8 @@ namespace CaluireMobile._0.Models.Services
         {
             _context = context;
         }
-        public void Save()
-    {
-        _context.SaveChanges();
-    }
 
-        public void AddClient(Client client)
+        public async Task<bool> SaveClientAsync(Client client)
         {
             if (client == null)
             {
@@ -25,35 +24,46 @@ namespace CaluireMobile._0.Models.Services
             }
 
             _context.Clients.Add(client);
-            _context.SaveChanges();
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public void DeleteClient(int id)
+        public async Task AddClientAsync(Client client)
         {
-            var client = _context.Clients.Find(id);
             if (client == null)
             {
                 throw new ArgumentNullException(nameof(client));
             }
 
+            await _context.Clients.AddAsync(client);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteClientAsync(int id)
+        {
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null)
+            {
+                throw new KeyNotFoundException($"Client with id {id} was not found.");
+            }
+
             _context.Clients.Remove(client);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Client> GetAllClients()
+        public async Task<IEnumerable<Client>> GetAllClientsAsync()
         {
-            return _context.Clients
-                           .Include(c => c.RendezVous)
-                           .Include(c => c.Socketios)
-                           .ToList();
+            return await _context.Clients
+                                 .Include(c => c.RendezVous)
+                                 .Include(c => c.Socketios)
+                                 .ToListAsync();
         }
 
-        public Client GetClientById(int id)
+        public async Task<Client> GetClientByIdAsync(int id)
         {
-            var clientFromDb = _context.Clients
-                                       .Include(c => c.RendezVous)
-                                       .Include(c => c.Socketios)
-                                       .FirstOrDefault(c => c.IdClient == id);
+            var clientFromDb = await _context.Clients
+                                             .Include(c => c.RendezVous)
+                                             .Include(c => c.Socketios)
+                                             .FirstOrDefaultAsync(c => c.IdClient == id);
 
             if (clientFromDb == null)
             {
@@ -62,22 +72,23 @@ namespace CaluireMobile._0.Models.Services
 
             return clientFromDb;
         }
-        public void UpdateClient(int id, Client client)
+
+        public async Task UpdateClientAsync(int id, Client client)
         {
-            var existingClient = _context.Clients.Find(id);
+            var existingClient = await _context.Clients.FindAsync(id);
             if (existingClient == null)
             {
-                throw new ArgumentNullException(nameof(existingClient));
+                throw new KeyNotFoundException($"Client with id {id} was not found.");
             }
 
             _context.Entry(existingClient).CurrentValues.SetValues(client);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Client GetClientByAdresseMail(string adresseMail)
+        public async Task<Client> GetClientByAdresseMailAsync(string adresseMail)
         {
-            var client = _context.Clients
-                                 .FirstOrDefault(c => c.AdresseMail == adresseMail);
+            var client = await _context.Clients
+                                       .FirstOrDefaultAsync(c => c.AdresseMail == adresseMail);
 
             if (client == null)
             {
@@ -87,5 +98,4 @@ namespace CaluireMobile._0.Models.Services
             return client;
         }
     }
-    
 }

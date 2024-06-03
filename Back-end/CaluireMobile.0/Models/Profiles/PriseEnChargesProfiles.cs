@@ -8,23 +8,22 @@ namespace CaluireMobile._0.Models.Profiles
     {
         public PriseEnChargesProfile()
         {
-            // Map from PriseEnCharge to PriseEnChargeDtoIn and vice versa
-            CreateMap<PriseEnCharge, PriseEnChargeDtoIn>();
+            // Cartographie de PriseEnCharge à PriseEnChargeDtoIn et vice versa            
             CreateMap<PriseEnChargeDtoIn, PriseEnCharge>();
 
-            // Map from PriseEnCharge to PriseEnChargeDtoOut and vice versa
+            // Cartographie de PriseEnCharge à PriseEnChargeDtoOut et vice versa
             CreateMap<PriseEnCharge, PriseEnChargeDtoOut>();
             CreateMap<PriseEnChargeDtoOut, PriseEnCharge>();
 
-            // Map from PriseEnCharge to PriseEnChargeDtoAvecEmploye and vice versa
+            // Cartographie de PriseEnCharge à PriseEnChargeDtoAvecEmploye et vice versa
             CreateMap<PriseEnCharge, PriseEnChargeDtoAvecEmploye>();
             CreateMap<PriseEnChargeDtoAvecEmploye, PriseEnCharge>();
 
-            // Map from PriseEnCharge to PriseEnChargeDtoAvecOperation and vice versa
+            // Cartographie de PriseEnCharge à PriseEnChargeDtoAvecOperation et vice versa
             CreateMap<PriseEnCharge, PriseEnChargeDtoAvecOperation>();
             CreateMap<PriseEnChargeDtoAvecOperation, PriseEnCharge>();
 
-            // Map from PriseEnCharge to PriseEnChargeDtoAvecEmployeEtOperation and vice versa
+            // Cartographie de PriseEnCharge à PriseEnChargeDtoAvecEmployeEtOperation et vice versa
             CreateMap<PriseEnCharge, PriseEnChargeDtoAvecEmployeEtOperation>();
             CreateMap<PriseEnChargeDtoAvecEmployeEtOperation, PriseEnCharge>();
         }

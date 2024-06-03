@@ -1,94 +1,62 @@
-using AutoMapper;
-using caluireMobile._0.Models.Dtos;
 using CaluireMobile._0.Models.Datas;
 using CaluireMobile._0.Models.IService;
-using CaluireMobile._0.Models.Services;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CaluireMobile._0.Models.Controllers
+namespace CaluireMobile._0.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TypesproduitsController : ControllerBase
     {
-        private readonly ITypesproduitsService _service;
-        private readonly IMapper _mapper;
+        private readonly ITypesproduitsService _typesproduitsService;
 
-        public TypesproduitsController(ITypesproduitsService service, IMapper mapper)
+        public TypesproduitsController(ITypesproduitsService typesproduitsService)
         {
-            _service = service;
-            _mapper = mapper;
+            _typesproduitsService = typesproduitsService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TypesproduitDtoAvecProduits>> GetAllTypesproduits()
+        public async Task<ActionResult<IEnumerable<Typesproduit>>> GetAllTypesproduits()
         {
-            var typesproduits = _service.GetAllTypesproduits();
-            return Ok(_mapper.Map<IEnumerable<TypesproduitDtoAvecProduits>>(typesproduits));
+            var typesproduits = await _typesproduitsService.GetAllTypesproduitsAsync();
+            return Ok(typesproduits);
         }
 
-        [HttpGet("{id}", Name = "GetTypesproduitById")]
-        public ActionResult<TypesproduitDtoAvecProduits> GetTypesproduitById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Typesproduit>> GetTypesproduitsById(int id)
         {
-            var typesproduit = _service.GetTypesproduitsById(id);
+            var typesproduit = await _typesproduitsService.GetTypesproduitsByIdAsync(id);
             if (typesproduit == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TypesproduitDtoAvecProduits>(typesproduit));
+            return Ok(typesproduit);
         }
 
         [HttpPost]
-        public ActionResult<Typesproduit> AddTypesproduit(TypesproduitDtoIn typesproduitCreateDto)
+        public async Task<ActionResult> AddTypesproduit(Typesproduit typesproduit)
         {
-            var typesproduitModel = _mapper.Map<Typesproduit>(typesproduitCreateDto);
-            _service.AddTypesproduits(typesproduitModel);
-            return CreatedAtRoute(nameof(GetTypesproduitById), new { Id = typesproduitModel.IdTypesProduit }, _mapper.Map<TypesproduitDtoOut>(typesproduitModel));
+            await _typesproduitsService.AddTypesproduitAsync(typesproduit);
+            return CreatedAtAction(nameof(GetTypesproduitsById), new { id = typesproduit.IdTypesProduit }, typesproduit);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateTypesproduit(int id, TypesproduitDtoIn typesproduitUpdateDto)
+        public async Task<ActionResult> UpdateTypesproduits(int id, Typesproduit typesproduit)
         {
-            var typesproduitModelFromRepo = _service.GetTypesproduitsById(id);
-            if (typesproduitModelFromRepo == null)
+            if (id != typesproduit.IdTypesProduit)
             {
-                return NotFound();
+                return BadRequest();
             }
-            _mapper.Map(typesproduitUpdateDto, typesproduitModelFromRepo);
-            _service.UpdateTypesproduits(typesproduitModelFromRepo);
-            return NoContent();
-        }
-
-        [HttpPatch("{id}")]
-        public ActionResult PartialTypesproduitUpdate(int id, JsonPatchDocument<Typesproduit> patchDoc)
-        {
-            var typesproduitFromRepo = _service.GetTypesproduitsById(id);
-            if (typesproduitFromRepo == null)
-            {
-                return NotFound();
-            }
-            var typesproduitToPatch = _mapper.Map<Typesproduit>(typesproduitFromRepo);
-            patchDoc.ApplyTo(typesproduitToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("", err.ErrorMessage));
-
-            if (!TryValidateModel(typesproduitToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(typesproduitToPatch, typesproduitFromRepo);
-            _service.UpdateTypesproduits(typesproduitFromRepo);
+            await _typesproduitsService.UpdateTypesproduitsAsync(typesproduit);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteTypesproduit(int id)
+        public async Task<ActionResult> DeleteTypesproduits(int id)
         {
-            var typesproduitModelFromRepo = _service.GetTypesproduitsById(id);
-            if (typesproduitModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _service.DeleteTypesproduits(id);
+            await _typesproduitsService.DeleteTypesproduitsAsync(id);
             return NoContent();
         }
     }
