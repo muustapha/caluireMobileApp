@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const cadieIcon = require('../../asset/icons/cadie.png');
-
 const Footer = () => {
     const navigation = useNavigation();
     return (

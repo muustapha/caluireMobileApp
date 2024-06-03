@@ -21,6 +21,8 @@ import Focus from './src/Pages/focus/Focus';
 import MonProfil from './src/Pages/Profil/monProfil/MonProfil';
 import Contact from './src/Pages/contact/Contact';
 import Drawers from './src/components/drawer/Drawers';
+import 'react-native-gesture-handler';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,18 +45,17 @@ const App = () => {
     recupererPanier();
   }, []);
 
-  // Ajoutez une condition ici, par exemple une variable d'état pour savoir si l'utilisateur est connecté
   const utilisateurConnecte = false;
 
   return (
     <PanierContext.Provider value={{ panier, setPanier }}>
       <NavigationContainer>
-        { utilisateurConnecte ? (
-     <Drawer.Navigator drawerContent={props => <Drawers {...props} />}>
-     <Drawer.Screen name="PageAcceuil" component={PageAcceuil} />
-     <Drawer.Screen name="MonProfil" component={MonProfil} />
-     <Drawer.Screen name="Contact" component={Contact} />
-   </Drawer.Navigator>
+        {utilisateurConnecte ? (
+          <Drawer.Navigator drawerContent={() => <Drawers />}>
+            <Drawer.Screen name="PageAcceuil" component={PageAcceuil} />
+            <Drawer.Screen name="MonProfil" component={MonProfil} />
+            <Drawer.Screen name="Contact" component={Contact} />
+          </Drawer.Navigator>
         ) : (
           <Stack.Navigator initialRouteName="PremierePage">
             <Stack.Screen name="PremierePage" component={PremierePage} options={{ headerShown: false }} />

@@ -12,7 +12,7 @@ const Drawers = () => {
       {/* Optionnel : Ajouter une entête ou des informations de profil ici */}
       <DrawerItem 
         label="PageAccueil"
-        onPress={() => navigation.navigate('PageAcceuil')} // Correction orthographe 'Acceuil' à 'Accueil'
+        onPress={() => navigation.navigate('PageAcceuil')} 
       />
       <DrawerItem 
         label="Mon Profil"
